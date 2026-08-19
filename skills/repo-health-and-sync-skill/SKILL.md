@@ -426,6 +426,16 @@ Inspect only settings needed for the plan; do not echo the full file into the
 transcript, and redact sensitive values. Merge the settings into the dimension
 list. A custom required check replaces the default probe for that dimension.
 
+---
+
+## References
+
+- [JSON Schemas Reference](references/json-schemas.md) — versioned schemas for optional interfaces
+- [REPO PROFILE Template](references/repo-profile-template.md) — copy-paste template for Step 1
+- [Eval Fixtures Reference](references/eval-fixtures.md) — deterministic behavioral contract fixtures
+
+---
+
 ## Completion contract
 
 Before delivering the report, confirm that:
