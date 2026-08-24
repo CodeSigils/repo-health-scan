@@ -7,6 +7,23 @@ related: AGENTS.md routes agents to this maintainer reference.
 
 # Maintaining the Repo Health Scan Skill
 
+This is the maintainer entry point. Use it for changes to this repository; do
+not copy it into repositories that consume the skill.
+
+## Start here
+
+Choose the smallest path that matches the change:
+
+| Change | Required path |
+|---|---|
+| Docs, CI, schemas, or maintainer scripts | Make the change, then run the fast verification checklist. |
+| `SKILL.md` wording or behavior | Apply the change, run the fast checklist, then run the local Codex regression. |
+| Release | Align versions, pass CI for the release commit, then follow the release process below. |
+| Agent support claim | Update the relevant compatibility report and portability evidence; do not broaden claims from one runtime. |
+
+The installed runtime payload is only `skills/repo-health-and-sync-skill/SKILL.md`.
+The rest of this repository is maintainer tooling or evidence.
+
 ## Commit convention
 
 Every commit must answer what and why. Use this body format:
@@ -61,26 +78,30 @@ Do not create a proposal database, scoring framework, or validator for this
 gate. Revisit that decision only after repeated maintainer failures show that
 the human-reviewed checklist is insufficient.
 
-## Verification checklist
+## Fast verification checklist
 
-Before marking work done, run through in order:
+Run this after every change. The tree-clean check is the final check, after all
+edits and generated artifacts have been removed:
 
-1. **Tree clean** — `git status --porcelain` shows nothing
-2. **Doc audit passes** — `python3 scripts/doc-audit.py --self-test`
-3. **No stale refs** — `grep -rn --include='*.md' 'PLAN\\.md\\|PROPOSALS\\.md\\|REPORT\\.md\\|USER-SUGGESTIONS\\.md' . | grep -v '.git/'` returns nothing
-4. **Shellcheck clean** — on any modified `.sh` files
-5. **Eval contract valid** — `python3 scripts/validate-evals.py`
-6. **Trust contract valid** — `python3 scripts/check-trust.py`
-7. **Versions aligned** — `python3 scripts/check-version-consistency.py`
-8. **Python lint clean** — `python3 -m ruff check scripts skills`
-9. **Eval profile contract** — `python3 scripts/validate-evals.py` verifies all required observed profile fields
-10. **Regression grader contract** — `python3 scripts/grade-codex-transcript.py --self-test`
+1. **Documentation:** `python3 scripts/doc-audit.py --self-test`
+2. **No stale refs:** `grep -rn --include='*.md' 'PLAN\\.md\\|PROPOSALS\\.md\\|REPORT\\.md\\|USER-SUGGESTIONS\\.md' . | grep -v '.git/'`
+3. **Eval contract:** `python3 scripts/validate-evals.py`
+4. **Trust contract:** `python3 scripts/check-trust.py`
+5. **Version alignment:** `python3 scripts/check-version-consistency.py`
+6. **Python lint:** `python3 -m ruff check scripts skills`
+7. **Regression grader self-test:** `python3 scripts/grade-codex-transcript.py --self-test`
+8. **Shellcheck:** run on any modified shell files.
+9. **Final tree:** `git status --porcelain` shows nothing.
 
-The model regression is deliberately outside this required fast checklist.
-After a material `SKILL.md` workflow or trigger change, run
+The model regression is deliberately outside the fast checklist because it
+requires authenticated model access and is nondeterministic. After a material
+`SKILL.md` workflow or trigger change, run
 `python3 scripts/run-codex-regression.py` locally or dispatch the dedicated
 `Codex regression` workflow. Do not make ordinary changes depend on model
 availability.
+
+See [codex-regression.md](codex-regression.md) for artifacts, grading, and the
+current evidence boundary.
 
 ## Release process
 
@@ -122,57 +143,24 @@ copies to maintain.
 Root `AGENTS.md` is a routing adapter, not a second maintainer guide. It points
 repository-health work to `SKILL.md` and repository changes to this file.
 
-## Project structure
+## Source ownership
 
-```text
-├── .github/
-│   ├── dependabot.yml              # Weekly GitHub Actions updates
-│   ├── release.yml                 # Generated release-note categories
-│   └── workflows/
-│       ├── ci.yml
-│       ├── codex-regression.yml    # Scheduled/manual non-blocking model evaluation
-│       └── release.yml             # Validated generated release creation
-├── .codex-plugin/plugin.json      # Codex distribution manifest
-├── .gitignore
-├── .gitattributes
-├── AGENTS.md                      # Repository-level agent routing
-├── CITATION.cff
-├── LICENSE
-├── README.md
-├── SECURITY.md
-├── docs/                          # Maintainer docs (not shipped)
-│   ├── README.md
-│   ├── codex-regression.md
-│   ├── codex-setup.md
-│   ├── compatibility-reports/
-│   │   └── codex.md
-│   ├── evidence-urls.json
-│   ├── portability-contract.md      # cross-agent claim and adapter rules
-│   ├── maintaining.md
-│   ├── decisions.md
-│   ├── research.md
-│   └── doc-standards.json
-├── evals/
-│   └── cases/
-│       └── repo-health-scan.json  # Local behavioral contract
-├── scripts/                       # CI-only tooling (not shipped)
-│   ├── _common.py                 # Shared utilities (ROOT, read_json, validate_dimensions)
-│   ├── check-expiry.py
-│   ├── check-portability.py
-│   ├── check-trust.py
-│   ├── check-version-consistency.py
-│   ├── doc-audit.py
-│   ├── extract-tests.py
-│   ├── grade-codex-transcript.py
-│   ├── run-codex-regression.py
-│   ├── validate-evals.py
-│   ├── validate-scripts.py
-│   ├── verify-urls.py
-│   └── verify.sh
-└── skills/
-    └── repo-health-and-sync-skill/
-        └── SKILL.md               # The entire skill
-```
+Keep one authoritative home for each kind of information. The root
+[README](../README.md) contains the user-facing overview and full repository
+tree; this table identifies where maintainers should make changes:
+
+| Concern | Authoritative location |
+|---|---|
+| Runtime audit methodology | `skills/repo-health-and-sync-skill/SKILL.md` |
+| Maintainer workflow and release procedure | `docs/maintaining.md` |
+| Architecture decisions | `docs/decisions.md` |
+| Portability and compatibility claims | `docs/portability-contract.md` and `docs/compatibility-reports/` |
+| Model regression behavior and evidence | `docs/codex-regression.md` and `evals/` |
+| Deterministic validation | `scripts/`, `schemas/`, and `.github/workflows/ci.yml` |
+| Packaging metadata | `.codex-plugin/plugin.json`, `CITATION.cff`, and `SKILL.md` frontmatter |
+
+Do not copy guidance between these locations. Link to the owning document
+instead; this is the primary defense against documentation drift.
 
 ## Common pitfalls
 

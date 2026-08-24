@@ -58,9 +58,9 @@ shape from its name.
 
 ```bash
 # What languages and tools does this project actually use?
-ls *.json *.toml *.yaml *.yml *.cfg 2>/dev/null
-ls *file 2>/dev/null
-ls Dockerfile Containerfile 2>/dev/null
+find . -maxdepth 1 -type f \( -name '*.json' -o -name '*.toml' \
+  -o -name '*.yaml' -o -name '*.yml' -o -name '*.cfg' -o -name '*file' \
+  -o -name 'Dockerfile' -o -name 'Containerfile' \) -print 2>/dev/null
 
 # What's the commit culture like? Count patterns without printing message text,
 # because subjects and bodies can themselves contain credentials.
@@ -83,7 +83,8 @@ find .github/workflows -type f \( -name '*.yml' -o -name '*.yaml' \) 2>/dev/null
 find . -maxdepth 1 -name '*.sh' 2>/dev/null
 find scripts/ -type f \( -name '*.py' -o -name '*.sh' \) 2>/dev/null | sort | head -20
 
-# What's the dependency surface?
+# What's the dependency surface? A manifest is not automatically a release
+# version source: classify it below before adding it to the profile.
 find . -type f \( -name 'requirements*.txt' -o -name 'Cargo.toml' \
   -o -name 'go.mod' -o -name 'package.json' -o -name 'pyproject.toml' \
   -o -name 'pom.xml' -o -name 'build.gradle' \) \
@@ -146,8 +147,11 @@ known extended fact is absent.
 Keep scalar fields canonical (`vcs: git`, `ci: null` when no CI is present,
 `base_ref: null` when no bounded base resolves); put explanations in the
 dimension plan or report, not inside scalar values. `workflow_files` and
-`release_files` contain relative paths, and `version_sources` contains the
-exact paths or the special `git tag` source that the version probe will parse.
+`release_files` contain relative paths, and `version_sources` contains only
+release-relevant exact paths (or the special `git tag` source) that the version
+probe will parse. Do not include a maintainer-only package, test, or tooling
+manifest merely because it has a `version` field. If a package is published
+independently, include its manifest and state that release model in `inferred`.
 
 ## Step 2: Infer what invariants matter
 
@@ -260,9 +264,12 @@ fi
 # observed.version_sources before running this block. Do not substitute
 # root-only defaults: monorepos, skill packs, and language workspaces commonly
 # keep version metadata in nested or nonstandard files. The parser handles
-# JSON/TOML/frontmatter/Python assignments and the special `git tag` source.
+# JSON/TOML/CFF/frontmatter/Python assignments and the special git-tag source.
 VERSION_SOURCES="$(printf '%s\n' 'path/from/profile' 'another/path/from/profile')"
 export VERSION_SOURCES
+
+# The portable Python parser runs through this same shell block so the full
+# probe sequence remains copy-pasteable as one command block.
 python3 - <<'PY'
 import json
 import os
@@ -297,7 +304,7 @@ def extract(path):
                     return section["version"]
         except (ModuleNotFoundError, ValueError):
             return None
-    match = re.search(r"(?m)^\s*(?:version|__version__)\s*[:=]\s*[\"']([^\"']+)", text)
+    match = re.search(r"(?m)^\s*(?:version|__version__)\s*[:=]\s*[\"']?([^\"'\\s#]+)", text)
     return match.group(1) if match else None
 
 sources = [item for item in os.environ.get("VERSION_SOURCES", "").splitlines() if item and not item.startswith("path/")]
@@ -331,7 +338,7 @@ if [ -z "$workflow_files" ]; then
   echo "SKIP: ci_efficiency has no workflow files"
 else
   while IFS= read -r workflow; do
-    if grep -Eq '^\s+paths(-ignore)?:' "$workflow"; then
+    if grep -Eq '^[[:space:]]+paths(-ignore)?:' "$workflow"; then
       echo "PASS: $workflow has path filtering"
     else
       echo "INFO: $workflow has no path filtering"
@@ -376,6 +383,11 @@ if command -v git >/dev/null 2>&1; then
   fi
 fi
 
+# A match in a scanner, fixture, test, or documentation file may be the
+# detector pattern itself rather than a credential. Inspect only the path and
+# surrounding non-secret context; if the native scanner passes and no literal
+# credential exists, report the result as a heuristic false positive or omit it.
+
 # .gitignore coverage — use Git's matcher so negations are respected
 for pat in '.DS_Store' 'node_modules/' '__pycache__/' '.vscode/'; do
   git check-ignore --no-index "$pat" >/dev/null 2>&1 || echo "MISSING: $pat"
@@ -385,7 +397,8 @@ for f in .env .env.local .env.production; do
   git check-ignore --no-index "$f" >/dev/null 2>&1 || echo "MISSING: $f (not ignored)"
 done
 # Ignoring a file does not protect a copy that is already tracked.
-tracked_sensitive=$(git ls-files -- .env '.env.*' | grep -Ev '^\.env(?:\..*)?\.example$' | wc -l)
+tracked_sensitive=$(git ls-files -- .env '.env.*' \
+  | grep -Evc '^\.env(\..*)?\.example$' || true)
 printf 'tracked_sensitive_env_files=%s\n' "$tracked_sensitive"
 ```
 
@@ -490,11 +503,12 @@ list. A custom required check replaces the default probe for that dimension.
 
 ---
 
-## References
+## Maintainer contracts
 
-- [JSON Schemas Reference](references/json-schemas.md) — versioned schemas for optional interfaces
-- [REPO PROFILE Template](references/repo-profile-template.md) — copy-paste template for Step 1
-- [Eval Fixtures Reference](references/eval-fixtures.md) — deterministic behavioral contract fixtures
+When working from the source repository, maintainers can consult the
+repository-local contracts and fixtures under `schemas/` and `evals/`. They
+are validation inputs, not runtime dependencies of this skill, and are not
+included in the installed payload.
 
 ---
 

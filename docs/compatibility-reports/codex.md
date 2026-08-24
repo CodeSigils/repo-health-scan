@@ -2,15 +2,15 @@
 
 Status: `workflow_verified`
 
-Date: 2026-07-13
+Date: 2026-08-24
 
 ## Scope
 
-This report verifies Codex plugin packaging, local marketplace installation,
-implicit skill discovery, and the full model-driven workflow for
-`repo-health-and-sync-skill`. A 2026-07-13 conformance retest selected the skill
-without naming it, emitted the profile and evidence-linked dimension plan before
-health checks, reported concrete harm and remediation, and remained read-only.
+This report records Codex plugin packaging and local marketplace evidence from
+2026-07-13 and 2026-08-19, plus the latest model-driven runtime certification
+from 2026-08-24. The current local CLI is 0.149.0; the earlier 0.133.0 install
+and workflow evidence is retained as historical evidence rather than presented
+as the current runtime.
 
 ## Sources
 
@@ -27,7 +27,7 @@ Evidence used:
 - OpenAI skills docs describe progressive disclosure: Codex starts from skill
   `name`, `description`, and path before loading full `SKILL.md`.
 
-## Environment
+## Historical environment (2026-07-13)
 
 ```text
 codex-cli 0.133.0
@@ -42,11 +42,12 @@ execution mode: ephemeral, read-only sandbox
 ```
 
 The install test used an isolated `CODEX_HOME` under the workspace so the user's
-real Codex configuration was not modified.
+real Codex configuration was not modified. The plugin and CLI versions in this
+block describe that historical installation test.
 
 ## Setup Guide Reproduction
 
-The `docs/codex-setup.md` procedure was reproduced on 2026-07-13 with a new
+The `docs/codex-setup.md` procedure was reproduced historically on 2026-07-13 with a new
 isolated `CODEX_HOME`, a new local marketplace, and an empty git repository.
 Marketplace registration, plugin installation, and listing reported
 `repo-health-and-sync-skill@repo-health-local` as installed, enabled, and
@@ -146,7 +147,7 @@ Selected skill: repo-health-and-sync-skill:repo-health-scan.
 
 Codex then read `SKILL.md` from the installed plugin cache and summarized the
 Discover -> Infer -> Report workflow without running repository probes. This
-verifies description-driven discovery for this prompt on Codex CLI 0.133.0.
+verified description-driven discovery for that prompt on Codex CLI 0.133.0.
 
 ### Full Workflow Retest
 

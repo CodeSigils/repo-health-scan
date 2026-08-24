@@ -11,6 +11,9 @@ Follow the selected workflow exactly:
    extended fields such as tags, base, workflow, release, and opt-in state when
    those probes apply. Use `null`, `false`, or `[]` when a known fact is
    absent; keep explanations out of scalar fields.
+   Include only release-relevant paths in `version_sources`; do not treat a
+   maintainer-only `pyproject.toml` or test manifest as a release source merely
+   because it declares `version`.
    Use this shape as a starting point before adding any prose:
 
    ```yaml
@@ -41,7 +44,9 @@ Follow the selected workflow exactly:
    `observed.vcs` for history, `observed.ci` for CI, and
    `inferred.release_model` only when it names concrete release evidence).
 3. Report findings in blocking, warning, then informational order. Every
-   finding must state concrete harm and remediation.
+   finding must state concrete harm and remediation. Treat matches in scanner
+   implementation or fixture files as heuristic candidates, not credentials,
+   unless non-secret inspection confirms a literal secret.
 
 Return the final result using the supplied JSON schema. The fixture contains an
 intentional repository-health defect, so do not return an empty findings list.

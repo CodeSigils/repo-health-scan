@@ -1,10 +1,10 @@
 # Codex Model Regression
 
-Status: non-blocking maintainer evaluation implemented against Codex CLI
-0.133.0. Later versions require their own recorded run before they become a
-compatibility claim.
+Status: non-blocking maintainer evaluation implemented; current local
+certification is Codex CLI 0.149.0. Earlier versions remain historical evidence,
+and later versions require their own recorded run before becoming a claim.
 
-Local status: `nine_runs_recorded_current_payload_verified_once`. Hosted
+Local status: `ten_runs_recorded_current_payload_certified_on_0.149.0`. Hosted
 workflow status: `pending_first_run`.
 
 Local runs through an authenticated Codex CLI are the primary reliability path.

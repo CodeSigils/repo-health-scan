@@ -1,5 +1,9 @@
 # Decisions — Repo Health Scan (v0.3.0)
 
+This decision record also captures post-release maintenance decisions; the
+release version in the title identifies the methodology baseline, not a claim
+that every entry was made before the release.
+
 **Purpose:** Records the design decisions that shaped the current methodology.
 The skill itself is `skills/repo-health-and-sync-skill/SKILL.md`. Research
 evidence that informed these decisions is in `docs/research.md`.
@@ -25,8 +29,8 @@ on 6 cross-project patterns (§ Methodology over Collection).
 
 ## Runtime discovery over reference tables
 
-**Decision:** Do not ship reference files. The agent discovers everything it
-needs at runtime using tools on PATH.
+**Decision:** Do not ship reference tables as part of the runtime skill
+payload. The agent discovers repository facts at runtime using tools on PATH.
 
 **Why:** The v0.1.0 design shipped 14 reference files as lookup tables for
 detection heuristics, portability patterns, and co-author guard procedures.
@@ -41,17 +45,18 @@ durable findings § drift self-proof.
 
 ---
 
-## No shipped scripts
+## No runtime scripts in the payload
 
-**Decision:** The agent uses general-purpose tools directly (`git`, `shellcheck`,
-`python3`, `gh`). Do not ship wrapper scripts.
+**Decision:** The runtime payload uses general-purpose tools directly (`git`,
+`shellcheck`, `python3`, `gh`) rather than requiring wrapper scripts. The
+repository may still contain maintainer-only scripts for CI, schema validation,
+documentation audits, and regression grading.
 
 **Why:** The v0.1.0 design shipped a Python checker for commit trailers and
-commit body format, plus a shared verification script. These duplicated
-functionality already available via `git log`, `shellcheck`, and `python3 -c`.
-Every ecosystem repo (addyosmani, openai/skills) ships zero scripts in their
-skill payloads. The methodology's detection commands call tools on PATH
-directly — no wrapper needed.
+commit body format, plus a shared verification script. Those runtime helpers
+duplicated functionality already available via `git log`, `shellcheck`, and
+`python3`. Keeping the distinction explicit lets maintainers test and package
+the project without making those helpers a dependency of the installed skill.
 
 **Evidence:** Ecosystem structural survey (2026-07-12 study note). All 6
 surveyed repos ship zero runtime scripts.
@@ -65,7 +70,7 @@ config paths, but do not declare blanket compatibility in `SKILL.md`
 frontmatter. Record installation and workflow evidence in per-agent
 compatibility reports.
 
-**Why:** The methodology uses only `ls`, `git`, `shellcheck`, `python3`, `gh`,
+**Why:** The methodology uses only `find`, `git`, `shellcheck`, `python3`, `gh`,
 and standard shell commands, so terminal-capable coding agents are plausible
 targets. Discovery, packaging, tool availability, and
 instruction-following behavior vary by agent. Portability of the text does not
@@ -104,15 +109,15 @@ a mechanism for cryptographically signing commits and tags. Sources accessed
 
 ## Single-file payload
 
-**Decision:** `skills/repo-health-and-sync-skill/SKILL.md` is the only shipped
-file. No references, no scripts, no config.
+**Decision:** `skills/repo-health-and-sync-skill/SKILL.md` is the only runtime
+payload file. Maintainer documentation, schemas, CI configuration, and test
+scripts remain in the repository but are not required by an installed skill.
 
 **Why:** A methodology that fits in one file is consumed immediately — the
-agent reads it once and applies it. Multi-file payloads require the agent to
-load references on demand, which adds context overhead and risks skipped steps.
-The v0.1.0 payload had 15+ files; the current payload has 1. This matches
-openai/skills (payload: SKILL.md + per-skill refs), addyosmani (zero refs),
-and wondelai (flat SKILL.md per skill).
+agent reads it once and applies it. Multi-file runtime payloads add loading
+overhead and create another drift surface. The repository therefore keeps
+supporting material for maintainers while installing only the portable
+`SKILL.md`.
 
 **Evidence:** Structural survey of 6 CodeSigils repos vs 6 ecosystem repos
 (2026-07-12 study note). The ecosystem consistently ships minimal payloads.
@@ -152,13 +157,30 @@ failure when...") rather than a severity class that repeats on every report.
 same items as WARNING regardless of the repo's stage or audience, wasting
 the maintainer's attention on items that didn't need action.
 
----\n\n## v0.3.0 Consolidation — Payload Reduction & Clarity\n\n**Decision:** Consolidate `SKILL.md` to reduce size (~10%), add inline profile schema, make candidate catalog explicitly extensible with discovery protocol, elevate redaction rule to Step 3, reference `.repo-health.json` schema, clarify blocking behavior with safe-continue guidance.\n\n**Why:** Roadmap §7 core consolidation gate — target 30-50% payload reduction where achievable without weakening trigger boundaries, read-only behavior, profile-first ordering, activation evidence, skip accounting, or finding quality. This pass achieves ~10% reduction with structural clarity improvements.\n\n**Changes:**\n- Candidate catalog table condensed from 3 columns to 2 (Dimension, Activated By)\n- Explicit "non-exhaustive" framing + custom dimensions allowance\n- Inline REPO PROFILE required structure schema in Step 1\n- Blocking behavior: safe-continue / pause / skip categorization\n- Redaction rule moved to Step 3 header\n- `.repo-health.json` schema reference added\n- Attribution drift clarification removed (moved to `docs/research.md` §4)\n- Completion contract condensed\n\n**Evidence:** Roadmap §7; all deterministic checks pass; payload 415→~380 lines.\n\n---\n\n## What this file does NOT document
+## v0.3.0 consolidation and later contract hardening
 
-This file documents v0.3.0 decisions. The v0.2.0 design (methodology-only
-payload, runtime discovery, portability by agent) is the foundation on which
-v0.3.0 added shared tooling (`scripts/_common.py`) and hardened CI (uv,
-Node 24, dependabot). The v0.1.0 design (B-phases, 14 reference files, 10
-shipped scripts, payload sync process) is archived in git history (commits
-2691398, 78b31c7). See also the agent-concepts-study note
-`2026-07-12-skill-repo-structural-diversity-and-optimal-patterns.md` for the
-structural analysis that motivated the v0.2.0 design.
+**Decision:** Keep the methodology profile-first and proportionate while
+making the observable runtime contract explicit. The current contract requires
+core profile fields, allows extended fields when evidence exists, requires
+activation evidence for dimensions, and supports redacted JSONL findings.
+
+**Why:** Regression runs showed that an implicit profile shape was too fragile:
+models could omit the evidence needed to justify a dimension or invent paths.
+The explicit contract improves grading and audit reproducibility without turning
+the skill into a universal checklist.
+
+**Changes:**
+
+- Added core/extended profile fields and exact-path evidence rules.
+- Added schema-backed dimension-plan and findings contracts.
+- Kept network and release verification opt-in and read-only.
+- Added portable version-source parsing guidance and explicit tool-absence skips.
+- Restricted version alignment to release-relevant metadata and accepted
+  unquoted CFF/YAML version values.
+- Treated scanner/test/fixture matches as heuristic candidates until native
+  scanner results and non-secret context confirm a credential.
+- Recorded Codex runtime certification separately from the release version.
+
+The v0.1.0 B-phase design and its shipped helper/reference files remain
+historical and are available in git history. Current repository structure and
+validation commands are documented in `docs/maintaining.md` and `README.md`.

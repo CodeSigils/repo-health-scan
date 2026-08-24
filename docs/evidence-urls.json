@@ -122,6 +122,28 @@
       "status": "active",
       "last_verified": "2026-07-27",
       "notes": "Official source for API-key proxying, read-only safety, output schemas, and trusted workflow triggers"
+    },
+    {
+      "name": "Diátaxis documentation model",
+      "url": "https://diataxis.fr/start-here/",
+      "expected_statuses": [200],
+      "source_section": "docs/research.md",
+      "domain_tag": "documentation",
+      "source_type": "methodology",
+      "status": "active",
+      "last_verified": "2026-08-24",
+      "notes": "Primary source for separating tutorials, how-to guides, reference, and explanation"
+    },
+    {
+      "name": "GitHub contributor-guideline placement",
+      "url": "https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors",
+      "expected_statuses": [200],
+      "source_section": "docs/research.md",
+      "domain_tag": "documentation",
+      "source_type": "official_docs",
+      "status": "active",
+      "last_verified": "2026-08-24",
+      "notes": "Official guidance for discoverable contributor documentation placement"
     }
   ]
 }

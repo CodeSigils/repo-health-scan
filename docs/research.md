@@ -173,7 +173,9 @@ led to the single-SKILL.md methodology design:
 | OpenMontage | 27.6K | 253 | 0 | ~50 | 0 | No |
 
 **Key finding: Zero ecosystem repos ship reference files or wrapper scripts
-in their skill payloads.** What you see in git is what the agent consumes.
+in their skill payloads.** In those surveyed repositories, the installed skill
+payload is the agent-facing surface; maintainer-only repository tooling is a
+separate concern.
 No build step, no sync script, no manifest.
 
 ### Consumption paths (no build step needed)
@@ -182,13 +184,15 @@ No build step, no sync script, no manifest.
 |----------|---------------|------------------|
 | Hermes | `external_dirs` → `skills/*/SKILL.md` | No — does not document `.agents/skills/` |
 | Claude Code | `.claude/skills/` directory walk | No |
-| Codex CLI | `.codex/skills/` directory walk | No |
+| Codex CLI | `.agents/skills/` directory walk | **Yes** — verified by the current setup guide |
 | Gemini CLI | `.agents/skills/` (user/workspace) | **Yes** — explicitly documented |
 | Cursor | `.cursor/rules/` glob match | No — uses rules format |
 
-**Confirmed:** `.agents/skills/` is the only cross-agent path explicitly
-endorsed by any platform vendor (Gemini CLI). The methodology works on any
-platform that can run `git`, `shellcheck`, `python3`, and `gh`.
+**Survey finding (2026-07-12):** `.agents/skills/` was the only cross-agent path
+explicitly endorsed by a platform vendor in the sources inspected (Gemini CLI).
+This is a historical survey result, not a guarantee about later platform
+versions. The methodology remains suitable for platforms that can run `git`,
+`shellcheck`, `python3`, and `gh`, subject to per-agent certification.
 
 ---
 
@@ -245,3 +249,33 @@ echoing matching values.
    identifies them.
 
 **Open question:** Whether opt-in `REPO_HEALTH_VERIFY_REFS=1` external URL checks should also scan response bodies for secret patterns.
+
+---
+
+## 10. Documentation architecture (2026-08-24)
+
+**Finding:** Maintainer documentation is easier to navigate when each page has
+one job: teach a task, define a contract, explain a decision, or preserve
+evidence. Mixing those jobs makes current instructions compete with historical
+context and increases drift.
+
+**Applied pattern:** The docs index routes maintainers by task, while
+`maintaining.md` owns the workflow. `portability-contract.md` owns normative
+claims, compatibility reports own runtime evidence, and `decisions.md` and
+`research.md` remain explanatory/history surfaces. Machine-readable JSON files
+stay clearly labeled as CI inputs rather than user documentation.
+
+**Sources:**
+
+- [Diátaxis: Start here](https://diataxis.fr/start-here/) — separates tutorials,
+  how-to guides, reference, and explanation.
+- [GitHub: Setting guidelines for repository contributors](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors)
+  — documents conventional contributor-guidance placement and discoverability.
+
+This is a navigation and ownership pattern, not a requirement to create a
+large documentation site or to split short, cohesive pages unnecessarily.
+
+The 2026-08-24 dogfood audit also validated two runtime guardrails: release
+alignment must distinguish published metadata from maintainer-only package
+metadata, and heuristic secret matches need native-scanner/context review to
+avoid flagging detector source code as a credential.

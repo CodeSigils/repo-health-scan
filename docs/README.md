@@ -4,16 +4,46 @@ This directory documents the project's architecture decisions and research
 evidence. It is not part of the skill runtime — users who install this
 skill do not receive these files.
 
-The skill ships as a single SKILL.md with no reference files or scripts.
-Everything the agent needs is discovered at runtime using general-purpose
-tools on PATH.
+The installed runtime payload is a single `SKILL.md`. This directory contains
+maintainer-only procedures, contracts, evidence, and research; none of these
+files are runtime dependencies of the installed skill.
 
-**Start here:**
+## Choose the right document
 
-- [decisions.md](decisions.md) — what was built, why, phase rationale, anti-patterns avoided
-- [codex-setup.md](codex-setup.md) — verified repository-local and plugin setup
-- [codex-regression.md](codex-regression.md) — non-blocking model regression harness
-- [portability-contract.md](portability-contract.md) — canonical payload,
-  adapter, evidence, and per-runtime certification rules
-- [maintaining.md](maintaining.md) — developer workflow and verification
-- [research.md](research.md) — survey data, ecosystem tables, evidence that informed decisions
+| If you need to… | Read… |
+|---|---|
+| Make or review a repository change | [maintaining.md](maintaining.md) |
+| Understand why the architecture looks this way | [decisions.md](decisions.md) |
+| Install or test the Codex plugin | [codex-setup.md](codex-setup.md) |
+| Run the model regression harness | [codex-regression.md](codex-regression.md) |
+| Check an agent compatibility claim | [compatibility-reports/codex.md](compatibility-reports/codex.md) and [portability-contract.md](portability-contract.md) |
+| Understand the research behind a decision | [research.md](research.md) |
+
+## Normal maintainer path
+
+1. Read [maintaining.md](maintaining.md) and make the smallest evidence-backed
+   change.
+2. Run the fast verification commands listed there.
+3. If `SKILL.md` behavior or trigger boundaries changed, run the optional local
+   Codex regression.
+4. For a release, follow the tagged-release procedure in `maintaining.md`.
+
+The root [README](../README.md) is the user-facing overview. `AGENTS.md` is
+only a routing layer; it points maintainers here and does not duplicate these
+procedures.
+
+## Documentation model
+
+The files use four deliberately different roles:
+
+- **How-to:** `maintaining.md`, `codex-setup.md`, and `codex-regression.md`
+  explain how to perform maintainer tasks.
+- **Reference:** `portability-contract.md` and
+  `compatibility-reports/` define claim levels and recorded runtime evidence.
+- **Explanation:** `decisions.md` explains architectural choices; `research.md`
+  records the evidence behind them.
+- **Automation data:** `doc-standards.json` and `evidence-urls.json` are
+  machine-maintained inputs for CI, not prose guides.
+
+Keep procedures out of decision records, keep current support claims out of
+research notes, and update the index above when a new document type is added.

@@ -1,6 +1,7 @@
 # Codex Setup
 
-Status: verified with Codex CLI 0.133.0 on 2026-07-13.
+Status: verified with Codex CLI 0.149.0 on 2026-08-24. The 0.133.0 setup
+reproduction remains historical evidence in the compatibility report.
 
 This guide separates repository-local skill authoring from plugin distribution.
 The skill itself ships as one `SKILL.md`; the plugin manifest packages that
@@ -18,8 +19,9 @@ Confirm the tested CLI surface:
 codex --version
 ```
 
-Later Codex versions should remain compatible, but they are not covered by this
-recorded test until the compatibility report is refreshed.
+Later Codex versions may remain compatible, but they are not covered by this
+recorded test until the compatibility report and regression evidence are
+refreshed.
 
 ## Repository-Local Skill
 
