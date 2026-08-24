@@ -12,6 +12,29 @@ Follow the selected workflow exactly:
    `branch_commits_outside_base`, `working_tree_dirty`, `workflow_files`,
    `release_files`, `verify_refs`, and `verify_releases`. Use `null`, `false`,
    or `[]` when a fact is absent; keep explanations out of scalar fields.
+   Use this exact shape before adding any prose:
+
+   ```yaml
+   observed:
+     vcs: git
+     languages: []
+     package_managers: []
+     ci: null
+     shell_files: false
+     recent_commits: false
+     gitignore: false
+     version_sources: []
+     script_surface: ""
+     shipped_payload: ""
+     tags_present: false
+     base_ref: null
+     branch_commits_outside_base: null
+     working_tree_dirty: false
+     workflow_files: []
+     release_files: []
+     verify_refs: false
+     verify_releases: false
+   ```
 2. Account for every candidate dimension defined by the workflow. Each active
    dimension must cite one or more exact profile paths in `activated_by`; each
    inactive dimension must have a concrete skip reason and `SKIP` status.
