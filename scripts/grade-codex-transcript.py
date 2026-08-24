@@ -13,6 +13,13 @@ from _common import read_json, validate_dimensions
 
 DEFAULT_CONTRACT = Path("evals/cases/repo-health-scan.json")
 SEVERITY_ORDER = {"blocking": 0, "warning": 1, "info": 2}
+REQUIRED_OBSERVED_FIELDS = {
+    "vcs", "languages", "package_managers", "ci", "shell_files", "recent_commits",
+    "gitignore", "version_sources", "script_surface", "shipped_payload", "tags_present",
+    "base_ref", "branch_commits_outside_base", "working_tree_dirty", "workflow_files",
+    "release_files", "verify_refs", "verify_releases",
+}
+REQUIRED_INFERRED_FIELDS = {"repo_type", "release_model", "risk_context"}
 
 
 def expected_dimensions(contract: dict[str, Any]) -> set[str]:
@@ -146,6 +153,14 @@ def grade_positive(result: dict[str, Any], dimensions: set[str]) -> list[str]:
     for section in ("observed", "inferred"):
         if not isinstance(profile.get(section), dict) or not profile[section]:
             errors.append(f"profile.{section} must be a non-empty object")
+    if isinstance(profile.get("observed"), dict):
+        missing = sorted(REQUIRED_OBSERVED_FIELDS - profile["observed"].keys())
+        if missing:
+            errors.append(f"profile.observed is missing required fields: {missing}")
+    if isinstance(profile.get("inferred"), dict):
+        missing = sorted(REQUIRED_INFERRED_FIELDS - profile["inferred"].keys())
+        if missing:
+            errors.append(f"profile.inferred is missing required fields: {missing}")
 
     plan = events[1]
     active = plan.get("active_dimensions")
@@ -213,8 +228,15 @@ def run_self_tests() -> int:
             {
                 "type": "profile",
                 "profile": {
-                    "observed": {"vcs": "git", "shell_files": False},
-                    "inferred": {"repo_type": "library"},
+                    "observed": {
+                        "vcs": "git", "languages": [], "package_managers": [], "ci": None,
+                        "shell_files": False, "recent_commits": False, "gitignore": False,
+                        "version_sources": [], "script_surface": "none", "shipped_payload": "none",
+                        "tags_present": False, "base_ref": None, "branch_commits_outside_base": None,
+                        "working_tree_dirty": False, "workflow_files": [], "release_files": [],
+                        "verify_refs": False, "verify_releases": False,
+                    },
+                    "inferred": {"repo_type": "library", "release_model": "none", "risk_context": "routine"},
                 },
                 "active_dimensions": [],
                 "skipped_dimensions": [],
@@ -267,8 +289,15 @@ def run_self_tests() -> int:
                 {
                     "type": "profile",
                     "profile": {
-                        "observed": {"vcs": "git"},
-                        "inferred": {"repo_type": "library"},
+                        "observed": {
+                            "vcs": "git", "languages": [], "package_managers": [], "ci": None,
+                            "shell_files": False, "recent_commits": False, "gitignore": False,
+                            "version_sources": [], "script_surface": "none", "shipped_payload": "none",
+                            "tags_present": False, "base_ref": None, "branch_commits_outside_base": None,
+                            "working_tree_dirty": False, "workflow_files": [], "release_files": [],
+                            "verify_refs": False, "verify_releases": False,
+                        },
+                        "inferred": {"repo_type": "library", "release_model": "none", "risk_context": "routine"},
                     },
                 }
             ]

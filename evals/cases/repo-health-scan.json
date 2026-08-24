@@ -65,7 +65,16 @@
             "git tag"
           ],
           "script_surface": "maintainer-only",
-          "shipped_payload": "single SKILL.md"
+          "shipped_payload": "single SKILL.md",
+          "package_managers": ["uv"],
+          "tags_present": true,
+          "base_ref": "origin/main",
+          "branch_commits_outside_base": 0,
+          "working_tree_dirty": false,
+          "workflow_files": [".github/workflows/ci.yml"],
+          "release_files": [".github/workflows/release.yml", ".github/release.yml"],
+          "verify_refs": false,
+          "verify_releases": false
         },
         "inferred": {
           "repo_type": "skill-pack",
@@ -96,8 +105,8 @@
           {
             "name": "tag_release_integrity",
             "activated_by": [
-              "inferred.release_model",
-              "inferred.risk_context"
+              "observed.tags_present",
+              "observed.release_files"
             ]
           },
           {
@@ -153,7 +162,17 @@
           "version_sources": [
             "pyproject.toml",
             "src/example/__init__.py"
-          ]
+          ],
+          "script_surface": "none",
+          "shipped_payload": "library",
+          "tags_present": false,
+          "base_ref": "origin/main",
+          "branch_commits_outside_base": 0,
+          "working_tree_dirty": false,
+          "workflow_files": [".github/workflows/ci.yml"],
+          "release_files": [],
+          "verify_refs": false,
+          "verify_releases": false
         },
         "inferred": {
           "repo_type": "library",
@@ -241,7 +260,15 @@
             "packages/shared/package.json"
           ],
           "script_surface": "maintainer-only",
-          "shipped_payload": "none"
+          "shipped_payload": "none",
+          "tags_present": false,
+          "base_ref": "origin/main",
+          "branch_commits_outside_base": 0,
+          "working_tree_dirty": false,
+          "workflow_files": [".github/workflows/ci.yml"],
+          "release_files": [],
+          "verify_refs": false,
+          "verify_releases": false
         },
         "inferred": {
           "repo_type": "monorepo",
@@ -321,7 +348,15 @@
           "gitignore": true,
           "version_sources": [],
           "script_surface": "none",
-          "shipped_payload": "documentation"
+          "shipped_payload": "documentation",
+          "tags_present": false,
+          "base_ref": "origin/main",
+          "branch_commits_outside_base": 0,
+          "working_tree_dirty": false,
+          "workflow_files": [".github/workflows/ci.yml"],
+          "release_files": [],
+          "verify_refs": false,
+          "verify_releases": false
         },
         "inferred": {
           "repo_type": "documentation",
@@ -403,7 +438,15 @@
             "pyproject.toml"
           ],
           "script_surface": "maintainer-only",
-          "shipped_payload": "single SKILL.md"
+          "shipped_payload": "single SKILL.md",
+          "tags_present": false,
+          "base_ref": null,
+          "branch_commits_outside_base": null,
+          "working_tree_dirty": false,
+          "workflow_files": [],
+          "release_files": [],
+          "verify_refs": false,
+          "verify_releases": false
         },
         "inferred": {
           "repo_type": "skill-pack",
@@ -432,13 +475,6 @@
             ]
           },
           {
-            "name": "tag_release_integrity",
-            "activated_by": [
-              "inferred.release_model",
-              "inferred.risk_context"
-            ]
-          },
-          {
             "name": "commit_quality",
             "activated_by": [
               "observed.recent_commits"
@@ -455,6 +491,10 @@
           {
             "name": "ci_efficiency",
             "skip_reason": "The profile records no CI configuration."
+          },
+          {
+            "name": "tag_release_integrity",
+            "skip_reason": "No observed tags, release workflow, release manifest, or release verification opt-in."
           },
           {
             "name": "cross_platform",
@@ -492,7 +532,14 @@
           ],
           "script_surface": "maintainer-only",
           "shipped_payload": "library",
-          "working_tree_dirty": true
+          "working_tree_dirty": true,
+          "tags_present": false,
+          "base_ref": "origin/main",
+          "branch_commits_outside_base": 0,
+          "workflow_files": [".github/workflows/ci.yml"],
+          "release_files": [],
+          "verify_refs": false,
+          "verify_releases": false
         },
         "inferred": {
           "repo_type": "library",
@@ -521,12 +568,6 @@
             ]
           },
           {
-            "name": "tag_release_integrity",
-            "activated_by": [
-              "inferred.release_model"
-            ]
-          },
-          {
             "name": "ci_efficiency",
             "activated_by": [
               "observed.ci"
@@ -546,6 +587,10 @@
           }
         ],
         "skipped_dimensions": [
+          {
+            "name": "tag_release_integrity",
+            "skip_reason": "No observed tags, release workflow, release manifest, or release verification opt-in."
+          },
           {
             "name": "cross_platform",
             "skip_reason": "No macOS or BSD user evidence appears in the profile."

@@ -24,6 +24,27 @@ DIMENSIONS = {
     "external_reference_health",
 }
 
+REQUIRED_OBSERVED_FIELDS = {
+    "vcs",
+    "languages",
+    "package_managers",
+    "ci",
+    "shell_files",
+    "recent_commits",
+    "gitignore",
+    "version_sources",
+    "script_surface",
+    "shipped_payload",
+    "tags_present",
+    "base_ref",
+    "branch_commits_outside_base",
+    "working_tree_dirty",
+    "workflow_files",
+    "release_files",
+    "verify_refs",
+    "verify_releases",
+}
+
 
 def validate_case(data: Any) -> list[str]:
     """Return structural and behavioral-contract errors."""
@@ -114,6 +135,12 @@ def validate_case(data: Any) -> list[str]:
         inferred = profile.get("inferred")
         if not isinstance(observed, dict) or not observed:
             errors.append(f"{prefix}.profile.observed must be a non-empty object")
+        else:
+            missing = sorted(REQUIRED_OBSERVED_FIELDS - observed.keys())
+            if missing:
+                errors.append(
+                    f"{prefix}.profile.observed is missing required fields: {missing}"
+                )
         if not isinstance(inferred, dict) or not inferred:
             errors.append(f"{prefix}.profile.inferred must be a non-empty object")
             continue
@@ -147,6 +174,26 @@ def validate_case(data: Any) -> list[str]:
 
 def run_self_tests() -> int:
     """Exercise success and missing-activation-evidence failures."""
+    observed_defaults = {
+        "vcs": "git",
+        "languages": [],
+        "package_managers": [],
+        "ci": None,
+        "shell_files": False,
+        "recent_commits": False,
+        "gitignore": False,
+        "version_sources": [],
+        "script_surface": "none",
+        "shipped_payload": "none",
+        "tags_present": False,
+        "base_ref": None,
+        "branch_commits_outside_base": None,
+        "working_tree_dirty": False,
+        "workflow_files": [],
+        "release_files": [],
+        "verify_refs": False,
+        "verify_releases": False,
+    }
     valid = {
         "schema_version": 1,
         "skill_name": "repo-health-scan",
@@ -169,7 +216,7 @@ def run_self_tests() -> int:
         "fixtures": [
             {
                 "profile": {
-                    "observed": {"vcs": "git"},
+                    "observed": observed_defaults.copy(),
                     "inferred": {"repo_type": "skill-pack"},
                 },
                 "expected": {
@@ -184,7 +231,7 @@ def run_self_tests() -> int:
             },
             {
                 "profile": {
-                    "observed": {"vcs": "git"},
+                    "observed": observed_defaults.copy(),
                     "inferred": {"repo_type": "library"},
                 },
                 "expected": {

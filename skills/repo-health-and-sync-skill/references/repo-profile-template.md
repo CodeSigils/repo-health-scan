@@ -17,6 +17,10 @@ observed:
   shipped_payload: ""
   tags_present: false
   base_ref: null
+  branch_commits_outside_base: null
+  working_tree_dirty: false
+  workflow_files: []
+  release_files: []
   verify_refs: false
   verify_releases: false
 
@@ -43,6 +47,10 @@ inferred:
 | `script_surface` | `find scripts/`, root `*.sh` | `"maintainer-only Python + shell"` |
 | `shipped_payload` | Skill discovery | `"single SKILL.md"` |
 | `tags_present` | `git tag --list 'v*'` | `true` / `false` |
+| `branch_commits_outside_base` | bounded base comparison | integer or `null` |
+| `working_tree_dirty` | `git status --porcelain` | `true` / `false` |
+| `workflow_files` | `.github/workflows/` recursive discovery | relative paths |
+| `release_files` | release workflows/manifests | relative paths |
 | `base_ref` | `@{upstream}` or remote default | `"origin/main"` or `null` |
 | `verify_refs` | `REPO_HEALTH_VERIFY_REFS` | `true` / `false` |
 | `verify_releases` | `REPO_HEALTH_VERIFY_RELEASES` | `true` / `false` |

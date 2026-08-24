@@ -109,23 +109,23 @@ Primary sources and research, accessed 2026-07-12 or 2026-07-13:
 | Repository routing | Root `AGENTS.md` routes health-audit intent to `SKILL.md`, routine maintenance to `docs/maintaining.md`, and explicitly excludes narrow implementation work. |
 | Skills CLI discovery | Skills CLI 1.5.16 found exactly `repo-health-scan` from the local `skills/` tree with `npx --yes skills add <repo> --list`; no root manifest was required. |
 | Eval contract | `evals/cases/repo-health-scan.json` covers positive/negative triggers, this skill pack, and a Python library using `uv`. |
-| Eval validation | `scripts/validate-evals.py` enforces profile-first ordering, activation evidence, skip reasons, and fixture diversity. |
+| Eval validation | `scripts/validate-evals.py` enforces profile-first ordering, activation evidence, skip reasons, fixture diversity, and the complete observed profile field set. |
 | Security and trust | `scripts/check-trust.py` enforces bounded triggers, read-only instructions, opt-in network/output behavior, credential hygiene, versioned compatibility evidence, and payload separation. |
-| Secret scanning | Skill scans `.gitignore` for secret patterns (`.env`, credentials) and commit message bodies for leaked secrets; report includes redaction guard. Evidence: commits `92d7481`, `fa0b8f9`, `063778c`. |
+| Secret scanning | Skill scans `.gitignore`, commit metadata, and tracked files for heuristic secret patterns; output is limited to counts/paths and includes a redaction guard. |
 | Audit hardening | Repository audits streamlined; coverage gaps closed; portability scanner fixed; expiry checker wired. Evidence: commits `1aef227`, `a54272b`, `988322d`. |
 | Release consistency | The checker validates `SKILL.md`, plugin metadata, `CITATION.cff`, tags, and GitHub releases. Strict CI queries use a read-only job token. |
 | Repository verification | Script self-tests, Ruff, ShellCheck, documentation audit, plugin validation, skill validation, and diff checks pass independently. |
 | Evidence URL tracking | `docs/evidence-urls.json` upgraded to v3 schema with status, source_type, domain_tag, and last_verified fields. All 11 URLs verified reachable. |
-| Local model regression | Nine Codex CLI 0.133.0 runs are recorded: six passes, one timeout, and two deterministic grading failures. The exact consolidated payload passed once after the latest run exposed and corrected profile/plan message ordering. |
+| Local model regression | Nine Codex CLI 0.133.0 runs are recorded: six passes, one timeout, and two deterministic grading failures. The installed CLI is now 0.149.0 and needs a fresh certification run. |
 
 ### Remaining Gaps
 
 | Gap | Consequence | Priority |
 |---|---|---|
 | Nine local runs are recorded, but the payload changed across recent runs and several were same-session. | The 66.7% historical pass rate is diagnostic; the exact current payload has only one passing run and needs time-separated repeated evidence. | High |
-| `.repo-health.json` and JSONL are agent-interpreted examples without versioned deterministic schemas. | Different agents may produce incompatible behavior while appearing to support the same interface. | Medium |
-| Deterministic fixtures cover this skill pack and one Python library shape. | The contract has limited evidence for missing tools, monorepos, docs products, repositories without `origin/main`, and intentionally dirty development trees. | Medium |
-| Current-version marketplace installation has not been reproduced in the compatibility report. | The v0.3.0 manifest is valid, but its installation evidence should remain distinct from the recorded v0.2.0 setup reproduction. | Low |
+| `.repo-health.json` and JSONL are optional maintainer-side contracts. | Schemas and graders now enforce profile completeness and redacted finding shape; cross-agent runtime conformance remains unverified. | Low |
+| Deterministic fixtures cover six repository shapes, including a monorepo, docs product, missing tools, no `origin/main`, and dirty tree. | Broader real-world model evidence is still needed beyond deterministic fixtures. | Medium |
+| Current-version marketplace installation has not been reproduced in the compatibility report. | Resolved: v0.3.0 installation evidence is recorded separately from historical v0.2.0 evidence. | Resolved |
 
 The hosted Codex Action is not a product gap. It requires API-key billing, which
 is separate from the ChatGPT subscription used by the current maintainer's
@@ -313,9 +313,12 @@ these gates in order:
    behavior when an expected tool is unavailable.
 5. Formalize small versioned contracts for the profile, dimension plan, JSONL
    findings, and `.repo-health.json`; keep schemas and validators as
-   maintainer-side evidence rather than shipped runtime dependencies.
+   maintainer-side evidence rather than shipped runtime dependencies. **Done:**
+   profile completeness, dimension accounting, and redacted finding fields are
+   now enforced by the validators.
 6. Add deterministic fixtures for a monorepo, documentation product, missing
    tools, no `origin/main`, and an intentionally dirty non-release workflow.
+   **Done:** all six shapes are represented in the eval contract.
 7. Because consolidation changes `SKILL.md`, establish a fresh repeated model
    baseline for the revised payload. Do not carry the v0.3.0 pass rate forward
    as proof of the new behavior.

@@ -73,6 +73,8 @@ Before marking work done, run through in order:
 6. **Trust contract valid** — `python3 scripts/check-trust.py`
 7. **Versions aligned** — `python3 scripts/check-version-consistency.py`
 8. **Python lint clean** — `python3 -m ruff check scripts skills`
+9. **Eval profile contract** — `python3 scripts/validate-evals.py` verifies all required observed profile fields
+10. **Regression grader contract** — `python3 scripts/grade-codex-transcript.py --self-test`
 
 The model regression is deliberately outside this required fast checklist.
 After a material `SKILL.md` workflow or trigger change, run

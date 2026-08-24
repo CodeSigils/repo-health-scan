@@ -79,13 +79,15 @@ if [ -n "$base_ref" ] && git rev-parse --verify "$base_ref" >/dev/null 2>&1; the
 fi
 
 # What automation exists?
-find .github/workflows -name '*.yml' 2>/dev/null | head -5
+find .github/workflows -type f \( -name '*.yml' -o -name '*.yaml' \) 2>/dev/null | sort | head -20
 find . -maxdepth 1 -name '*.sh' 2>/dev/null
-find scripts/ -name '*.py' -o -name '*.sh' 2>/dev/null | head -10
+find scripts/ -type f \( -name '*.py' -o -name '*.sh' \) 2>/dev/null | sort | head -20
 
 # What's the dependency surface?
-find . -maxdepth 2 -name 'requirements*.txt' -o -name 'Cargo.toml' \
-  -o -name 'go.mod' -o -name 'package.json' 2>/dev/null | head -10
+find . -type f \( -name 'requirements*.txt' -o -name 'Cargo.toml' \
+  -o -name 'go.mod' -o -name 'package.json' -o -name 'pyproject.toml' \
+  -o -name 'pom.xml' -o -name 'build.gradle' \) \
+  -not -path './.git/*' 2>/dev/null | sort | head -50
 
 # Is there a pre-existing health convention?
 test -f .repo-health.json && echo ".repo-health.json present" || echo "no .repo-health.json"
@@ -120,6 +122,10 @@ observed:
   shipped_payload: string
   tags_present: boolean
   base_ref: string | null
+  branch_commits_outside_base: integer | null
+  working_tree_dirty: boolean
+  workflow_files: [string]
+  release_files: [string]
   verify_refs: boolean
   verify_releases: boolean
 
@@ -171,7 +177,7 @@ skipped:
 | history_hygiene | always |
 | shell_correctness | observed.shell_files |
 | version_alignment | len(observed.version_sources) ≥ 2 |
-| tag_release_integrity | inferred.release_model exists |
+| tag_release_integrity | observed.tags_present, observed.workflow_files, observed.release_files, or verify_releases=true |
 | commit_quality | observed.recent_commits |
 | ci_efficiency | observed.ci |
 | cross_platform | observed.shell_files + inferred.platform_requirements |
@@ -215,68 +221,75 @@ else
 fi
 
 # Shell correctness
-find . -name '*.sh' -not -path '*/node_modules/*' -not -path '*/.git/*' \
-  -exec shellcheck {} \; 2>&1 | grep -c 'SC[0-9]*:' || true
+if ! command -v shellcheck >/dev/null 2>&1; then
+  echo "SKIP: shell_correctness requires shellcheck"
+else
+  shell_files=$(find . -name '*.sh' -not -path '*/node_modules/*' -not -path '*/.git/*' -print)
+  if [ -z "$shell_files" ]; then
+    echo "SKIP: shell_correctness has no shell files"
+  else
+    find . -name '*.sh' -not -path '*/node_modules/*' -not -path '*/.git/*' \
+      -exec shellcheck {} +
+  fi
+fi
 
 # Version alignment
+# Set VERSION_SOURCES to the exact newline-delimited paths recorded in
+# observed.version_sources before running this block. Do not substitute
+# root-only defaults: monorepos, skill packs, and language workspaces commonly
+# keep version metadata in nested or nonstandard files. The parser handles
+# JSON/TOML/frontmatter/Python assignments and the special `git tag` source.
+VERSION_SOURCES="$(printf '%s\n' 'path/from/profile' 'another/path/from/profile')"
+export VERSION_SOURCES
 python3 - <<'PY'
 import json
-import pathlib
+import os
 import re
+import subprocess
+from pathlib import Path
 
-versions = {}
-
-package_json = pathlib.Path("package.json")
-if package_json.exists():
+def extract(path):
+    if path == "git tag":
+        result = subprocess.run(
+            ["git", "tag", "--list", "v*", "--sort=-version:refname"],
+            capture_output=True, text=True, check=False,
+        )
+        return result.stdout.splitlines()[0].removeprefix("v") if result.stdout.strip() else None
+    file_path = Path(path)
     try:
-        data = json.loads(package_json.read_text())
-        if isinstance(data.get("version"), str):
-            versions["package.json"] = data["version"]
-    except Exception as exc:
-        versions["package.json"] = f"unreadable:{exc.__class__.__name__}"
-
-def load_toml(path):
-    try:
-        import tomllib
-    except ModuleNotFoundError:
+        text = file_path.read_text(encoding="utf-8")
+    except OSError:
         return None
-    try:
-        return tomllib.loads(path.read_text())
-    except Exception:
-        return None
+    if file_path.suffix == ".json":
+        try:
+            value = json.loads(text).get("version")
+            return value if isinstance(value, str) else None
+        except (json.JSONDecodeError, AttributeError):
+            return None
+    if file_path.suffix in {".toml", ".tml"}:
+        try:
+            import tomllib
+            data = tomllib.loads(text)
+            for section in (data.get("project", {}), data.get("package", {}), data.get("tool", {}).get("poetry", {})):
+                if isinstance(section, dict) and isinstance(section.get("version"), str):
+                    return section["version"]
+        except (ModuleNotFoundError, ValueError):
+            return None
+    match = re.search(r"(?m)^\s*(?:version|__version__)\s*[:=]\s*[\"']([^\"']+)", text)
+    return match.group(1) if match else None
 
-pyproject = pathlib.Path("pyproject.toml")
-if pyproject.exists():
-    data = load_toml(pyproject)
-    version = None
-    if data:
-        version = data.get("project", {}).get("version")
-        version = version or data.get("tool", {}).get("poetry", {}).get("version")
-    if not version:
-        match = re.search(r'(?m)^version\s*=\s*["\']([^"\']+)["\']', pyproject.read_text())
-        version = match.group(1) if match else None
-    if version:
-        versions["pyproject.toml"] = version
-
-cargo = pathlib.Path("Cargo.toml")
-if cargo.exists():
-    data = load_toml(cargo)
-    version = data.get("package", {}).get("version") if data else None
-    if not version:
-        text = cargo.read_text()
-        package_block = re.search(r'(?ms)^\[package\](.*?)(?:^\[|\Z)', text)
-        if package_block:
-            match = re.search(r'(?m)^version\s*=\s*["\']([^"\']+)["\']', package_block.group(1))
-            version = match.group(1) if match else None
-    if version:
-        versions["Cargo.toml"] = version
-
-if len(versions) < 2:
-    print(f"SKIP: fewer than two version sources found: {versions}")
-elif len(set(versions.values())) == 1:
-    print(f"PASS: versions aligned: {versions}")
+sources = [item for item in os.environ.get("VERSION_SOURCES", "").splitlines() if item and not item.startswith("path/")]
+values = {source: extract(source) for source in sources}
+unreadable = [source for source, value in values.items() if value is None]
+comparable = {source: value.removeprefix("v") for source, value in values.items() if value is not None}
+if unreadable:
+    print(f"UNREADABLE: {unreadable}")
+if len(comparable) < 2:
+    print(f"SKIP: fewer than two comparable version sources: {list(comparable)}")
+elif len(set(comparable.values())) == 1:
+    print(f"PASS: versions aligned across {len(comparable)} sources")
 else:
-    print(f"DRIFT: {versions}")
+    print(f"DRIFT: version sources disagree: {list(comparable)}")
 PY
 
 # Tag/release integrity
@@ -291,8 +304,18 @@ fi
 # Just reach a judgment from what you already read
 
 # CI efficiency
-grep -c 'paths:' .github/workflows/*.yml 2>/dev/null && echo "scoped" \
-  || echo "unscoped"
+workflow_files=$(find .github/workflows -type f \( -name '*.yml' -o -name '*.yaml' \) 2>/dev/null | sort)
+if [ -z "$workflow_files" ]; then
+  echo "SKIP: ci_efficiency has no workflow files"
+else
+  while IFS= read -r workflow; do
+    if grep -Eq '^\s+paths(-ignore)?:' "$workflow"; then
+      echo "PASS: $workflow has path filtering"
+    else
+      echo "INFO: $workflow has no path filtering"
+    fi
+  done <<< "$workflow_files"
+fi
 
 # Cross-platform shell
 grep -n 'which\|grep -P\|sed -i[^.]' scripts/*.sh 2>/dev/null \
@@ -316,6 +339,18 @@ if [ -n "$range" ]; then
     echo "SECRET-LIKE VALUE: commit metadata contains a potential credential"
   else
     echo "No secret-like values detected in commit metadata"
+  fi
+fi
+
+# Tracked-file credential scan. Print paths/counts only; never print matching
+# lines or values. Prefer a project-native scanner when the profile identifies
+# one, and skip this heuristic when no grep implementation is available.
+if command -v git >/dev/null 2>&1; then
+  secret_paths=$(git grep -IlE '(^|[^A-Za-z])(api[_-]?key|secret|token|password|passwd|credential)[[:space:]]*[:=][[:space:]]*[A-Za-z0-9_+/=-]{16,}|-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----|gh[oprsu]_[A-Za-z0-9_]{20,}|github_pat_[A-Za-z0-9_]{20,}|AKIA[A-Z0-9]{16}|sk-[A-Za-z0-9_-]{20,}' -- . ':!*.lock' 2>/dev/null || true)
+  if [ -n "$secret_paths" ]; then
+    echo "SECRET-LIKE PATHS: $(printf '%s\n' "$secret_paths" | wc -l | tr -d ' ') tracked file(s) require review"
+  else
+    echo "No secret-like values detected in tracked files"
   fi
 fi
 
@@ -378,7 +413,12 @@ any further probing is meaningful.
 
 Structured output is an output mode, not a health dimension. Do not include it
 in the dimension plan. Emit JSONL only when `REPO_HEALTH_OUTPUT=jsonl` is set;
-otherwise use the normal human-readable report.
+otherwise use the normal human-readable report. Each JSONL finding must match
+[`schemas/repo-health-findings.schema.json`](../schemas/repo-health-findings.schema.json)
+and contain only redacted strings, paths, counts, and confidence values. Emit
+one line per finding in blocking → warning → info order; emit no finding lines
+when the audit is clean. The schema is a maintainer-side contract, not a
+runtime dependency of the shipped payload.
 
 If any finding contains sensitive values (API keys, tokens, passwords,
 connection strings, private URLs), **redact the value before including it in

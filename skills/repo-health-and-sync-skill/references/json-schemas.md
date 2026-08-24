@@ -8,7 +8,7 @@ Versioned schemas for optional automation interfaces. Maintainer-side evidence �
 |--------|---------|-----------|
 | `repo-health-profile.schema.json` | Step 1 REPO PROFILE (observed/inferred) | Eval fixtures, agent output |
 | `dimension-plan.schema.json` | Step 2 DIMENSION PLAN (active/skipped) | Eval fixtures, agent output |
-| `repo-health-findings.schema.json` | JSONL findings (dimension, finding, harm, remediation, confidence) | `REPO_HEALTH_OUTPUT=jsonl` output |
+| `repo-health-findings.schema.json` | JSONL findings (dimension, finding, harm, remediation, confidence) | `REPO_HEALTH_OUTPUT=jsonl` output; one redacted line per finding |
 | `repo-health-config.schema.json` | `.repo-health.json` per-repo override | Pre-flight contract |
 
 ## Design Principles
@@ -17,6 +17,8 @@ Versioned schemas for optional automation interfaces. Maintainer-side evidence �
 - **Draft 2020-12** — compatible with `jsonschema` Python library
 - **Versioned per interface** — each schema independent; no monolithic schema
 - **Optional interfaces** — skill works without them; they enable automation when present
+- **Profile completeness** — every profile field is emitted explicitly with `null`, `false`, or `[]` when not applicable
+- **Redacted output** — findings contain paths/counts and remediation, never credential values or raw command output
 
 ## Validation
 
