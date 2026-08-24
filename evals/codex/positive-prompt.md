@@ -14,6 +14,8 @@ Follow the selected workflow exactly:
    Include only release-relevant paths in `version_sources`; do not treat a
    maintainer-only `pyproject.toml` or test manifest as a release source merely
    because it declares `version`.
+   Distinguish ordinary CI workflow paths from `release_files`; only record a
+   workflow when its filename or contents clearly implement release behavior.
    Use this shape as a starting point before adding any prose:
 
    ```yaml

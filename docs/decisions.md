@@ -177,6 +177,9 @@ the skill into a universal checklist.
 - Added portable version-source parsing guidance and explicit tool-absence skips.
 - Restricted version alignment to release-relevant metadata and accepted
   unquoted CFF/YAML version values.
+- Used Git's tracked/non-ignored file set for manifest discovery, with a
+  pruned filesystem fallback for non-Git repositories; release-file evidence
+  remains separate from ordinary CI workflows.
 - Treated scanner/test/fixture matches as heuristic candidates until native
   scanner results and non-secret context confirm a credential.
 - Recorded Codex runtime certification separately from the release version.

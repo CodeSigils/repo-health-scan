@@ -80,15 +80,37 @@ fi
 
 # What automation exists?
 find .github/workflows -type f \( -name '*.yml' -o -name '*.yaml' \) 2>/dev/null | sort | head -20
+find .github -type f \( -iname '*release*.yml' -o -iname '*release*.yaml' \) 2>/dev/null | sort | head -20
 find . -maxdepth 1 -name '*.sh' 2>/dev/null
 find scripts/ -type f \( -name '*.py' -o -name '*.sh' \) 2>/dev/null | sort | head -20
 
 # What's the dependency surface? A manifest is not automatically a release
-# version source: classify it below before adding it to the profile.
-find . -type f \( -name 'requirements*.txt' -o -name 'Cargo.toml' \
-  -o -name 'go.mod' -o -name 'package.json' -o -name 'pyproject.toml' \
-  -o -name 'pom.xml' -o -name 'build.gradle' \) \
-  -not -path './.git/*' 2>/dev/null | sort | head -50
+# version source: classify it below before adding it to the profile. In a Git
+# repository, include tracked and non-ignored files so .gitignore is respected;
+# otherwise use a pruned filesystem scan that avoids dependency, cache, and
+# generated trees.
+manifest_name() {
+  case "${1##*/}" in
+    requirements*.txt|Cargo.toml|go.mod|package.json|pyproject.toml|pom.xml|build.gradle)
+      printf '%s\n' "$1"
+      ;;
+  esac
+}
+if git rev-parse --show-toplevel >/dev/null 2>&1; then
+  while IFS= read -r path; do
+    manifest_name "$path"
+  done < <(git ls-files -co --exclude-standard)
+else
+  find . \( -path './.git' -o -path '*/node_modules' -o -path '*/vendor' \
+    -o -path '*/.venv' -o -path '*/.ruff_cache' -o -path '*/.pytest_cache' \
+    -o -path '*/.mypy_cache' -o -path '*/.pyright' -o -path '*/.tox' \
+    -o -path '*/.nox' -o -path '*/.cache' -o -path '*/.npm' \
+    -o -path '*/.pnpm-store' -o -path '*/.yarn' -o -path '*/dist' \
+    -o -path '*/build' \) -prune -o -type f \( \
+    -name 'requirements*.txt' -o -name 'Cargo.toml' -o -name 'go.mod' \
+    -o -name 'package.json' -o -name 'pyproject.toml' -o -name 'pom.xml' \
+    -o -name 'build.gradle' \) -print 2>/dev/null
+fi | sort | head -50
 
 # Is there a pre-existing health convention?
 test -f .repo-health.json && echo ".repo-health.json present" || echo "no .repo-health.json"
@@ -147,7 +169,9 @@ known extended fact is absent.
 Keep scalar fields canonical (`vcs: git`, `ci: null` when no CI is present,
 `base_ref: null` when no bounded base resolves); put explanations in the
 dimension plan or report, not inside scalar values. `workflow_files` and
-`release_files` contain relative paths, and `version_sources` contains only
+`workflow_files` contain workflow paths, while `release_files` contain only
+paths whose filename or configuration clearly represents release behavior.
+Do not classify every CI workflow as a release file. `version_sources` contains only
 release-relevant exact paths (or the special `git tag` source) that the version
 probe will parse. Do not include a maintainer-only package, test, or tooling
 manifest merely because it has a `version` field. If a package is published
