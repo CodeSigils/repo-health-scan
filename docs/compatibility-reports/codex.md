@@ -251,8 +251,8 @@ current released version.
 
 ## Runtime freshness note (2026-08-24)
 
-The local Codex CLI currently reports `codex-cli 0.149.0`. The
-`workflow_verified` claim above remains scoped to the recorded `0.133.0`
-execution evidence; the newer installed version has not yet received a new
-model-regression certification run. This distinction prevents a version
-observation from being mistaken for a behavioral compatibility result.
+The local Codex CLI currently reports `codex-cli 0.149.0`. A new local
+positive/negative regression run completed successfully on 2026-08-24 in
+2m08s, including the stricter profile/evidence contract. This is a fresh
+certification point for 0.149.0, while the older 0.133.0 run history remains
+separately preserved for longitudinal comparison.

@@ -116,13 +116,13 @@ Primary sources and research, accessed 2026-07-12 or 2026-07-13:
 | Release consistency | The checker validates `SKILL.md`, plugin metadata, `CITATION.cff`, tags, and GitHub releases. Strict CI queries use a read-only job token. |
 | Repository verification | Script self-tests, Ruff, ShellCheck, documentation audit, plugin validation, skill validation, and diff checks pass independently. |
 | Evidence URL tracking | `docs/evidence-urls.json` upgraded to v3 schema with status, source_type, domain_tag, and last_verified fields. All 11 URLs verified reachable. |
-| Local model regression | Nine Codex CLI 0.133.0 runs are recorded: six passes, one timeout, and two deterministic grading failures. The installed CLI is now 0.149.0 and needs a fresh certification run. |
+| Local model regression | Ten Codex runs are recorded: seven passes, one timeout, and two deterministic grading failures. Run 10 passed the revised payload on Codex CLI 0.149.0. |
 
 ### Remaining Gaps
 
 | Gap | Consequence | Priority |
 |---|---|---|
-| Nine local runs are recorded, but the payload changed across recent runs and several were same-session. | The 66.7% historical pass rate is diagnostic; the exact current payload has only one passing run and needs time-separated repeated evidence. | High |
+| Ten local runs are recorded, but the payload changed across recent runs and several were same-session. | The 70% historical pass rate is diagnostic; the current 0.149.0 payload has one passing run and needs time-separated repeated evidence. | High |
 | `.repo-health.json` and JSONL are optional maintainer-side contracts. | Schemas and graders now enforce profile completeness and redacted finding shape; cross-agent runtime conformance remains unverified. | Low |
 | Deterministic fixtures cover six repository shapes, including a monorepo, docs product, missing tools, no `origin/main`, and dirty tree. | Broader real-world model evidence is still needed beyond deterministic fixtures. | Medium |
 | Current-version marketplace installation has not been reproduced in the compatibility report. | Resolved: v0.3.0 installation evidence is recorded separately from historical v0.2.0 evidence. | Resolved |

@@ -110,6 +110,7 @@ Use `not recorded` for historical data that cannot be recovered.
 | 7 | 2026-07-16 | Local | 0.133.0 | not emitted | Pass | 2m 11s | 139,874 input (101,760 cached); 4,973 output; 446 reasoning | Exact final payload after adding quiet/redacted native-scanner output handling; positive and negative scenarios passed. |
 | 8 | 2026-07-16 | Local | 0.133.0 | not emitted | Fail | 2m 34s | 160,054 input (117,376 cached); 6,249 output; 748 reasoning | Consolidated payload completed both scenarios; deterministic grading found that the profile and dimension plan were emitted in the same message. |
 | 9 | 2026-07-16 | Local | 0.133.0 | not emitted | Pass | 2m 32s | 117,709 input (79,360 cached); 6,936 output; 1,155 reasoning | Exact consolidated payload passed after requiring the profile to be emitted in its own message before dimension planning. |
+| 10 | 2026-08-24 | Local | 0.149.0 | not recorded | Pass | 2m 08s | 206,184 input (146,176 cached); 5,537 output; 783 reasoning | Revised profile/evidence contract passed positive and negative scenarios after making extended profile fields conditional and canonical activation paths explicit. |
 
 Runs 1-3 predate the `run-summary.json` observability added in `f21214c`.
 Their committed log entries remain the authoritative historical evidence; do
@@ -123,13 +124,12 @@ version. A stable reliability baseline additionally requires repeated runs of
 the same payload. Review the pass rate and deviations before changing the
 harness or expanding `SKILL.md`.
 
-Current evidence: nine runs recorded, with six passes, one timeout, and two
-deterministic grading failures (66.7% pass rate). Runs 4 and 8 found real
-instruction ambiguities; runs 5 and 9 passed after targeted corrections. The
-payload changed between adjacent same-session runs, so this is diagnostic
-history, not a stable repeated baseline. Run 9 verifies the exact consolidated,
-hardened payload, which has one passing run and still needs time-separated
-repeats.
+Current evidence: ten runs recorded, with seven passes, one timeout, and two
+deterministic grading failures (70% pass rate). Runs 4 and 8 found real
+instruction ambiguities; runs 5, 9, and 10 passed after targeted corrections.
+The payload changed between adjacent same-session runs, so this is diagnostic
+history, not a stable repeated baseline. Run 10 is the first passing
+certification on Codex CLI 0.149.0; time-separated repeats are still useful.
 
 Excluded infrastructure attempt: on 2026-07-14, a run inside the restricted
 network sandbox timed out after 900 seconds immediately after `turn.started`,
