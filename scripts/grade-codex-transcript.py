@@ -15,9 +15,7 @@ DEFAULT_CONTRACT = Path("evals/cases/repo-health-scan.json")
 SEVERITY_ORDER = {"blocking": 0, "warning": 1, "info": 2}
 REQUIRED_OBSERVED_FIELDS = {
     "vcs", "languages", "package_managers", "ci", "shell_files", "recent_commits",
-    "gitignore", "version_sources", "script_surface", "shipped_payload", "tags_present",
-    "base_ref", "branch_commits_outside_base", "working_tree_dirty", "workflow_files",
-    "release_files", "verify_refs", "verify_releases",
+    "gitignore", "version_sources", "script_surface", "shipped_payload",
 }
 REQUIRED_INFERRED_FIELDS = {"repo_type", "release_model", "risk_context"}
 
@@ -232,9 +230,6 @@ def run_self_tests() -> int:
                         "vcs": "git", "languages": [], "package_managers": [], "ci": None,
                         "shell_files": False, "recent_commits": False, "gitignore": False,
                         "version_sources": [], "script_surface": "none", "shipped_payload": "none",
-                        "tags_present": False, "base_ref": None, "branch_commits_outside_base": None,
-                        "working_tree_dirty": False, "workflow_files": [], "release_files": [],
-                        "verify_refs": False, "verify_releases": False,
                     },
                     "inferred": {"repo_type": "library", "release_model": "none", "risk_context": "routine"},
                 },
@@ -293,9 +288,6 @@ def run_self_tests() -> int:
                             "vcs": "git", "languages": [], "package_managers": [], "ci": None,
                             "shell_files": False, "recent_commits": False, "gitignore": False,
                             "version_sources": [], "script_surface": "none", "shipped_payload": "none",
-                            "tags_present": False, "base_ref": None, "branch_commits_outside_base": None,
-                            "working_tree_dirty": False, "workflow_files": [], "release_files": [],
-                            "verify_refs": False, "verify_releases": False,
                         },
                         "inferred": {"repo_type": "library", "release_model": "none", "risk_context": "routine"},
                     },

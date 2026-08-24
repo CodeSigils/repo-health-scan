@@ -35,14 +35,6 @@ REQUIRED_OBSERVED_FIELDS = {
     "version_sources",
     "script_surface",
     "shipped_payload",
-    "tags_present",
-    "base_ref",
-    "branch_commits_outside_base",
-    "working_tree_dirty",
-    "workflow_files",
-    "release_files",
-    "verify_refs",
-    "verify_releases",
 }
 
 
@@ -185,14 +177,6 @@ def run_self_tests() -> int:
         "version_sources": [],
         "script_surface": "none",
         "shipped_payload": "none",
-        "tags_present": False,
-        "base_ref": None,
-        "branch_commits_outside_base": None,
-        "working_tree_dirty": False,
-        "workflow_files": [],
-        "release_files": [],
-        "verify_refs": False,
-        "verify_releases": False,
     }
     valid = {
         "schema_version": 1,

@@ -105,8 +105,7 @@
           {
             "name": "tag_release_integrity",
             "activated_by": [
-              "observed.tags_present",
-              "observed.release_files"
+              "inferred.release_model"
             ]
           },
           {

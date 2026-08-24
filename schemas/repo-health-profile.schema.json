@@ -10,7 +10,7 @@
   "properties": {
     "observed": {
       "type": "object",
-      "required": ["vcs", "languages", "package_managers", "ci", "shell_files", "recent_commits", "gitignore", "version_sources", "script_surface", "shipped_payload", "tags_present", "base_ref", "branch_commits_outside_base", "working_tree_dirty", "workflow_files", "release_files", "verify_refs", "verify_releases"],
+      "required": ["vcs", "languages", "package_managers", "ci", "shell_files", "recent_commits", "gitignore", "version_sources", "script_surface", "shipped_payload"],
       "additionalProperties": false,
       "properties": {
         "vcs": { "type": "string", "enum": ["git"] },

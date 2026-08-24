@@ -138,8 +138,11 @@ inferred:
 Do not run a dimension-specific command before emitting this block. If you
 cannot write it, run more discovery probes.
 
-The profile is a machine-readable contract, not a prose summary. Every field
-shown above is mandatory: use `null`, `false`, or `[]` when a fact is absent.
+The profile is a machine-readable contract, not a prose summary. The core
+fields (`vcs`, languages, package managers, CI, shell/filesystem signals,
+version sources, script surface, and shipped payload) are mandatory. Extended
+fields are emitted when their probes apply; use `null`, `false`, or `[]` when a
+known extended fact is absent.
 Keep scalar fields canonical (`vcs: git`, `ci: null` when no CI is present,
 `base_ref: null` when no bounded base resolves); put explanations in the
 dimension plan or report, not inside scalar values. `workflow_files` and
@@ -168,6 +171,17 @@ Use paths such as `observed.ci` or `inferred.release_model`. A recorded request
 or environment flag may also activate a dimension; an unobserved assumption may
 not.
 
+For built-in dimensions, prefer these canonical activation paths: history uses
+`observed.vcs`; shell correctness uses `observed.shell_files`; version
+alignment uses `observed.version_sources`; tag/release integrity uses
+`inferred.release_model` only when it names concrete tag/release evidence (or
+an observed tag/release file or opt-in flag); commit quality uses
+`observed.recent_commits`; CI efficiency uses `observed.ci`; file coverage uses
+`observed.gitignore`; attribution drift uses a positive
+`observed.branch_commits_outside_base`; and external reference health uses the
+true `observed.verify_refs` opt-in. Cross-platform checks additionally require
+inferred platform evidence.
+
 ```yaml
 # DIMENSION PLAN
 active:
@@ -185,7 +199,7 @@ skipped:
 | history_hygiene | always |
 | shell_correctness | observed.shell_files |
 | version_alignment | len(observed.version_sources) ≥ 2 |
-| tag_release_integrity | observed.tags_present, observed.workflow_files, observed.release_files, or verify_releases=true |
+| tag_release_integrity | concrete `inferred.release_model` evidence, observed tags/release files, or verify_releases=true |
 | commit_quality | observed.recent_commits |
 | ci_efficiency | observed.ci |
 | cross_platform | observed.shell_files + inferred.platform_requirements |
