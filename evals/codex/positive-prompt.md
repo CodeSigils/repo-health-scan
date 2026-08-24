@@ -5,7 +5,13 @@ files and do not use network access.
 Follow the selected workflow exactly:
 
 1. Emit the structured observed/inferred repository profile before selecting
-   health dimensions.
+   health dimensions. The `observed` object must include every field from the
+   profile contract: `vcs`, `languages`, `package_managers`, `ci`,
+   `shell_files`, `recent_commits`, `gitignore`, `version_sources`,
+   `script_surface`, `shipped_payload`, `tags_present`, `base_ref`,
+   `branch_commits_outside_base`, `working_tree_dirty`, `workflow_files`,
+   `release_files`, `verify_refs`, and `verify_releases`. Use `null`, `false`,
+   or `[]` when a fact is absent; keep explanations out of scalar fields.
 2. Account for every candidate dimension defined by the workflow. Each active
    dimension must cite one or more exact profile paths in `activated_by`; each
    inactive dimension must have a concrete skip reason and `SKIP` status.
