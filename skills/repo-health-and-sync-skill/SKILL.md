@@ -138,6 +138,14 @@ inferred:
 Do not run a dimension-specific command before emitting this block. If you
 cannot write it, run more discovery probes.
 
+The profile is a machine-readable contract, not a prose summary. Every field
+shown above is mandatory: use `null`, `false`, or `[]` when a fact is absent.
+Keep scalar fields canonical (`vcs: git`, `ci: null` when no CI is present,
+`base_ref: null` when no bounded base resolves); put explanations in the
+dimension plan or report, not inside scalar values. `workflow_files` and
+`release_files` contain relative paths, and `version_sources` contains the
+exact paths or the special `git tag` source that the version probe will parse.
+
 ## Step 2: Infer what invariants matter
 
 Given the emitted repo profile, ask: what invariants would break if they
