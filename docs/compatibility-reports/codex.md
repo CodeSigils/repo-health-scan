@@ -248,3 +248,11 @@ The v0.3.0 plugin manifest (`./.codex-plugin/plugin.json`) identifies version
 `0.3.0`, matching the `SKILL.md` frontmatter, `CITATION.cff`, git tag `v0.3.0`,
 and GitHub release `v0.3.0`. This completes the installation evidence for the
 current released version.
+
+## Runtime freshness note (2026-08-24)
+
+The local Codex CLI currently reports `codex-cli 0.149.0`. The
+`workflow_verified` claim above remains scoped to the recorded `0.133.0`
+execution evidence; the newer installed version has not yet received a new
+model-regression certification run. This distinction prevents a version
+observation from being mistaken for a behavioral compatibility result.
