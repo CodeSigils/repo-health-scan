@@ -80,6 +80,33 @@ After a material `SKILL.md` workflow or trigger change, run
 `Codex regression` workflow. Do not make ordinary changes depend on model
 availability.
 
+## Release process
+
+Releases are created by `.github/workflows/release.yml` from a pushed semantic
+version tag. The workflow is intentionally gated before it writes a GitHub
+Release:
+
+1. Align the `SKILL.md`, plugin manifest, citation metadata, and release tag
+   versions with `python3 scripts/check-version-consistency.py`.
+2. Commit and push the release change to `main`; wait for the `ci` workflow to
+   pass for that exact commit.
+3. Create and push the version tag (use the repository's normal signing policy
+   when creating tags):
+
+   ```bash
+   git tag -a vX.Y.Z -m "release: vX.Y.Z"
+   git push origin vX.Y.Z
+   ```
+
+4. The release workflow verifies that the tag is reachable from `main`, finds
+   a successful `ci` run for the tagged commit, and checks the tagged diff for
+   whitespace errors.
+5. After the preflight succeeds, it creates the GitHub Release with generated
+   notes. Categories and excluded labels are defined in `.github/release.yml`.
+
+Do not create the GitHub Release manually before the preflight completes. A tag
+that does not point into `main` or lacks a successful CI run is rejected.
+
 ## How the skill works
 
 The skill is a single SKILL.md with no shipped scripts, no reference files,
