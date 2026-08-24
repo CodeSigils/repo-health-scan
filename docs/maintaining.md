@@ -96,9 +96,13 @@ repository-health work to `SKILL.md` and repository changes to this file.
 ## Project structure
 
 ```text
-├── .github/workflows/
-│   ├── ci.yml
-│   └── codex-regression.yml       # Scheduled/manual non-blocking model evaluation
+├── .github/
+│   ├── dependabot.yml              # Weekly GitHub Actions updates
+│   ├── release.yml                 # Generated release-note categories
+│   └── workflows/
+│       ├── ci.yml
+│       ├── codex-regression.yml    # Scheduled/manual non-blocking model evaluation
+│       └── release.yml             # Validated generated release creation
 ├── .codex-plugin/plugin.json      # Codex distribution manifest
 ├── .gitignore
 ├── .gitattributes

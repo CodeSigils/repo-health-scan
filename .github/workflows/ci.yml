@@ -22,6 +22,7 @@ on:
       - '.repo-health.json'
       - '.codex-plugin/plugin.json'
       - '.github/workflows/**'
+      - '.github/*.yml'
       - 'pyproject.toml'
       - 'uv.lock'
   pull_request:
@@ -41,6 +42,7 @@ on:
       - '.repo-health.json'
       - '.codex-plugin/plugin.json'
       - '.github/workflows/**'
+      - '.github/*.yml'
       - 'pyproject.toml'
       - 'uv.lock'
   schedule:
@@ -58,7 +60,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v5
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
       - name: Set up Python
@@ -107,7 +109,7 @@ jobs:
     timeout-minutes: 5
     needs: lint
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v5
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
       - name: Full verification
@@ -121,18 +123,32 @@ jobs:
     env:
       COMMIT_RANGE: ${{ github.event.before == '0000000000000000000000000000000000000000' && 'origin/main..HEAD' || format('{0}..{1}', github.event.before, github.event.after) }}
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v5
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
       - name: Phase B — Pre-release health check
         run: |
           echo "=== Phase B: Pre-release health check ==="
           echo "Checking commit range: ${COMMIT_RANGE}"
+          if ! git diff --name-only "${COMMIT_RANGE}" >/dev/null; then
+            echo "BLOCKING: commit range is invalid or unavailable"
+            exit 1
+          fi
+          if [ -n "$(git diff --name-only "${COMMIT_RANGE}")" ]; then
+            echo "PASS: commit range resolves to a non-empty change set"
+          else
+            echo "BLOCKING: commit range is empty or unavailable"
+            exit 1
+          fi
+          if ! git diff --check "${COMMIT_RANGE}"; then
+            echo "BLOCKING: commit range contains whitespace errors"
+            exit 1
+          fi
           if [ -n "$(git status --porcelain)" ]; then
             echo "BLOCKING: dirty tree"
             exit 1
           fi
-          echo "PASS: clean tree"
+          echo "PASS: commit range and tree are clean"
 
   check-expiry:
     runs-on: ubuntu-latest
@@ -140,7 +156,7 @@ jobs:
     needs: lint
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v5
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
       - name: Check for expired references
@@ -152,7 +168,7 @@ jobs:
     needs: lint
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v5
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
       - name: Verify referenced URLs

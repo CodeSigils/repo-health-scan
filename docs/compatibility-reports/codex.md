@@ -34,10 +34,10 @@ codex-cli 0.133.0
 repo: CodeSigils/repo-health-and-sync-skill
 plugin: repo-health-and-sync-skill
 plugin version: 0.2.0
-isolated CODEX_HOME: .codex-test-home
-temporary marketplace root: /tmp/repo-health-marketplace
-activation CODEX_HOME: /tmp/repo-health-codex-eval-20260713
-audit fixture: clean local clone at /tmp/repo-health-audit-fixture
+isolated CODEX_HOME: $CODEX_HOME
+temporary marketplace root: $TMPDIR/repo-health-marketplace
+activation CODEX_HOME: $TMPDIR/repo-health-codex-eval-20260713
+audit fixture: clean local clone at $TMPDIR/repo-health-audit-fixture
 execution mode: ephemeral, read-only sandbox
 ```
 
@@ -63,34 +63,34 @@ warns against that option during plugin verification.
 Validate plugin manifest against the local Codex plugin validator:
 
 ```bash
-python3 /home/sand/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py \
-  /home/sand/projects/repo-health-and-sync-skill
+python3 "$CODEX_PLUGIN_VALIDATOR" \
+  "$REPO_ROOT"
 ```
 
 Result:
 
 ```text
-Plugin validation passed: /home/sand/projects/repo-health-and-sync-skill
+Plugin validation passed: $REPO_ROOT
 ```
 
 Register the temporary local marketplace:
 
 ```bash
-env CODEX_HOME=/home/sand/projects/repo-health-and-sync-skill/.codex-test-home \
-  codex plugin marketplace add /tmp/repo-health-marketplace
+env CODEX_HOME="$CODEX_HOME" \
+  codex plugin marketplace add "$TMPDIR/repo-health-marketplace"
 ```
 
 Result:
 
 ```text
-Added marketplace `repo-health-local` from /tmp/repo-health-marketplace.
-Installed marketplace root: /tmp/repo-health-marketplace
+Added marketplace `repo-health-local` from `$TMPDIR/repo-health-marketplace`.
+Installed marketplace root: $TMPDIR/repo-health-marketplace
 ```
 
 Install the plugin from that marketplace:
 
 ```bash
-env CODEX_HOME=/home/sand/projects/repo-health-and-sync-skill/.codex-test-home \
+env CODEX_HOME="$CODEX_HOME" \
   codex plugin add repo-health-and-sync-skill --marketplace repo-health-local
 ```
 
@@ -98,13 +98,13 @@ Result:
 
 ```text
 Added plugin `repo-health-and-sync-skill` from marketplace `repo-health-local`.
-Installed plugin root: /home/sand/projects/repo-health-and-sync-skill/.codex-test-home/plugins/cache/repo-health-local/repo-health-and-sync-skill/0.2.0
+Installed plugin root: $CODEX_HOME/plugins/cache/repo-health-local/repo-health-and-sync-skill/0.2.0
 ```
 
 Confirm installed status:
 
 ```bash
-env CODEX_HOME=/home/sand/projects/repo-health-and-sync-skill/.codex-test-home \
+env CODEX_HOME="$CODEX_HOME" \
   codex plugin list --marketplace repo-health-local
 ```
 
@@ -213,7 +213,7 @@ Directly adding this repository as a marketplace failed because a plugin root is
 not a marketplace root. The working local marketplace layout was:
 
 ```text
-/tmp/repo-health-marketplace/
+$TMPDIR/repo-health-marketplace/
 ├── .agents/plugins/marketplace.json
 └── plugins/repo-health-and-sync-skill/
     ├── .codex-plugin/plugin.json
@@ -235,13 +235,13 @@ version:
 
 ```bash
 # Validate v0.3.0 plugin manifest
-python3 /home/sand/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py \\
-  /home/sand/projects/repo-health-and-sync-skill
+python3 "$CODEX_PLUGIN_VALIDATOR" \\
+  "$REPO_ROOT"
 ```
 
 Result:
 ```text
-Plugin validation passed: /home/sand/projects/repo-health-and-sync-skill
+Plugin validation passed: $REPO_ROOT
 ```
 
 The v0.3.0 plugin manifest (`./.codex-plugin/plugin.json`) identifies version
