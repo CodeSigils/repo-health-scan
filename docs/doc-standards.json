@@ -30,7 +30,7 @@
       "id": "compatibility-scope",
       "description": "Verified compatibility scope declared",
       "type": "regex",
-      "pattern": "Codex CLI 0\\.133\\.0 is the only verified agent target"
+      "pattern": "Codex CLI 0\\.149\\.0 is the only verified agent target"
     },
     {
       "id": "quickstart-bash",
@@ -118,7 +118,7 @@
       "id": "verification-checklist",
       "description": "Verification checklist section",
       "type": "regex",
-      "pattern": "## Verification checklist"
+      "pattern": "## Fast verification checklist"
     }
   ],
   "docs/codex-setup.md": [
@@ -126,7 +126,7 @@
       "id": "tested-version",
       "description": "Names the tested Codex CLI version",
       "type": "regex",
-      "pattern": "Codex CLI 0\\.133\\.0"
+      "pattern": "Codex CLI 0\\.149\\.0"
     },
     {
       "id": "repo-local",
