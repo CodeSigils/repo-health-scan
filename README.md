@@ -15,6 +15,8 @@ Works on any git repository — Python, Rust, shell, docs-only, or monorepo.
 
 It does **not** ship hardcoded checklists, runtime scripts, or reference
 files. Pair it with
+[`repo-architecture-skill`](https://github.com/CodeSigils/repo-architecture-skill)
+for skill-repository structure, payload, and distribution boundaries, and with
 [`py-review-skill`](https://github.com/CodeSigils/py-review-skill) for
 dedicated Python code review.
 
