@@ -129,7 +129,7 @@
       "expected_statuses": [200],
       "source_section": "docs/research.md",
       "domain_tag": "documentation",
-      "source_type": "methodology",
+      "source_type": "community",
       "status": "active",
       "last_verified": "2026-08-24",
       "notes": "Primary source for separating tutorials, how-to guides, reference, and explanation"
