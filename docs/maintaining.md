@@ -49,6 +49,21 @@ already shared.
 | `refactor:` | Restructuring, no behaviour change |
 | `fix:` | Bug fix in SKILL.md |
 | `chore:` | Housekeeping (.gitignore, CI) |
+| `ci:` | GitHub Actions or other CI configuration |
+| `test:` | Tests, fixtures, or evaluation evidence |
+| `chore(deps):` | Dependency bump (dependabot uses this scoped form) |
+
+Subject prefixes are enforced automatically by CI in the `phase-b-gate` job
+(`scripts/check-commit-convention.py`), which checks every commit in the pushed
+range on `main`. Prefixes outside the table above fail the gate, so use only
+those listed.
+
+The prefixes `what:`, `changelog:`, `sync:`, `flatten:`, and `dev:` were used
+historically (before 2026-07-13 / v0.2.0) and are now retired. They are not
+enforced against existing history: because release tag `v0.2.0` points at
+commit `74d2082` whose subject is `what: fix table pipe formatting in Step 2
+dimension table`, rewriting past subjects would destroy release history. Only
+new commits going forward are validated.
 
 ## Change admission gate
 
@@ -88,7 +103,7 @@ edits and generated artifacts have been removed:
 3. **Eval contract:** `python3 scripts/validate-evals.py`
 4. **Trust contract:** `python3 scripts/check-trust.py`
 5. **Version alignment:** `python3 scripts/check-version-consistency.py`
-6. **Python lint:** `python3 -m ruff check scripts skills`
+6. **Python lint:** `uv run ruff check scripts/ skills/`
 7. **Regression grader self-test:** `python3 scripts/grade-codex-transcript.py --self-test`
 8. **Shellcheck:** run on any modified shell files.
 9. **Final tree:** `git status --porcelain` shows nothing.

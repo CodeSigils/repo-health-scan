@@ -149,6 +149,10 @@ jobs:
             exit 1
           fi
           echo "PASS: commit range and tree are clean"
+      - name: Phase B — Commit subject convention check
+        run: |
+          echo "=== Phase B: Commit subject convention check ==="
+          python3 scripts/check-commit-convention.py --range "${COMMIT_RANGE}"
 
   check-expiry:
     runs-on: ubuntu-latest
