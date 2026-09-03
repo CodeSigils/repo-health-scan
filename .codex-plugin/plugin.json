@@ -1,6 +1,6 @@
 {
   "name": "repo-health-and-sync-skill",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Repo health scan methodology for AI coding agents.",
   "author": {
     "name": "CodeSigils",

@@ -12,7 +12,7 @@ description: >-
 license: MIT
 metadata:
   author: CodeSigils
-  version: "0.3.0"
+  version: "0.4.0"
   purpose: project-governance
   tags:
     - git-hygiene
