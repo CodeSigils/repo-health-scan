@@ -9,19 +9,9 @@ from pathlib import Path
 
 SCRIPTS_DIR = Path(__file__).resolve().parent
 
-# Python scripts that should have --self-test
-PY_SCRIPTS_WITH_SELF_TEST = [
-    "check-portability.py",
-    "verify-urls.py",
-    "doc-audit.py",
-    "check-expiry.py",
-    "check-version-consistency.py",
-    "check-trust.py",
-    "extract-tests.py",
-    "grade-codex-transcript.py",
-    "run-codex-regression.py",
-    "validate-evals.py",
-]
+# Regex matching a standalone self-test entry point. Must stay in sync with
+# REQUIRED_PATTERNS below so discovery and validation agree on what counts.
+SELF_TEST_RE = re.compile(r"def (?:do_self_test|run_self_tests|check_self_test|self_test)\(")
 
 ALL_SCRIPTS = sorted(
     p.name for p in SCRIPTS_DIR.iterdir()
@@ -29,7 +19,7 @@ ALL_SCRIPTS = sorted(
 )
 
 REQUIRED_PATTERNS = [
-    (r"def (?:do_self_test|run_self_tests|check_self_test|self_test)\(\)", "missing --self-test function"),
+    (SELF_TEST_RE.pattern, "missing --self-test function"),
     (r"if __name__ == \"__main__\"", "missing main entry point"),
 ]
 
@@ -40,6 +30,24 @@ FORBIDDEN_PATTERNS = [
 ]
 
 SHELL_SCRIPTS = {"verify.sh"}
+
+
+def _py_scripts_with_self_test() -> list[str]:
+    """Auto-discover Python scripts that declare a self-test entry point.
+
+    Excludes the current harness module, which declares `run_self_tests` but
+    must not be invoked by itself (that would recurse into this very loop).
+    """
+    self_name = Path(__file__).name
+    return sorted(
+        p.name
+        for p in SCRIPTS_DIR.iterdir()
+        if p.is_file()
+        and p.suffix == ".py"
+        and p.name != self_name
+        and not p.name.startswith("_")
+        and SELF_TEST_RE.search(p.read_text(encoding="utf-8"))
+    )
 
 
 def check_script(script_path: Path) -> list[str]:
@@ -85,9 +93,9 @@ def check_script(script_path: Path) -> list[str]:
 
 
 def run_self_tests() -> list[str]:
-    """Run --self-test on all scripts that should have it and verify they pass."""
+    """Run --self-test on all scripts that declare it and verify they pass."""
     errors = []
-    for script in PY_SCRIPTS_WITH_SELF_TEST:
+    for script in _py_scripts_with_self_test():
         script_path = SCRIPTS_DIR / script
         if not script_path.exists():
             continue

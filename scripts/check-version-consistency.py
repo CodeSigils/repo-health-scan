@@ -11,12 +11,12 @@ from collections.abc import Mapping
 from dataclasses import dataclass
 from pathlib import Path
 
-from _common import read_json
+from _common import ROOT, read_json
 
 LOCAL_VERSION_SOURCES = {
-    "SKILL.md": Path("skills/repo-health-and-sync-skill/SKILL.md"),
-    "plugin.json": Path(".codex-plugin/plugin.json"),
-    "CITATION.cff": Path("CITATION.cff"),
+    "SKILL.md": ROOT / "skills/repo-health-and-sync-skill/SKILL.md",
+    "plugin.json": ROOT / ".codex-plugin/plugin.json",
+    "CITATION.cff": ROOT / "CITATION.cff",
 }
 
 # Release-prep commits carry a subject of this shape, e.g.
