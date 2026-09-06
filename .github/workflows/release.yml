@@ -58,4 +58,13 @@ jobs:
       - name: Create GitHub release with generated notes
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "$GITHUB_REF_NAME" --verify-tag --generate-notes --title "$GITHUB_REF_NAME"
+        run: |
+          if release_json=$(gh release view "$GITHUB_REF_NAME" --json isDraft,isPrerelease 2>/dev/null); then
+            if [ "$(printf '%s' "$release_json" | jq -r '.isDraft')" = "false" ]; then
+              echo "GitHub Release $GITHUB_REF_NAME already exists; treating rerun as successful."
+              exit 0
+            fi
+            echo "A draft GitHub Release already exists for $GITHUB_REF_NAME; refusing to overwrite it." >&2
+            exit 1
+          fi
+          gh release create "$GITHUB_REF_NAME" --verify-tag --generate-notes --title "$GITHUB_REF_NAME"
