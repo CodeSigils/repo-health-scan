@@ -38,7 +38,7 @@ Current product assessment:
 
 - The profile-first and evidence-linked planning contract is useful and
   differentiates the skill from a generic health checklist.
-- The current payload is 513 lines after removing repeated prose and low-value
+- The current payload is 518 lines after removing repeated prose and low-value
   examples while retaining inline probes and the complete security contract.
   Do not add new runtime modules until repeated model evidence shows the extra
   surface is useful.
@@ -309,11 +309,12 @@ these gates in order:
 2. **Completed with caveat:** five runs now record observability and failure
    phases, but runs 4 and 5 were same-session and straddled a payload fix; treat
    them as diagnostic evidence rather than a stable repeated baseline.
-3. Consolidate the core methodology while preserving the verified three-step
-   contract. Target a 30-50% payload reduction where it can be achieved without
-   weakening trigger boundaries, read-only behavior, profile-first ordering,
-   activation evidence, skip accounting, or finding quality.
-4. Describe the dimension table as a non-exhaustive candidate catalog, allow
+3. **Completed:** consolidate the core methodology while preserving the
+   verified three-step contract. The current 518-line payload retains the
+   profile-first, read-only, activation, skip-accounting, and finding-quality
+   boundaries after removing repeated prose and low-value examples.
+4. **Completed:** describe the dimension table as a non-exhaustive candidate
+   catalog, allow
    evidence-backed custom dimensions, make blocking contextual to the audit,
    continue safe read-only checks after finding a blocker, and state graceful
    behavior when an expected tool is unavailable.
@@ -382,12 +383,12 @@ surface expansion.
 
 | Order | Action                                                                                                                                                                      |                                     Effort | Impact |
 | ----: | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -----------------------------------------: | ------ |
-|     1 | Collect time-separated local regression runs for the hardened payload without changing model-facing inputs. Preserve all first-attempt outcomes.                            |             Observation over multiple runs | High   |
-|     2 | Review the hardened-payload pass rate, failure phases, runtime, token use, and evidence quality.                                                                            |                                    0.5 day | High   |
-|     3 | If that review supports proceeding, consolidate `SKILL.md`, clarify the candidate-catalog and contextual-blocking contracts, and preserve the verified three-step behavior. |                                   1-2 days | High   |
-|     4 | Establish a fresh repeated model baseline for the consolidated payload; do not reuse earlier rates as proof.                                                                |             Observation over multiple runs | High   |
-|     5 | Formalize the optional interfaces and broaden deterministic fixture coverage against the stable consolidated contract.                                                      |                                   1-2 days | High   |
-|     6 | Decide whether profile modules are justified. Keep them deferred by default; if approved, implement and evaluate one module at a time.                                      | Review, then 0.5-1 day per approved module | Medium |
+|     1 | **Completed:** Collect time-separated local regression runs for the hardened payload and preserve all first-attempt outcomes.                                                |             Observation over multiple runs | High   |
+|     2 | **Completed:** Review pass rate, failure phases, runtime, token use, and evidence quality; runs 13–15 support proceeding.                                                   |                                    0.5 day | High   |
+|     3 | **Completed:** Consolidate `SKILL.md` and clarify the candidate-catalog and contextual-blocking contracts.                                                                   |                                   1-2 days | High   |
+|     4 | **Completed:** Establish a fresh repeated model baseline for the consolidated payload; runs 13–15 are the current baseline.                                                 |             Observation over multiple runs | High   |
+|     5 | **Next:** Hold a documented go/no-go review for profile modules; default to continued deferral unless observed failures justify one.                                         |                                    0.5 day | High   |
+|     6 | If a module is approved, implement and evaluate one module at a time with its own fixture, field budget, and fresh regression evidence.                                     | Review, then 0.5-1 day per approved module | Medium |
 
 Optional, unordered infrastructure: activate the hosted Codex Action only if a
 maintainer later has API-key billing and wants GitHub-hosted scheduling. It is
