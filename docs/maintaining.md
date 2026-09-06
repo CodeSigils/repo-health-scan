@@ -101,14 +101,15 @@ edits and generated artifacts have been removed:
 
 1. **Documentation:** `python3 scripts/doc-audit.py --self-test`
 2. **Agent Skills format:** `uvx --from git+https://github.com/agentskills/agentskills.git@69ef37e9424c0a7ea9dd2293b559e43ec8176379#subdirectory=skills-ref skills-ref validate skills/repo-health-scan`
-3. **No stale refs:** `grep -rn --include='*.md' 'PLAN\\.md\\|PROPOSALS\\.md\\|REPORT\\.md\\|USER-SUGGESTIONS\\.md' . | grep -v '.git/'`
-4. **Eval contract:** `python3 scripts/validate-evals.py`
-5. **Trust contract:** `python3 scripts/check-trust.py`
-6. **Version alignment:** `python3 scripts/check-version-consistency.py`
-7. **Python lint:** `uv run ruff check scripts/ skills/`
-8. **Regression grader self-test:** `python3 scripts/grade-codex-transcript.py --self-test`
-9. **Shellcheck:** run on any modified shell files.
-10. **Final tree:** `git status --porcelain` shows nothing.
+3. **Compatibility evidence policy:** `python3 scripts/check-skills-ref-policy.py .`
+4. **No stale refs:** `grep -rn --include='*.md' 'PLAN\\.md\\|PROPOSALS\\.md\\|REPORT\\.md\\|USER-SUGGESTIONS\\.md' . | grep -v '.git/'`
+5. **Eval contract:** `python3 scripts/validate-evals.py`
+6. **Trust contract:** `python3 scripts/check-trust.py`
+7. **Version alignment:** `python3 scripts/check-version-consistency.py`
+8. **Python lint:** `uv run ruff check scripts/ skills/`
+9. **Regression grader self-test:** `python3 scripts/grade-codex-transcript.py --self-test`
+10. **Shellcheck:** run on any modified shell files.
+11. **Final tree:** `git status --porcelain` shows nothing.
 
 The model regression is deliberately outside the fast checklist because it
 requires authenticated model access and is nondeterministic. After a material

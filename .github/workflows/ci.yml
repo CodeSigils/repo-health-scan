@@ -37,6 +37,8 @@ jobs:
         run: uv sync
       - name: Check cross-agent portability
         run: python3 scripts/check-portability.py
+      - name: Enforce skills-ref evidence policy
+        run: python3 scripts/check-skills-ref-policy.py .
       - name: Validate Agent Skills format
         run: >-
           uvx --from

@@ -414,7 +414,10 @@ expanding the runtime payload:
    activated the skill for a health audit and correctly rejected a narrow task.
 4. **Next:** Add a claim/evidence matrix for compatibility, distribution, read-only, and
    release claims, including evidence date and confidence.
-5. Review the multi-surface versioning model at the next major release; do not
+5. **Completed:** Enforce the Agent Skills validator policy with a pinned
+   `skills-ref` command in CI (or a manual release gate for no-CI repositories),
+   and provide a reusable audit script for other repositories.
+6. Review the multi-surface versioning model at the next major release; do not
    migrate it now without evidence that its maintenance cost outweighs the
    existing release-integrity controls.
 
