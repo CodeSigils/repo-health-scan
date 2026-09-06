@@ -83,8 +83,9 @@ Use `--agent claude-code` for Claude Code. The repository is indexed by the
 `skills/<directory>/SKILL.md` layout; no npm package or root `SKILL.md` is
 required. The skills.sh detail page is
 `https://skills.sh/codesigils/repo-health-scan/repo-health-scan`; the repository
-landing page and install-count badge may remain unavailable until skills.sh
-records an install.
+landing page is `https://skills.sh/codesigils/repo-health-scan`. The badge
+currently reports one indexed skill/install; skills.sh may show a dash on the
+individual skill page until its per-skill history is populated.
 
 For repository-local Codex use, place the skill under `.agents/skills/`:
 
