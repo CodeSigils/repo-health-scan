@@ -148,7 +148,9 @@ skills/
     └── SKILL.md      # 3-step methodology — discover, infer, report
 ```
 
-One file. No separate scripts, no config files, no runtime dependencies.
+The runtime payload is one file: `SKILL.md`. The adjacent `references/`
+directory contains maintainer-only evidence and templates; it is not copied
+into an agent's installed skill directory and is not a runtime dependency.
 The methodology contains inline command examples the agent executes using
 `git`, `shellcheck`, `python3`, `gh` already on PATH. Copy only
 `skills/repo-health-and-sync-skill/` to your agent's skill directory (see
@@ -217,7 +219,8 @@ Install above).
 │   └── verify-urls.py                # Checks external URL references are reachable
 ├── skills/
 │   └── repo-health-and-sync-skill/
-│       └── SKILL.md                  # The entire skill — one file, nothing else
+│       ├── SKILL.md                  # The shipped runtime skill
+│       └── references/               # Maintainer-only evidence and templates
 ```
 
 ---

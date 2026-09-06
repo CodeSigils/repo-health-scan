@@ -22,7 +22,8 @@ Choose the smallest path that matches the change:
 | Agent support claim | Update the relevant compatibility report and portability evidence; do not broaden claims from one runtime. |
 
 The installed runtime payload is only `skills/repo-health-and-sync-skill/SKILL.md`.
-The rest of this repository is maintainer tooling or evidence.
+The adjacent `references/` files are maintainer-only evidence/templates and are
+not copied into an agent's installed skill directory.
 
 ## Commit convention
 
@@ -147,8 +148,9 @@ that does not point into `main` or lacks a successful CI run is rejected.
 
 ## How the skill works
 
-The skill is a single SKILL.md with no shipped scripts, no reference files,
-and no build process. The agent discovers repo characteristics at runtime
+The skill runtime is a single SKILL.md with no shipped scripts and no build
+process. The adjacent references are maintainer-only and are not installed.
+The agent discovers repo characteristics at runtime
 using tools already on PATH (`git`, `shellcheck`, `python3`, `gh`).
 
 Changes to the methodology go directly into `skills/repo-health-and-sync-skill/SKILL.md`.

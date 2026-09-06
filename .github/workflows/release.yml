@@ -33,14 +33,22 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           TAG_COMMIT: ${{ github.sha }}
         run: |
-          successful_runs=$(gh run list --workflow ci.yml --commit "${TAG_COMMIT}" \
-            --status completed --json conclusion \
-            --jq '[.[] | select(.conclusion == "success")] | length')
-          if [ "${successful_runs}" -lt 1 ]; then
-            echo "No successful ci.yml run was found for ${TAG_COMMIT}."
+          successful_run_ids=$(gh run list --workflow ci.yml --commit "${TAG_COMMIT}" \
+            --status completed --json conclusion,databaseId \
+            --jq '.[] | select(.conclusion == "success") | .databaseId')
+          verified=0
+          while IFS= read -r run_id; do
+            [ -n "${run_id}" ] || continue
+            if gh run view "${run_id}" --json jobs --jq '([.jobs[] | select(.name == "lint" or .name == "full-verify") | .conclusion] | (length == 2 and all(.[]; . == "success")))' | grep -qx true; then
+              verified=1
+              echo "Verified ci.yml run ${run_id} with lint and full-verify success."
+              break
+            fi
+          done <<< "${successful_run_ids}"
+          if [ "${verified}" -ne 1 ]; then
+            echo "No successful ci.yml run with required jobs was found for ${TAG_COMMIT}."
             exit 1
           fi
-          echo "Found ${successful_runs} successful CI run(s) for ${TAG_COMMIT}."
       - name: Check tagged diff
         run: git diff --check "${{ github.sha }}^" "${{ github.sha }}"
 

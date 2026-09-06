@@ -7,44 +7,8 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths:
-      - 'skills/**'
-      - 'scripts/**'
-      - 'docs/**'
-      - 'evals/**'
-      - 'AGENTS.md'
-      - 'README.md'
-      - 'repo-health-skill-roadmap.md'
-      - 'SECURITY.md'
-      - 'LICENSE'
-      - 'CITATION.cff'
-      - '.gitignore'
-      - '.repo-health.json'
-      - '.codex-plugin/plugin.json'
-      - '.github/workflows/**'
-      - '.github/*.yml'
-      - 'pyproject.toml'
-      - 'uv.lock'
   pull_request:
     branches: [main]
-    paths:
-      - 'skills/**'
-      - 'scripts/**'
-      - 'docs/**'
-      - 'evals/**'
-      - 'AGENTS.md'
-      - 'README.md'
-      - 'repo-health-skill-roadmap.md'
-      - 'SECURITY.md'
-      - 'LICENSE'
-      - 'CITATION.cff'
-      - '.gitignore'
-      - '.repo-health.json'
-      - '.codex-plugin/plugin.json'
-      - '.github/workflows/**'
-      - '.github/*.yml'
-      - 'pyproject.toml'
-      - 'uv.lock'
   schedule:
     - cron: "0 9 * * 1"
 
@@ -121,9 +85,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     needs: lint
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'pull_request' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
     env:
-      COMMIT_RANGE: ${{ github.event.before == '0000000000000000000000000000000000000000' && 'origin/main..HEAD' || format('{0}..{1}', github.event.before, github.event.after) }}
+      COMMIT_RANGE: ${{ github.event_name == 'pull_request' && format('{0}..{1}', github.event.pull_request.base.sha, github.event.pull_request.head.sha) || (github.event.before == '0000000000000000000000000000000000000000' && 'origin/main..HEAD' || format('{0}..{1}', github.event.before, github.event.after)) }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
@@ -178,4 +142,15 @@ jobs:
         with:
           fetch-depth: 0
       - name: Verify referenced URLs
-        run: python3 scripts/verify-urls.py
+        run: |
+          for attempt in 1 2 3; do
+            if python3 scripts/verify-urls.py; then
+              exit 0
+            fi
+            if [ "$attempt" -lt 3 ]; then
+              echo "URL verification attempt $attempt failed; retrying in 15 seconds..."
+              sleep 15
+            fi
+          done
+          echo "URL verification failed after 3 attempts." >&2
+          exit 1
