@@ -120,6 +120,7 @@ Primary sources and research, accessed 2026-07-12 or 2026-07-13:
 | CI and merge governance    | CI runs on every pull request without path filters; `lint`, `full-verify`, and `phase-b-gate` are required on `main`, with conversation resolution and signed commits.     |
 | Release workflow hardening | Tagged releases verify the exact CI commit and required jobs; reruns are idempotent when a GitHub Release already exists.                                                                 |
 | Repository verification    | Script self-tests, Ruff, ShellCheck, documentation audit, plugin validation, skill validation, and diff checks pass independently.                                                        |
+| Agent Skills format        | Pinned official `skills-ref` validation is run locally and in the `lint` CI job against `skills/repo-health-scan`.                                         |
 | Evidence URL tracking      | `docs/evidence-urls.json` upgraded to v3 schema with status, source_type, domain_tag, and last_verified fields. All 11 URLs verified reachable.                                           |
 | Local model regression     | Fifteen Codex runs are recorded: ten passes, one timeout, and two deterministic grading failures. Runs 13–15 are clean repeated passes on Codex CLI 0.153.2. |
 
