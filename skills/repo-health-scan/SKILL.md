@@ -37,19 +37,11 @@ Four rules govern the scan:
 - Report concrete harm and remediation while keeping sensitive values out of
   commands, transcripts, and findings.
 
-## When to Use
-
-- Before a release, archive, handoff, or project revival
-- When onboarding onto an unfamiliar repository
-- When CI is failing and the cause is unclear
-- After a large batch of AI-assisted commits
-
-## When Not to Use
-
-- For a task scoped to one file, bug, or feature
-- For ordinary implementation work when overall repository health is not at issue
-- For repositories without git history, except for a filesystem shape summary
-- As an automatic fixer; this skill reports but does not mutate the repository
+Use this skill before a release, archive, handoff, project revival, unfamiliar-
+repository onboarding, or unclear CI failure. Do not use it for a single-file
+edit, narrow bug fix, feature implementation, or automatic fixing. Repositories
+without git history receive only a filesystem shape summary. The skill reports
+findings and does not mutate the repository.
 
 ## Step 1: Discover the repo's shape
 
@@ -222,18 +214,18 @@ skipped:
 
 ### Candidate Catalog (non-exhaustive)
 
-| Dimension | Activated By |
-|-----------|--------------|
-| history_hygiene | always |
-| shell_correctness | observed.shell_files |
-| version_alignment | len(observed.version_sources) ≥ 2 |
-| tag_release_integrity | concrete `inferred.release_model` evidence, observed tags/release files, or verify_releases=true |
-| commit_quality | observed.recent_commits |
-| ci_efficiency | observed.ci |
-| cross_platform | observed.shell_files + inferred.platform_requirements |
-| attribution_drift | observed.branch_commits_outside_base > 0 |
-| file_coverage | observed.gitignore |
-| external_reference_health | env:REPO_HEALTH_VERIFY_REFS=1 |
+| Dimension                 | Activated By                                                                                     |
+| ------------------------- | ------------------------------------------------------------------------------------------------ |
+| history_hygiene           | always                                                                                           |
+| shell_correctness         | observed.shell_files                                                                             |
+| version_alignment         | len(observed.version_sources) ≥ 2                                                                |
+| tag_release_integrity     | concrete `inferred.release_model` evidence, observed tags/release files, or verify_releases=true |
+| commit_quality            | observed.recent_commits                                                                          |
+| ci_efficiency             | observed.ci                                                                                      |
+| cross_platform            | observed.shell_files + inferred.platform_requirements                                            |
+| attribution_drift         | observed.branch_commits_outside_base > 0                                                         |
+| file_coverage             | observed.gitignore                                                                               |
+| external_reference_health | env:REPO_HEALTH_VERIFY_REFS=1                                                                    |
 
 Only after emitting the dimension plan, run the smallest command or command
 block that answers each active dimension. Do not run probes for skipped
@@ -448,20 +440,8 @@ secret-bearing URLs in findings. Report only:
 - Remediation
 - Confidence (0–1)
 
-For each active dimension, report what you found. Do not use a
-pre-defined severity scale. Use language that reflects actual harm:
-
-```text
-SHELL CORRECTNESS — 3 scripts, 6 warnings
-  shellcheck reports SC2086 (unquoted var) in scripts/deploy.sh:17
-  This causes silent failure when a path contains spaces.
-  Remediation: wrap "$var" consistently. 5-minute fix.
-
-VERSION ALIGNMENT — DRIFT
-  package.json says 1.3.0, pyproject.toml says 1.2.0
-  Publishing now would release inconsistent metadata.
-  Remediation: cross-reference the latest tag and align both files.
-```
+For each active dimension, report what you found. Do not use a pre-defined
+severity scale; state the concrete harm and the smallest useful remediation.
 
 If all active dimensions are healthy, report one line such as
 `PASS — 4 dimensions checked, all healthy.`
@@ -473,11 +453,11 @@ any further probing is meaningful.
 Structured output is an output mode, not a health dimension. Do not include it
 in the dimension plan. Emit JSONL only when `REPO_HEALTH_OUTPUT=jsonl` is set;
 otherwise use the normal human-readable report. Each JSONL finding must match
-[`schemas/repo-health-findings.schema.json`](../schemas/repo-health-findings.schema.json)
-and contain only redacted strings, paths, counts, and confidence values. Emit
-one line per finding in blocking → warning → info order; emit no finding lines
-when the audit is clean. The schema is a maintainer-side contract, not a
-runtime dependency of the shipped payload.
+the maintainer-side `schemas/repo-health-findings.schema.json` contract and
+contain only redacted strings, paths, counts, and confidence values. Emit one
+line per finding in blocking → warning → info order; emit no finding lines when
+the audit is clean. The schema is not a runtime dependency of the shipped
+payload.
 
 If any finding contains sensitive values (API keys, tokens, passwords,
 connection strings, private URLs), **redact the value before including it in
@@ -498,41 +478,19 @@ sanitized `!.env.example` when used, and avoid broad `*.key` or `*.pem` rules
 without checking for intentional public certificates or fixtures. Treat
 lockfile policy as an application-versus-library decision, not a generic ignore.
 
-Example JSONL output:
-```jsonl
-{"dimension":"version_alignment","finding":"pyproject=1.2.0 Cargo=1.1.0","harm":"stale release","remediation":"sync to 1.2.0","confidence":0.95}
-```
-
 ---
 
 ## Optional: Pre-flight contract
 
-Some repos carry a `.repo-health.json` at the root. When present, it
-overrides the heuristic discovery in Step 2. Schema:
-[`schemas/repo-health-config.schema.json`](../schemas/repo-health-config.schema.json)
-(maintainer-side evidence).
-
-```json
-{
-  "skip": ["shell-correctness"],
-  "require": ["custom-consistency-check"],
-  "version_sources": ["pyproject.toml"],
-  "commit_format": {"type": "conventional", "required_fields": ["what", "why"]}
-}
-```
+Some repos carry a `.repo-health.json` at the root. When present, it overrides
+the heuristic discovery in Step 2. Its maintainer-side schema is
+`schemas/repo-health-config.schema.json`.
 
 Inspect only settings needed for the plan; do not echo the full file into the
 transcript, and redact sensitive values. Merge the settings into the dimension
 list. A custom required check replaces the default probe for that dimension.
 
 ---
-
-## Maintainer contracts
-
-When working from the source repository, maintainers can consult the
-repository-local contracts and fixtures under `schemas/` and `evals/`. They
-are validation inputs, not runtime dependencies of this skill, and are not
-included in the installed payload.
 
 ---
 
