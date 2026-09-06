@@ -406,9 +406,10 @@ expanding the runtime payload:
 1. **Completed:** Add a reusable dogfood report template covering repository
    shape, profile, active/skipped dimensions, findings, tool availability,
    commands, and date (`docs/dogfood-audit-template.md`).
-2. **Next:** Add a control-justification ledger mapping each recurring CI/release check to
-   its failure mode, evidence, recurring cost, and retain/weaken/remove decision.
-3. Run one focused manual trigger-selection review after material `SKILL.md`
+2. **Completed:** Add a control-justification ledger mapping each recurring
+   CI/release check to its failure mode, evidence, recurring cost, and
+   retain/weaken/remove decision (`docs/control-justification-ledger.md`).
+3. **Next:** Run one focused manual trigger-selection review after material `SKILL.md`
    changes; deterministic validators do not fully prove semantic agent routing.
 4. Add a claim/evidence matrix for compatibility, distribution, read-only, and
    release claims, including evidence date and confidence.
