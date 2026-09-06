@@ -390,13 +390,33 @@ surface expansion.
 |     3 | **Completed:** Consolidate `SKILL.md` and clarify the candidate-catalog and contextual-blocking contracts.                                                                   |                                   1-2 days | High   |
 |     4 | **Completed:** Establish a fresh repeated model baseline for the consolidated payload; runs 13–15 are the current baseline.                                                 |             Observation over multiple runs | High   |
 |     5 | **Completed:** Hold the profile-module go/no-go review; `docs/decisions.md` records defer-by-default.                                                                         |                                    0.5 day | High   |
-|     6 | **Maintenance:** Run release-readiness and real-project dogfood checks; reopen implementation only after a concrete evidence gap.                                             |                         Ongoing, lightweight | High   |
+|     6 | **Maintenance:** Run release-readiness and real-project dogfood checks; add the bounded evidence artifacts listed below; reopen implementation only after a concrete evidence gap. | Ongoing, lightweight | High   |
 |     7 | If a module is later approved, implement and evaluate one at a time with its own fixture, field budget, and fresh regression evidence.                                         | Review, then 0.5-1 day per approved module | Medium |
 
 Optional, unordered infrastructure: activate the hosted Codex Action only if a
 maintainer later has API-key billing and wants GitHub-hosted scheduling. It is
 not required to complete this queue. Non-Codex agent verification remains
 deferred under Section 6 rather than competing with the Codex reliability path.
+
+### Maintenance improvements informed by agent-concepts-study (2026-09-06)
+
+These recommendations improve evidence quality and maintainer decisions without
+expanding the runtime payload:
+
+1. Add a reusable dogfood report template covering repository shape, profile,
+   active/skipped dimensions, findings, tool availability, commands, and date.
+2. Add a control-justification ledger mapping each recurring CI/release check to
+   its failure mode, evidence, recurring cost, and retain/weaken/remove decision.
+3. Run one focused manual trigger-selection review after material `SKILL.md`
+   changes; deterministic validators do not fully prove semantic agent routing.
+4. Add a claim/evidence matrix for compatibility, distribution, read-only, and
+   release claims, including evidence date and confidence.
+5. Review the multi-surface versioning model at the next major release; do not
+   migrate it now without evidence that its maintenance cost outweighs the
+   existing release-integrity controls.
+
+Acceptance for this maintenance track is documentation or a bounded review
+artifact, not a new runtime module or universal agent matrix.
 
 Completed foundation:
 
