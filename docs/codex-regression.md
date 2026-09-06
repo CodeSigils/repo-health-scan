@@ -4,7 +4,7 @@ Status: non-blocking maintainer evaluation implemented; current local
 certification is Codex CLI 0.149.0. Earlier versions remain historical evidence,
 and later versions require their own recorded run before becoming a claim.
 
-Local status: `fourteen_runs_recorded_current_payload_certified_on_0.153.2`. Hosted
+Local status: `fifteen_runs_recorded_current_payload_certified_on_0.153.2`. Hosted
 workflow status: `pending_first_run`.
 
 Local runs through an authenticated Codex CLI are the primary reliability path.
@@ -115,6 +115,7 @@ Use `not recorded` for historical data that cannot be recovered.
 |   12 | 2026-09-06 | Local     | 0.153.2 | not recorded | Fail → regraded Pass | 2m 23s       | 232,265 input (201,472 cached); 2,975 output; 55 reasoning    | Same behavior under the pre-fix grader; no model or tool failure. Regraded successfully after the transcript compatibility fix.                                          |
 |   13 | 2026-09-06 | Local     | 0.153.2 | not recorded | Pass                 | 2m 06s       | 231,904 input (201,728 cached); 2,850 output; 11 reasoning    | First clean run under the corrected transcript grader; profile and plan messages were separately observed.                                                               |
 |   14 | 2026-09-06 | Local     | 0.153.2 | not recorded | Pass                 | 2m 18s       | 231,042 input (197,376 cached); 2,969 output; 86 reasoning    | Second clean time-separated run under the corrected grader; positive and negative scenarios passed.                                                                      |
+|   15 | 2026-09-06 | Local     | 0.153.2 | not recorded | Pass                 | 2m 30s       | 255,211 input (221,440 cached); 2,955 output; 68 reasoning    | Third clean time-separated run under the corrected grader; positive and negative scenarios passed.                                                                      |
 
 Runs 1-3 predate the `run-summary.json` observability added in `f21214c`.
 Their committed log entries remain the authoritative historical evidence; do
@@ -128,12 +129,13 @@ version. A stable reliability baseline additionally requires repeated runs of
 the same payload. Review the pass rate and deviations before changing the
 harness or expanding `SKILL.md`.
 
-Current evidence: ten runs recorded, with seven passes, one timeout, and two
-deterministic grading failures (70% pass rate). Runs 4 and 8 found real
+Current evidence: fifteen runs recorded, with ten passes, one timeout, and two
+deterministic grading failures (67% pass rate). Runs 4 and 8 found real
 instruction ambiguities; runs 5, 9, and 10 passed after targeted corrections.
-The payload changed between adjacent same-session runs, so this is diagnostic
-history, not a stable repeated baseline. Run 10 is the first passing
-certification on Codex CLI 0.149.0; time-separated repeats are still useful.
+Runs 13–15 are three clean, time-separated passes of the unchanged hardened
+payload on Codex CLI 0.153.2. The historical payload changes mean the complete
+log remains diagnostic, while runs 13–15 provide the current repeated-baseline
+evidence.
 
 Excluded infrastructure attempt: on 2026-07-14, a run inside the restricted
 network sandbox timed out after 900 seconds immediately after `turn.started`,

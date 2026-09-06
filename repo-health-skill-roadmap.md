@@ -121,13 +121,13 @@ Primary sources and research, accessed 2026-07-12 or 2026-07-13:
 | Release workflow hardening | Tagged releases verify the exact CI commit and required jobs; reruns are idempotent when a GitHub Release already exists.                                                                 |
 | Repository verification    | Script self-tests, Ruff, ShellCheck, documentation audit, plugin validation, skill validation, and diff checks pass independently.                                                        |
 | Evidence URL tracking      | `docs/evidence-urls.json` upgraded to v3 schema with status, source_type, domain_tag, and last_verified fields. All 11 URLs verified reachable.                                           |
-| Local model regression     | Ten Codex runs are recorded: seven passes, one timeout, and two deterministic grading failures. Run 10 passed the revised payload on Codex CLI 0.149.0.                                   |
+| Local model regression     | Fifteen Codex runs are recorded: ten passes, one timeout, and two deterministic grading failures. Runs 13–15 are clean repeated passes on Codex CLI 0.153.2. |
 
 ### Remaining Gaps
 
 | Gap                                                                                                                                                             | Consequence                                                                                                                                    | Priority |
 | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| Fourteen local runs are recorded; the current 0.153.2 payload has two clean time-separated passes plus two earlier runs regraded after a transcript-parser fix. | Treat the corrected grader and two clean runs as an initial baseline; collect one more independent pass before expanding the profile contract. | High     |
+| Fifteen local runs are recorded; the current 0.153.2 payload has three clean time-separated passes plus two earlier runs regraded after a transcript-parser fix. | Treat the corrected grader and three clean runs as the initial repeated baseline; review consolidation before expanding the profile contract. | High     |
 | `.repo-health.json` and JSONL are optional maintainer-side contracts.                                                                                           | Schemas and graders now enforce profile completeness and redacted finding shape; cross-agent runtime conformance remains unverified.           | Low      |
 | Deterministic fixtures cover six repository shapes, including a monorepo, docs product, missing tools, no `origin/main`, and dirty tree.                        | Broader real-world model evidence is still needed beyond deterministic fixtures.                                                               | Medium   |
 | Current-version marketplace installation has not been reproduced in the compatibility report.                                                                   | Resolved: v0.3.0 installation evidence is recorded separately from historical v0.2.0 evidence.                                                 | Resolved |
@@ -153,8 +153,8 @@ The required sequence is:
 
 1. **Completed:** record and review the initial five runs, preserving the
    timeout, grading failure, runtime, and token evidence.
-2. Collect time-separated repeated runs for the hardened payload without
-   changing model-facing inputs.
+2. **Completed:** collect time-separated repeated runs for the hardened payload
+   without changing model-facing inputs; runs 13–15 provide three clean passes.
 3. Consolidate the core methodology and contextual blocking behavior only if
    the baseline review supports proceeding.
 4. Establish a fresh repeated baseline for the consolidated payload.
@@ -325,9 +325,9 @@ these gates in order:
 6. Add deterministic fixtures for a monorepo, documentation product, missing
    tools, no `origin/main`, and an intentionally dirty non-release workflow.
    **Done:** all six shapes are represented in the eval contract.
-7. Because consolidation changes `SKILL.md`, establish a fresh repeated model
-   baseline for the revised payload. Do not carry the v0.3.0 pass rate forward
-   as proof of the new behavior.
+7. **Completed for the current payload:** runs 13–15 establish a fresh repeated
+   model baseline on Codex CLI 0.153.2. Do not carry the v0.3.0 pass rate forward
+   as proof of new behavior after future `SKILL.md` changes.
 8. Hold a documented go/no-go review for profile modules. The default outcome
    is continued deferral unless observed repository failures show that the
    compact core cannot represent necessary evidence.
