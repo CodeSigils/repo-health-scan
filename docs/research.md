@@ -279,3 +279,21 @@ The 2026-08-24 dogfood audit also validated two runtime guardrails: release
 alignment must distinguish published metadata from maintainer-only package
 metadata, and heuristic secret matches need native-scanner/context review to
 avoid flagging detector source code as a credential.
+
+---
+
+## 11. Real-project dogfood audit (2026-09-06)
+
+**Finding:** A read-only sample across three projects exercised the consolidated
+core without requiring profile modules.
+
+| Repository | Evidence and findings | Module need |
+| --- | --- | --- |
+| `zero-md-formatter` | Node/npm package with CI, release tags, and publishing. `npm test` passed (11 unit suites and 34 integration tests). CI covers Node 24/26, packed-package smoke testing, audit, links, and tag-gated publishing. | None; CI, release, version, history, and package dimensions were sufficient. |
+| `py-review-skill` | Python/uv skill repo with CI, release workflow, validators, fixtures, and `unittest` suites across Python 3.12–3.14. A local `pytest` attempt was correctly inapplicable because pytest is not declared and tests use `unittest`. | None; tool absence was distinguishable from a repository failure. |
+| `learning-path` | Private instruction-only prototype with no commits and an entirely untracked tree. README and roadmap clearly mark Gate 1 as pending. | None; the core exposes provenance, dirty-tree, and missing-CI risk without a module. |
+
+**Decision:** Keep profile modules deferred. These audits produced actionable
+distinctions—passing package tests, an inapplicable optional test command, and
+an uncommitted prototype boundary—but no repeatable gap in the core profile.
+Reopen only when a real audit failure requires module-specific evidence.
