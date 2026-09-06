@@ -1,8 +1,8 @@
 """
 check-commit-convention.py — Validate commit subject prefixes against the documented convention.
 
-Reads commit subjects from a git revision range and fails if any subject does
-not start with an allowed conventional-commit prefix. This is the automated
+Reads authored (non-merge) commit subjects from a git revision range and fails
+if any subject does not start with an allowed conventional-commit prefix. This is the automated
 enforcement half of the "Commit convention" section in docs/maintaining.md.
 
 Usage:
@@ -49,7 +49,10 @@ def _subject_ok(subject: str) -> bool:
 def _git_subjects(rev_range: str) -> list[str]:
     """Return commit subjects for a git revision range via `git log`."""
     proc = subprocess.run(
-        ["git", "log", f"{rev_range}", "--format=%s"],
+        # Merge commits created by GitHub use generated subjects such as
+        # "Merge pull request ...". Validate the authored commits instead;
+        # the PR check already validates the commits introduced by the PR.
+        ["git", "log", "--no-merges", f"{rev_range}", "--format=%s"],
         capture_output=True,
         text=True,
         check=False,
