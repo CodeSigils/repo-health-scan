@@ -122,7 +122,7 @@ Primary sources and research, accessed 2026-07-12 or 2026-07-13:
 | Repository verification    | Script self-tests, Ruff, ShellCheck, documentation audit, plugin validation, skill validation, and diff checks pass independently.                                                        |
 | Agent Skills format        | Pinned official `skills-ref` validation is run locally and in the `lint` CI job against `skills/repo-health-scan`.                                         |
 | Evidence URL tracking      | `docs/evidence-urls.json` upgraded to v3 schema with status, source_type, domain_tag, and last_verified fields. All 11 URLs verified reachable.                                           |
-| Local model regression     | Fifteen Codex runs are recorded: ten passes, one timeout, and two deterministic grading failures. Runs 13–15 are clean repeated passes on Codex CLI 0.153.2. |
+| Local model regression     | Sixteen Codex runs are recorded: eleven passes, one timeout, and two deterministic grading failures. Runs 13–16 are clean passes on Codex CLI 0.153.2. |
 
 ### Remaining Gaps
 
@@ -410,9 +410,9 @@ expanding the runtime payload:
 2. **Completed:** Add a control-justification ledger mapping each recurring
    CI/release check to its failure mode, evidence, recurring cost, and
    retain/weaken/remove decision (`docs/control-justification-ledger.md`).
-3. **Next:** Run one focused manual trigger-selection review after material `SKILL.md`
-   changes; deterministic validators do not fully prove semantic agent routing.
-4. Add a claim/evidence matrix for compatibility, distribution, read-only, and
+3. **Completed:** Run a focused semantic trigger-selection review; run 16
+   activated the skill for a health audit and correctly rejected a narrow task.
+4. **Next:** Add a claim/evidence matrix for compatibility, distribution, read-only, and
    release claims, including evidence date and confidence.
 5. Review the multi-surface versioning model at the next major release; do not
    migrate it now without evidence that its maintenance cost outweighs the

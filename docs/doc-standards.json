@@ -158,7 +158,7 @@
       "id": "model-regression-status",
       "description": "Records local and hosted model regression status",
       "type": "regex",
-      "pattern": "Local status: `fifteen_runs_recorded_current_payload_certified_on_0\\.153\\.2`\\. Hosted"
+      "pattern": "Local status: `sixteen_runs_recorded_current_payload_certified_on_0\\.153\\.2`\\. Hosted"
     },
     {
       "id": "model-regression-local-command",
