@@ -187,3 +187,22 @@ the skill into a universal checklist.
 The v0.1.0 B-phase design and its shipped helper/reference files remain
 historical and are available in git history. Current repository structure and
 validation commands are documented in `docs/maintaining.md` and `README.md`.
+
+---
+
+## Defer profile modules by default
+
+**Decision:** Do not add release, agent, monorepo, security, or documentation
+profile modules to the runtime payload yet.
+
+**Why:** The consolidated core already expresses the observed repository
+shapes, and three clean, time-separated runs (13–15) passed on Codex CLI
+0.153.2. No captured failure requires module-specific fields or checks. Adding
+modules now would increase prompt surface and maintenance cost without an
+evidence-backed user benefit.
+
+**Reopen when:** A real audit failure shows that the core profile cannot
+represent necessary evidence, or a repeatable use case demonstrates that one
+module materially improves finding quality. Any approved module must be added
+alone with a bounded field budget, deterministic fixture, validator coverage,
+and a fresh regression baseline.

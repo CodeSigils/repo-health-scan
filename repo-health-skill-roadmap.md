@@ -155,11 +155,13 @@ The required sequence is:
    timeout, grading failure, runtime, and token evidence.
 2. **Completed:** collect time-separated repeated runs for the hardened payload
    without changing model-facing inputs; runs 13–15 provide three clean passes.
-3. Consolidate the core methodology and contextual blocking behavior only if
-   the baseline review supports proceeding.
-4. Establish a fresh repeated baseline for the consolidated payload.
-5. Formalize optional output contracts, broaden deterministic fixtures, and
-   only then hold the profile-module go/no-go review.
+3. **Completed:** consolidate the core methodology and contextual blocking
+   behavior; the baseline review supports the current payload.
+4. **Completed:** establish a fresh repeated baseline for the consolidated
+   payload with runs 13–15.
+5. **Completed:** formalize optional output contracts and broaden deterministic
+   fixtures; profile-module go/no-go review is now recorded as defer-by-default
+   in `docs/decisions.md`.
 
 Completing a baseline is an evidence gate, not an automatic instruction to
 implement the next item. Any failed or stalled run must remain in the record and
