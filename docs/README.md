@@ -10,14 +10,16 @@ files are runtime dependencies of the installed skill.
 
 ## Choose the right document
 
-| If you need to… | Read… |
-|---|---|
-| Make or review a repository change | [maintaining.md](maintaining.md) |
-| Understand why the architecture looks this way | [decisions.md](decisions.md) |
-| Install or test the Codex plugin | [codex-setup.md](codex-setup.md) |
-| Run the model regression harness | [codex-regression.md](codex-regression.md) |
-| Check an agent compatibility claim | [compatibility-reports/codex.md](compatibility-reports/codex.md) and [portability-contract.md](portability-contract.md) |
-| Understand the research behind a decision | [research.md](research.md) |
+| If you need to…                                | Read…                                                                                                                   |
+| ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| Make or review a repository change             | [maintaining.md](maintaining.md)                                                                                        |
+| Understand why the architecture looks this way | [decisions.md](decisions.md)                                                                                            |
+| Install or test the Codex plugin               | [codex-setup.md](codex-setup.md)                                                                                        |
+| Run the model regression harness               | [codex-regression.md](codex-regression.md)                                                                              |
+| Check an agent compatibility claim             | [compatibility-reports/codex.md](compatibility-reports/codex.md) and [portability-contract.md](portability-contract.md) |
+| Understand the research behind a decision      | [research.md](research.md)                                                                                              |
+| Use maintainer-only evaluation references      | [references/](references/)                                                                                              |
+| Plan a repository or skill-directory rename    | [rename-plan.md](rename-plan.md)                                                                                        |
 
 ## Normal maintainer path
 

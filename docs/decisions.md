@@ -5,7 +5,7 @@ release version in the title identifies the methodology baseline, not a claim
 that every entry was made before the release.
 
 **Purpose:** Records the design decisions that shaped the current methodology.
-The skill itself is `skills/repo-health-and-sync-skill/SKILL.md`. Research
+The skill itself is `skills/repo-health-scan/SKILL.md`. Research
 evidence that informed these decisions is in `docs/research.md`.
 
 ---
@@ -109,8 +109,8 @@ a mechanism for cryptographically signing commits and tags. Sources accessed
 
 ## Single-file payload
 
-**Decision:** `skills/repo-health-and-sync-skill/SKILL.md` is the only runtime
-payload file. Maintainer documentation, schemas, CI configuration, and test
+**Decision:** `skills/repo-health-scan/SKILL.md` is the only runtime
+payload file. Maintainer documentation, references, schemas, CI configuration, and test
 scripts remain in the repository but are not required by an installed skill.
 
 **Why:** A methodology that fits in one file is consumed immediately — the

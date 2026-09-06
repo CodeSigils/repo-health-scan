@@ -221,7 +221,7 @@ def main() -> int:
     today = datetime.now(tz=UTC).date()
 
     # Scan SKILL.md
-    skill_path = ROOT / "skills" / "repo-health-and-sync-skill" / "SKILL.md"
+    skill_path = ROOT / "skills" / "repo-health-scan" / "SKILL.md"
     if skill_path.exists():
         expired, missing = check_file_expiry(skill_path, strict=args.strict)
         errors.extend(expired)

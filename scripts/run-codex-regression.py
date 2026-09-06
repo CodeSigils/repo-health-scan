@@ -17,7 +17,7 @@ from typing import Any
 from _common import ROOT as REPO_ROOT
 from _common import read_json
 
-SKILL_SOURCE = REPO_ROOT / "skills/repo-health-and-sync-skill/SKILL.md"
+SKILL_SOURCE = REPO_ROOT / "skills/repo-health-scan/SKILL.md"
 POSITIVE_PROMPT = REPO_ROOT / "evals/codex/positive-prompt.md"
 NEGATIVE_PROMPT = REPO_ROOT / "evals/codex/negative-prompt.md"
 RESULT_SCHEMA = REPO_ROOT / "evals/codex/positive-result.schema.json"
@@ -268,14 +268,14 @@ def prepare_fixture(root: Path) -> None:
     """Create a small Python repository with one intentional health defect."""
     if root.exists():
         raise FileExistsError(f"fixture path already exists: {root}")
-    (root / ".agents/skills/repo-health-and-sync-skill").mkdir(parents=True)
+    (root / ".agents/skills/repo-health-scan").mkdir(parents=True)
     (root / ".github/workflows").mkdir(parents=True)
     (root / "src/example").mkdir(parents=True)
     (root / "tests").mkdir(parents=True)
 
     shutil.copy2(
         SKILL_SOURCE,
-        root / ".agents/skills/repo-health-and-sync-skill/SKILL.md",
+        root / ".agents/skills/repo-health-scan/SKILL.md",
     )
     files = {
         "README.md": "# Example Parser\n\nSmall Python parsing library.\n",
@@ -416,7 +416,7 @@ def run_self_tests() -> int:
         fixture = root / "fixture"
         prepare_fixture(fixture)
         assert (
-            fixture / ".agents/skills/repo-health-and-sync-skill/SKILL.md"
+            fixture / ".agents/skills/repo-health-scan/SKILL.md"
         ).is_file()
         assert "uv" in (fixture / "pyproject.toml").read_text(encoding="utf-8")
         status = subprocess.run(

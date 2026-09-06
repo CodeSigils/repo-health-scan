@@ -33,7 +33,7 @@ SKILL_REPO=/absolute/path/to/repo-health-and-sync-skill
 TARGET_REPO=/absolute/path/to/target-repository
 
 mkdir -p "$TARGET_REPO/.agents/skills"
-cp -R "$SKILL_REPO/skills/repo-health-and-sync-skill" \
+cp -R "$SKILL_REPO/skills/repo-health-scan" \
   "$TARGET_REPO/.agents/skills/"
 cd "$TARGET_REPO"
 codex
@@ -116,11 +116,11 @@ also be removed from Codex configuration.
 The scan remains read-only by default. Network and structured-output behavior
 is opt-in:
 
-| Variable | Effect |
-|---|---|
-| `REPO_HEALTH_VERIFY_RELEASES=1` | Permit GitHub release queries. |
-| `REPO_HEALTH_VERIFY_REFS=1` | Permit external-reference checks. |
-| `REPO_HEALTH_OUTPUT=jsonl` | Request JSONL output. |
+| Variable                        | Effect                            |
+| ------------------------------- | --------------------------------- |
+| `REPO_HEALTH_VERIFY_RELEASES=1` | Permit GitHub release queries.    |
+| `REPO_HEALTH_VERIFY_REFS=1`     | Permit external-reference checks. |
+| `REPO_HEALTH_OUTPUT=jsonl`      | Request JSONL output.             |
 
 ## Evidence and Sources
 

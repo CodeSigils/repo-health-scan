@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/CodeSigils/repo-health-and-sync-skill/schemas/dimension-plan.schema.json",
+  "$id": "https://github.com/CodeSigils/repo-health-scan/schemas/dimension-plan.schema.json",
   "title": "Dimension Plan",
   "version": "1.0.0",
   "description": "Dimension activation plan emitted in Step 2 (Infer). Lists active and skipped dimensions with evidence.",

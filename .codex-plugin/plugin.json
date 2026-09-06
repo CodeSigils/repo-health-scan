@@ -6,8 +6,8 @@
     "name": "CodeSigils",
     "url": "https://github.com/CodeSigils"
   },
-  "homepage": "https://github.com/CodeSigils/repo-health-and-sync-skill",
-  "repository": "https://github.com/CodeSigils/repo-health-and-sync-skill",
+  "homepage": "https://github.com/CodeSigils/repo-health-scan",
+  "repository": "https://github.com/CodeSigils/repo-health-scan",
   "license": "MIT",
   "keywords": [
     "repo-health",
@@ -24,7 +24,7 @@
     "capabilities": [
       "Read"
     ],
-    "websiteURL": "https://github.com/CodeSigils/repo-health-and-sync-skill",
+    "websiteURL": "https://github.com/CodeSigils/repo-health-scan",
     "defaultPrompt": [
       "Audit this repository before release.",
       "Check whether this repo is healthy.",

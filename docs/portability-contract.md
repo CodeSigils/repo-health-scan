@@ -10,7 +10,7 @@ shipped skill payload.
 
 ### 1. Keep one canonical payload
 
-`skills/repo-health-and-sync-skill/SKILL.md` is the sole source of runtime
+`skills/repo-health-scan/SKILL.md` is the sole source of runtime
 methodology. A platform may add metadata, routing, or packaging around that
 file, but it must not maintain a second copy of the methodology.
 
@@ -39,11 +39,11 @@ manifests over copied prose.
 
 Use these terms consistently:
 
-| Claim | Required evidence |
-| :--- | :--- |
-| **Payload portable** | The canonical files use the documented skill shape and contain no known platform-only runtime dependency. |
-| **Discoverable/installable** | A named platform and version can locate or install the skill through a recorded procedure. |
-| **Workflow verified** | That platform completes representative positive and negative tasks and satisfies the behavioral contract. |
+| Claim                        | Required evidence                                                                                         |
+| :--------------------------- | :-------------------------------------------------------------------------------------------------------- |
+| **Payload portable**         | The canonical files use the documented skill shape and contain no known platform-only runtime dependency. |
+| **Discoverable/installable** | A named platform and version can locate or install the skill through a recorded procedure.                |
+| **Workflow verified**        | That platform completes representative positive and negative tasks and satisfies the behavioral contract. |
 
 Evidence for one level does not establish the next. In particular, a shared
 directory convention, successful validator, or marketplace listing does not
@@ -94,13 +94,13 @@ scoped certification path, not retesting every known agent.
 
 Use the narrowest state supported by current evidence:
 
-| State | Meaning |
-| :--- | :--- |
-| `candidate` | The payload appears structurally suitable; runtime behavior is untested. |
-| `install_verified` | Installation or discovery succeeded; workflow behavior is untested. |
+| State               | Meaning                                                                  |
+| :------------------ | :----------------------------------------------------------------------- |
+| `candidate`         | The payload appears structurally suitable; runtime behavior is untested. |
+| `install_verified`  | Installation or discovery succeeded; workflow behavior is untested.      |
 | `workflow_verified` | Representative behavioral tests passed for the recorded runtime version. |
-| `limited` | Testing found a documented runtime or workflow limitation. |
-| `unsupported` | A known incompatibility prevents the supported workflow. |
+| `limited`           | Testing found a documented runtime or workflow limitation.               |
+| `unsupported`       | A known incompatibility prevents the supported workflow.                 |
 
 Avoid `compatible`, `universal`, or `agent-agnostic` without a qualifier. State
 the runtime, version, evidence level, and date instead.

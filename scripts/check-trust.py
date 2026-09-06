@@ -8,7 +8,7 @@ from pathlib import Path
 
 from _common import ROOT as REPO_ROOT
 
-SKILL = Path("skills/repo-health-and-sync-skill/SKILL.md")
+SKILL = Path("skills/repo-health-scan/SKILL.md")
 
 FORBIDDEN_ACTIONS = {
     "destructive file removal": re.compile(r"\brm\s+(?:-[^\n]*r[^\n]*f|-[^\n]*f[^\n]*r)\b"),

@@ -1,7 +1,7 @@
 # Security Policy
 
 Report security issues privately through the
-[GitHub Security Advisory](https://github.com/CodeSigils/repo-health-and-sync-skill/security/advisories/new)
+[GitHub Security Advisory](https://github.com/CodeSigils/repo-health-scan/security/advisories/new)
 rather than opening a public issue.
 
 Security concerns in this repository include unsafe instructions in the skill

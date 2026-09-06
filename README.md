@@ -1,7 +1,8 @@
 # Repo Health Scan
 
-[![CI](https://github.com/CodeSigils/repo-health-and-sync-skill/actions/workflows/ci.yml/badge.svg)](https://github.com/CodeSigils/repo-health-and-sync-skill/actions/workflows/ci.yml)
-[![Release](https://img.shields.io/github/v/release/CodeSigils/repo-health-and-sync-skill?label=release)](https://github.com/CodeSigils/repo-health-and-sync-skill/releases)
+[![CI](https://github.com/CodeSigils/repo-health-scan/actions/workflows/ci.yml/badge.svg)](https://github.com/CodeSigils/repo-health-scan/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/CodeSigils/repo-health-and-sync-skill?label=release)](https://github.com/CodeSigils/repo-health-scan/releases)
+[![skills.sh](https://skills.sh/b/codesigils/repo-health-scan)](https://skills.sh/CodeSigils/repo-health-scan)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 **Repo Health Scan** — audits any git repository for release readiness,
@@ -37,7 +38,7 @@ supported claims until they have their own recorded compatibility tests.
 3. The agent runs three steps — discover → infer → report — and reports
    what it finds with judgment proportional to actual harm.
 
-See [SKILL.md](skills/repo-health-and-sync-skill/SKILL.md) for the full three-step procedure.
+See [SKILL.md](skills/repo-health-scan/SKILL.md) for the full three-step procedure.
 
 ---
 
@@ -45,18 +46,18 @@ See [SKILL.md](skills/repo-health-and-sync-skill/SKILL.md) for the full three-st
 
 The agent activates only relevant checks from this catalog — not a universal checklist:
 
-| Dimension | Activated When |
-|-----------|----------------|
-| History hygiene | Always (cheap, universal) |
-| Shell correctness | Any `.sh` files exist |
-| Version alignment | ≥2 version sources found |
-| Tag/release integrity | Any tags exist |
-| Commit quality | Commits on this branch |
-| CI efficiency | CI config exists |
-| Cross-platform | `.sh` files + macOS/BSD user evidence |
-| Attribution drift | Commits outside upstream/remote-default base |
-| File coverage | `.gitignore` exists |
-| External reference health | `REPO_HEALTH_VERIFY_REFS=1` set |
+| Dimension                 | Activated When                               |
+| ------------------------- | -------------------------------------------- |
+| History hygiene           | Always (cheap, universal)                    |
+| Shell correctness         | Any `.sh` files exist                        |
+| Version alignment         | ≥2 version sources found                     |
+| Tag/release integrity     | Any tags exist                               |
+| Commit quality            | Commits on this branch                       |
+| CI efficiency             | CI config exists                             |
+| Cross-platform            | `.sh` files + macOS/BSD user evidence        |
+| Attribution drift         | Commits outside upstream/remote-default base |
+| File coverage             | `.gitignore` exists                          |
+| External reference health | `REPO_HEALTH_VERIFY_REFS=1` set              |
 
 *Not a checklist — the agent may add custom dimensions when repo evidence supports them.*
 
@@ -67,14 +68,26 @@ The agent activates only relevant checks from this catalog — not a universal c
 Clone this repo and make the skill discoverable:
 
 ```bash
-git clone --filter=blob:none https://github.com/CodeSigils/repo-health-and-sync-skill
+git clone --filter=blob:none https://github.com/CodeSigils/repo-health-scan
 ```
+
+For skills.sh-compatible installation, use the Skills CLI and select the
+portable skill for the target agent:
+
+```bash
+npx skills add CodeSigils/repo-health-and-sync-skill \
+  --skill repo-health-scan --agent codex --copy --yes
+```
+
+Use `--agent claude-code` for Claude Code. The repository is indexed by the
+`skills/<directory>/SKILL.md` layout; no npm package or root `SKILL.md` is
+required.
 
 For repository-local Codex use, place the skill under `.agents/skills/`:
 
 ```bash
 mkdir -p .agents/skills
-cp -r repo-health-and-sync-skill/skills/repo-health-and-sync-skill .agents/skills/
+cp -r repo-health-and-sync-skill/skills/repo-health-scan .agents/skills/
 ```
 
 Codex discovers repository skills from `.agents/skills/`. For reusable
@@ -93,14 +106,14 @@ levels and evidence required before support is advertised.
 
 ## What this repo does NOT include
 
-| Excluded | Reason |
-|----------|--------|
-| Hardcoded checklists | The agent discovers what to check from the repo itself, not from a pre-written table. |
-| Reference files | Every fact the skill needs is discovered at runtime (tools on PATH, repo state, filesystem). |
-| Shipped runtime scripts | The agent uses `git`, `shellcheck`, `python3`, `gh`, and whatever else is on PATH. |
-| Install scripts | Every platform provides native skill consumption paths. A script would compete and drift. |
-| Platform adapter files | User-side setup only. The repo ships only `skills/repo-health-and-sync-skill/SKILL.md`. |
-| Runtime plugin code | The Codex plugin manifest points at the skill directory; it does not add runtime scripts, hooks, MCP servers, or connectors. |
+| Excluded                | Reason                                                                                                                       |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| Hardcoded checklists    | The agent discovers what to check from the repo itself, not from a pre-written table.                                        |
+| Reference files         | Every fact the skill needs is discovered at runtime (tools on PATH, repo state, filesystem).                                 |
+| Shipped runtime scripts | The agent uses `git`, `shellcheck`, `python3`, `gh`, and whatever else is on PATH.                                           |
+| Install scripts         | Every platform provides native skill consumption paths. A script would compete and drift.                                    |
+| Platform adapter files  | User-side setup only. The repo ships only `skills/repo-health-scan/SKILL.md`.                                                |
+| Runtime plugin code     | The Codex plugin manifest points at the skill directory; it does not add runtime scripts, hooks, MCP servers, or connectors. |
 
 ---
 
@@ -113,7 +126,7 @@ dimension and reports the gap.
 
 The Python and shell files under `scripts/` are maintainer-only checks for
 this repository's CI and documentation. They are not installed as skill
-runtime helpers and should not be copied into `skills/repo-health-and-sync-skill/`.
+runtime helpers and should not be copied into `skills/repo-health-scan/`.
 
 The optional [Codex model regression](docs/codex-regression.md) runs positive
 and negative prompts against an isolated fixture. It is manual or scheduled,
@@ -129,11 +142,11 @@ to use, or a custom consistency check.
 
 Optional behavior is explicit:
 
-| Variable | Effect |
-|---|---|
-| `REPO_HEALTH_VERIFY_RELEASES=1` | Allow the GitHub release query for tag/release integrity. |
-| `REPO_HEALTH_VERIFY_REFS=1` | Allow network checks for external references. |
-| `REPO_HEALTH_OUTPUT=jsonl` | Emit automation-oriented JSONL instead of the normal report. |
+| Variable                        | Effect                                                       |
+| ------------------------------- | ------------------------------------------------------------ |
+| `REPO_HEALTH_VERIFY_RELEASES=1` | Allow the GitHub release query for tag/release integrity.    |
+| `REPO_HEALTH_VERIFY_REFS=1`     | Allow network checks for external references.                |
+| `REPO_HEALTH_OUTPUT=jsonl`      | Emit automation-oriented JSONL instead of the normal report. |
 
 ---
 
@@ -148,12 +161,12 @@ skills/
     └── SKILL.md      # 3-step methodology — discover, infer, report
 ```
 
-The runtime payload is one file: `SKILL.md`. The adjacent `references/`
-directory contains maintainer-only evidence and templates; it is not copied
-into an agent's installed skill directory and is not a runtime dependency.
+The runtime payload is one file: `SKILL.md`. Maintainer-only evidence and
+templates live under `docs/references/`; they are not copied into an agent's
+installed skill directory and are not runtime dependencies.
 The methodology contains inline command examples the agent executes using
 `git`, `shellcheck`, `python3`, `gh` already on PATH. Copy only
-`skills/repo-health-and-sync-skill/` to your agent's skill directory (see
+`skills/repo-health-scan/` to your agent's skill directory (see
 Install above).
 
 ---
@@ -219,8 +232,9 @@ Install above).
 │   └── verify-urls.py                # Checks external URL references are reachable
 ├── skills/
 │   └── repo-health-and-sync-skill/
-│       ├── SKILL.md                  # The shipped runtime skill
-│       └── references/               # Maintainer-only evidence and templates
+│       └── SKILL.md                  # The shipped runtime skill
+├── docs/
+│   └── references/                   # Maintainer-only evidence and templates
 ```
 
 ---

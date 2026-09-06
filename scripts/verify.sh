@@ -65,7 +65,7 @@ if [ "${1:-}" = "--self-test" ]; then
     for f in AGENTS.md docs/doc-standards.json README.md docs/maintaining.md \
              evals/cases/repo-health-scan.json \
              scripts/check-trust.py \
-             skills/repo-health-and-sync-skill/SKILL.md; do
+             skills/repo-health-scan/SKILL.md; do
         if [ -f "$f" ]; then
             echo "  PASS  $f exists"
         else

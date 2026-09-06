@@ -8,7 +8,7 @@
 
 - For repository-health, release-readiness, maintenance-drift, archive,
   handoff, or onboarding audits, read and follow
-  [`skills/repo-health-and-sync-skill/SKILL.md`](skills/repo-health-and-sync-skill/SKILL.md).
+  [`skills/repo-health-scan/SKILL.md`](skills/repo-health-scan/SKILL.md).
 - Do not invoke the skill for ordinary feature implementation, a narrow bug
   fix, a single-file edit, or a routine code review without a repository-health
   question.

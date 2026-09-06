@@ -10,7 +10,7 @@
       "id": "canonical-skill-route",
       "description": "Routes health-audit intent to the canonical skill",
       "type": "regex",
-      "pattern": "skills/repo-health-and-sync-skill/SKILL\\.md"
+      "pattern": "skills/repo-health-scan/SKILL\\.md"
     },
     {
       "id": "negative-trigger",

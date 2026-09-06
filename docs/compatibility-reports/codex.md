@@ -119,7 +119,7 @@ Confirm installed payload:
 
 ```text
 .codex-plugin/plugin.json
-skills/repo-health-and-sync-skill/SKILL.md
+skills/repo-health-scan/SKILL.md
 ```
 
 ## Activation Tests
@@ -165,16 +165,16 @@ concrete harm and remediation.
 
 ## Workflow Result
 
-| Requirement | Result | Evidence |
-|---|---|---|
-| Select and load the installed skill | Pass | Codex selected `repo-health-scan` from the unnamed prompt and read its installed `SKILL.md` before repository inspection. |
-| Produce an observed/inferred profile | Pass | A distinct `REPO PROFILE` transcript event separated observed facts from inferred labels. |
-| Write the profile before dimension checks | Pass | The profile and `DIMENSION PLAN` appeared before the first health-check command. |
-| Cite activation evidence | Pass | All seven active dimensions named one or more exact profile paths in `activated_by`. |
-| Skip unsupported dimensions before probing | Pass | Cross-platform, attribution drift, and external-reference checks had explicit reasons and were not probed. |
-| Explain concrete harm and remediation | Pass | The release-verification limitation included its concrete consequence and a specific rerun procedure. |
-| Distinguish payload from maintainer tooling | Pass | The profile identified `SKILL.md` as shipped payload and `scripts/` as maintainer-only. |
-| Preserve read-only behavior | Pass | No repository files changed; the run used Codex's read-only sandbox. |
+| Requirement                                 | Result | Evidence                                                                                                                  |
+| ------------------------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------- |
+| Select and load the installed skill         | Pass   | Codex selected `repo-health-scan` from the unnamed prompt and read its installed `SKILL.md` before repository inspection. |
+| Produce an observed/inferred profile        | Pass   | A distinct `REPO PROFILE` transcript event separated observed facts from inferred labels.                                 |
+| Write the profile before dimension checks   | Pass   | The profile and `DIMENSION PLAN` appeared before the first health-check command.                                          |
+| Cite activation evidence                    | Pass   | All seven active dimensions named one or more exact profile paths in `activated_by`.                                      |
+| Skip unsupported dimensions before probing  | Pass   | Cross-platform, attribution drift, and external-reference checks had explicit reasons and were not probed.                |
+| Explain concrete harm and remediation       | Pass   | The release-verification limitation included its concrete consequence and a specific rerun procedure.                     |
+| Distinguish payload from maintainer tooling | Pass   | The profile identified `SKILL.md` as shipped payload and `scripts/` as maintainer-only.                                   |
+| Preserve read-only behavior                 | Pass   | No repository files changed; the run used Codex's read-only sandbox.                                                      |
 
 The active dimensions were history hygiene, shell correctness, version
 alignment, tag/release integrity, commit quality, CI efficiency, and file
@@ -218,7 +218,7 @@ $TMPDIR/repo-health-marketplace/
 ├── .agents/plugins/marketplace.json
 └── plugins/repo-health-and-sync-skill/
     ├── .codex-plugin/plugin.json
-    └── skills/repo-health-and-sync-skill/SKILL.md
+    └── skills/repo-health-scan/SKILL.md
 ```
 
 Using a symlink from the temporary marketplace plugin path back to this checkout

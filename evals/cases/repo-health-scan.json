@@ -59,7 +59,7 @@
           "recent_commits": true,
           "gitignore": true,
           "version_sources": [
-            "skills/repo-health-and-sync-skill/SKILL.md",
+            "skills/repo-health-scan/SKILL.md",
             ".codex-plugin/plugin.json",
             "CITATION.cff",
             "git tag"

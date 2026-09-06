@@ -7,5 +7,5 @@ version: 0.4.0
 date-released: 2026-09-03
 license: MIT
 type: software
-repository-code: https://github.com/CodeSigils/repo-health-and-sync-skill
+repository-code: https://github.com/CodeSigils/repo-health-scan
 description: "A three-step methodology for evaluating any git repository's health at runtime. The agent discovers the repo's shape, infers what invariants matter, and checks them using tools on PATH. Ships as a single SKILL.md with no reference files or scripts."

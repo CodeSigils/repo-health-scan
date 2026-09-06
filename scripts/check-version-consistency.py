@@ -14,7 +14,7 @@ from pathlib import Path
 from _common import ROOT, read_json
 
 LOCAL_VERSION_SOURCES = {
-    "SKILL.md": ROOT / "skills/repo-health-and-sync-skill/SKILL.md",
+    "SKILL.md": ROOT / "skills/repo-health-scan/SKILL.md",
     "plugin.json": ROOT / ".codex-plugin/plugin.json",
     "CITATION.cff": ROOT / "CITATION.cff",
 }

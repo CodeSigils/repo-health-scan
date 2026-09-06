@@ -54,22 +54,23 @@ Current product assessment:
 
 ## 2. Evidence Baseline
 
-| Evidence | Decision Supported |
-|---|---|
-| OpenAI plugin documentation requires `.codex-plugin/plugin.json` and supports a plugin-root-relative `skills` path. | Keep Codex packaging separate from the portable `SKILL.md` payload. |
-| OpenAI skill documentation describes metadata-first discovery and progressive disclosure. | Keep trigger language precise and the loaded skill concise. |
-| The 2026-07-13 isolated Codex transcript selected the unnamed skill prompt and loaded the installed payload. | Treat implicit Codex discovery as verified for CLI 0.133.0. |
-| The 2026-07-13 conformance retest emitted the profile and evidence-linked dimension plan before health checks. | Treat the core Codex workflow as verified and preserve it with deterministic evals. |
-| Current Codex skill validation rejects the blanket `compatibility` frontmatter field. | Record compatibility per agent instead of declaring `compatibility: all`. |
-| GitHub documents `GH_TOKEN` for GitHub CLI API access in Actions and SSH/GPG/S/MIME for commit or tag signing. | Keep CI API authorization separate from git provenance policy. |
-| Repository-context research warns that excess context can increase cost or reduce task performance. | Consolidate the existing payload before adding fields or modules; any later profile growth requires strict evidence and budgets. |
-| Addy Osmani's `agent-skills` keeps shared `SKILL.md` workflows alongside substantial repository-level `AGENTS.md` and `CLAUDE.md` instructions, per-agent setup guides, and separate platform manifests. Its root `plugin.json` is identified as an Antigravity manifest. | Reuse the source-ownership principle, not a presumed universal three-file contract. Add only adapters required by a selected platform and keep their scope explicit. |
-| The AGENTS.md specification describes one repository instruction file consumed by Codex, Cursor, OpenCode, GitHub Copilot, and other agents. | Use a concise root `AGENTS.md` for repository routing without treating its presence as runtime compatibility evidence. |
-| Skills CLI 1.5.16 discovers `skills/<name>/SKILL.md` directly and lists Codex, Cursor, OpenCode, GitHub Copilot, and Hermes installation targets. An isolated local `--list` check found exactly `repo-health-scan` without root `plugin.json`. | Treat skills CLI discovery as verified independently of agent execution; do not add duplicate root metadata for this path. |
-| Claude Code reads `CLAUDE.md`, not `AGENTS.md`, and officially supports importing `AGENTS.md` with `@AGENTS.md`. | If Claude Code becomes active, use an import adapter instead of duplicating repository instructions. |
-| Official Codex non-interactive guidance documents `codex exec --json`, ephemeral sessions, explicit sandboxes, and machine-readable output schemas. | Use raw JSONL locally and a schema-constrained final result for deterministic grading. |
-| Official Codex GitHub Action guidance keeps the API key behind a proxy and supports read-only execution on trusted triggers. | Retain the official Action as optional infrastructure for maintainers with API-key billing; never make it a prerequisite for local evaluation or repository exploration. |
-| Two local regressions passed with 153,545 and 136,050 input tokens; a third produced partial model output and timed out after 15 minutes. | Treat model cost and stalls as product evidence, improve run observability, and do not expand the instruction surface yet. |
+| Evidence                                                                                                                                                                                                                                                                  | Decision Supported                                                                                                                                                       |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| OpenAI plugin documentation requires `.codex-plugin/plugin.json` and supports a plugin-root-relative `skills` path.                                                                                                                                                       | Keep Codex packaging separate from the portable `SKILL.md` payload.                                                                                                      |
+| OpenAI skill documentation describes metadata-first discovery and progressive disclosure.                                                                                                                                                                                 | Keep trigger language precise and the loaded skill concise.                                                                                                              |
+| The 2026-07-13 isolated Codex transcript selected the unnamed skill prompt and loaded the installed payload.                                                                                                                                                              | Treat implicit Codex discovery as verified for CLI 0.133.0.                                                                                                              |
+| The 2026-07-13 conformance retest emitted the profile and evidence-linked dimension plan before health checks.                                                                                                                                                            | Treat the core Codex workflow as verified and preserve it with deterministic evals.                                                                                      |
+| Current Codex skill validation rejects the blanket `compatibility` frontmatter field.                                                                                                                                                                                     | Record compatibility per agent instead of declaring `compatibility: all`.                                                                                                |
+| GitHub documents `GH_TOKEN` for GitHub CLI API access in Actions and SSH/GPG/S/MIME for commit or tag signing.                                                                                                                                                            | Keep CI API authorization separate from git provenance policy.                                                                                                           |
+| Repository-context research warns that excess context can increase cost or reduce task performance.                                                                                                                                                                       | Consolidate the existing payload before adding fields or modules; any later profile growth requires strict evidence and budgets.                                         |
+| Addy Osmani's `agent-skills` keeps shared `SKILL.md` workflows alongside substantial repository-level `AGENTS.md` and `CLAUDE.md` instructions, per-agent setup guides, and separate platform manifests. Its root `plugin.json` is identified as an Antigravity manifest. | Reuse the source-ownership principle, not a presumed universal three-file contract. Add only adapters required by a selected platform and keep their scope explicit.     |
+| The AGENTS.md specification describes one repository instruction file consumed by Codex, Cursor, OpenCode, GitHub Copilot, and other agents.                                                                                                                              | Use a concise root `AGENTS.md` for repository routing without treating its presence as runtime compatibility evidence.                                                   |
+| Skills CLI 1.5.16 discovers `skills/<name>/SKILL.md` directly and lists Codex, Cursor, OpenCode, GitHub Copilot, and Hermes installation targets. An isolated local `--list` check found exactly `repo-health-scan` without root `plugin.json`.                           | Treat skills CLI discovery as verified independently of agent execution; do not add duplicate root metadata for this path.                                               |
+| Skills CLI 1.5.16 again discovered `repo-health-scan` from the published repository with `npx skills add CodeSigils/repo-health-and-sync-skill --list`.                                                                                                                   | Keep the `skills/<directory>/SKILL.md` layout, document the skills.sh install form, and verify copied installs for each claimed host.                                    |
+| Claude Code reads `CLAUDE.md`, not `AGENTS.md`, and officially supports importing `AGENTS.md` with `@AGENTS.md`.                                                                                                                                                          | If Claude Code becomes active, use an import adapter instead of duplicating repository instructions.                                                                     |
+| Official Codex non-interactive guidance documents `codex exec --json`, ephemeral sessions, explicit sandboxes, and machine-readable output schemas.                                                                                                                       | Use raw JSONL locally and a schema-constrained final result for deterministic grading.                                                                                   |
+| Official Codex GitHub Action guidance keeps the API key behind a proxy and supports read-only execution on trusted triggers.                                                                                                                                              | Retain the official Action as optional infrastructure for maintainers with API-key billing; never make it a prerequisite for local evaluation or repository exploration. |
+| Two local regressions passed with 153,545 and 136,050 input tokens; a third produced partial model output and timed out after 15 minutes.                                                                                                                                 | Treat model cost and stalls as product evidence, improve run observability, and do not expand the instruction surface yet.                                               |
 
 Primary sources and research, accessed 2026-07-12 or 2026-07-13:
 
@@ -96,39 +97,40 @@ Primary sources and research, accessed 2026-07-12 or 2026-07-13:
 
 ### Verified
 
-| Area | Evidence |
-|---|---|
-| Skill schema | Current Codex skill validator passes. Frontmatter contains supported fields only. |
-| Codex packaging | The v0.3.0 plugin manifest validates. The recorded isolated marketplace installation is historical v0.2.0 evidence and should not be described as a reproduced v0.3.0 install. |
-| Codex discovery | An unnamed release-audit prompt selected `repo-health-scan` and loaded the installed skill. |
-| Codex workflow | The isolated retest emitted the profile and complete dimension plan before probes; all active checks cited profile evidence. |
-| Codex setup | The focused guide was reproduced from a clean isolated `CODEX_HOME`; the historical v0.2.0 plugin installation and implicit discovery passed. |
-| Final reporting | The full audit produced a structured final profile, concrete harm, remediation, and correct payload/tooling classification. |
-| Probe correctness | Dirty-tree, TOML/JSON version parsing, attribution range, and command-block examples were corrected and smoke-tested. |
-| Runtime boundary | The shipped payload is one `SKILL.md`; Python and shell scripts are maintainer-only. |
-| Repository routing | Root `AGENTS.md` routes health-audit intent to `SKILL.md`, routine maintenance to `docs/maintaining.md`, and explicitly excludes narrow implementation work. |
-| Skills CLI discovery | Skills CLI 1.5.16 found exactly `repo-health-scan` from the local `skills/` tree with `npx --yes skills add <repo> --list`; no root manifest was required. |
-| Eval contract | `evals/cases/repo-health-scan.json` covers positive/negative triggers, this skill pack, and a Python library using `uv`. |
-| Eval validation | `scripts/validate-evals.py` enforces profile-first ordering, activation evidence, skip reasons, fixture diversity, and the complete observed profile field set. |
-| Security and trust | `scripts/check-trust.py` enforces bounded triggers, read-only instructions, opt-in network/output behavior, credential hygiene, versioned compatibility evidence, and payload separation. |
-| Secret scanning | Skill scans `.gitignore`, commit metadata, and tracked files for heuristic secret patterns; output is limited to counts/paths and includes a redaction guard. |
-| Audit hardening | Repository audits streamlined; coverage gaps closed; portability scanner fixed; expiry checker wired. Evidence: commits `1aef227`, `a54272b`, `988322d`. |
-| Release consistency | The checker validates `SKILL.md`, plugin metadata, `CITATION.cff`, tags, and GitHub releases. Strict CI queries use a read-only job token. |
-| CI and merge governance | CI runs on every pull request without path filters; `lint`, `full-verify`, and `phase-b-gate` are required on `main`, with one approval, conversation resolution, and signed commits. |
-| Release workflow hardening | Tagged releases verify the exact CI commit and required jobs; reruns are idempotent when a GitHub Release already exists. |
-| Repository verification | Script self-tests, Ruff, ShellCheck, documentation audit, plugin validation, skill validation, and diff checks pass independently. |
-| Evidence URL tracking | `docs/evidence-urls.json` upgraded to v3 schema with status, source_type, domain_tag, and last_verified fields. All 11 URLs verified reachable. |
-| Local model regression | Ten Codex runs are recorded: seven passes, one timeout, and two deterministic grading failures. Run 10 passed the revised payload on Codex CLI 0.149.0. |
+| Area                       | Evidence                                                                                                                                                                                  |
+| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Skill schema               | Current Codex skill validator passes. Frontmatter contains supported fields only.                                                                                                         |
+| Codex packaging            | The v0.3.0 plugin manifest validates. The recorded isolated marketplace installation is historical v0.2.0 evidence and should not be described as a reproduced v0.3.0 install.            |
+| Codex discovery            | An unnamed release-audit prompt selected `repo-health-scan` and loaded the installed skill.                                                                                               |
+| Codex workflow             | The isolated retest emitted the profile and complete dimension plan before probes; all active checks cited profile evidence.                                                              |
+| Codex setup                | The focused guide was reproduced from a clean isolated `CODEX_HOME`; the historical v0.2.0 plugin installation and implicit discovery passed.                                             |
+| Final reporting            | The full audit produced a structured final profile, concrete harm, remediation, and correct payload/tooling classification.                                                               |
+| Probe correctness          | Dirty-tree, TOML/JSON version parsing, attribution range, and command-block examples were corrected and smoke-tested.                                                                     |
+| Runtime boundary           | The shipped payload is one `SKILL.md`; Python and shell scripts are maintainer-only.                                                                                                      |
+| Repository routing         | Root `AGENTS.md` routes health-audit intent to `SKILL.md`, routine maintenance to `docs/maintaining.md`, and explicitly excludes narrow implementation work.                              |
+| Skills CLI discovery       | Skills CLI 1.5.16 found exactly `repo-health-scan` from the local `skills/` tree with `npx --yes skills add <repo> --list`; no root manifest was required.                                |
+| skills.sh distribution     | README documents `npx skills add` for Codex and Claude Code; the skills.sh badge and install smoke matrix remain lightweight distribution evidence.                                       |
+| Eval contract              | `evals/cases/repo-health-scan.json` covers positive/negative triggers, this skill pack, and a Python library using `uv`.                                                                  |
+| Eval validation            | `scripts/validate-evals.py` enforces profile-first ordering, activation evidence, skip reasons, fixture diversity, and the complete observed profile field set.                           |
+| Security and trust         | `scripts/check-trust.py` enforces bounded triggers, read-only instructions, opt-in network/output behavior, credential hygiene, versioned compatibility evidence, and payload separation. |
+| Secret scanning            | Skill scans `.gitignore`, commit metadata, and tracked files for heuristic secret patterns; output is limited to counts/paths and includes a redaction guard.                             |
+| Audit hardening            | Repository audits streamlined; coverage gaps closed; portability scanner fixed; expiry checker wired. Evidence: commits `1aef227`, `a54272b`, `988322d`.                                  |
+| Release consistency        | The checker validates `SKILL.md`, plugin metadata, `CITATION.cff`, tags, and GitHub releases. Strict CI queries use a read-only job token.                                                |
+| CI and merge governance    | CI runs on every pull request without path filters; `lint`, `full-verify`, and `phase-b-gate` are required on `main`, with one approval, conversation resolution, and signed commits.     |
+| Release workflow hardening | Tagged releases verify the exact CI commit and required jobs; reruns are idempotent when a GitHub Release already exists.                                                                 |
+| Repository verification    | Script self-tests, Ruff, ShellCheck, documentation audit, plugin validation, skill validation, and diff checks pass independently.                                                        |
+| Evidence URL tracking      | `docs/evidence-urls.json` upgraded to v3 schema with status, source_type, domain_tag, and last_verified fields. All 11 URLs verified reachable.                                           |
+| Local model regression     | Ten Codex runs are recorded: seven passes, one timeout, and two deterministic grading failures. Run 10 passed the revised payload on Codex CLI 0.149.0.                                   |
 
 ### Remaining Gaps
 
-| Gap | Consequence | Priority |
-|---|---|---|
-| Ten local runs are recorded, but the payload changed across recent runs and several were same-session. | The 70% historical pass rate is diagnostic; the current 0.149.0 payload has one passing run and needs time-separated repeated evidence. | High |
-| `.repo-health.json` and JSONL are optional maintainer-side contracts. | Schemas and graders now enforce profile completeness and redacted finding shape; cross-agent runtime conformance remains unverified. | Low |
-| Deterministic fixtures cover six repository shapes, including a monorepo, docs product, missing tools, no `origin/main`, and dirty tree. | Broader real-world model evidence is still needed beyond deterministic fixtures. | Medium |
-| Current-version marketplace installation has not been reproduced in the compatibility report. | Resolved: v0.3.0 installation evidence is recorded separately from historical v0.2.0 evidence. | Resolved |
-| Scheduled URL checks can fail when upstream references drift or are unavailable. | Keep URL verification scheduled/manual, retry transient failures, and do not make it a pull-request merge gate. | Ongoing |
+| Gap                                                                                                                                      | Consequence                                                                                                                             | Priority |
+| ---------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| Ten local runs are recorded, but the payload changed across recent runs and several were same-session.                                   | The 70% historical pass rate is diagnostic; the current 0.149.0 payload has one passing run and needs time-separated repeated evidence. | High     |
+| `.repo-health.json` and JSONL are optional maintainer-side contracts.                                                                    | Schemas and graders now enforce profile completeness and redacted finding shape; cross-agent runtime conformance remains unverified.    | Low      |
+| Deterministic fixtures cover six repository shapes, including a monorepo, docs product, missing tools, no `origin/main`, and dirty tree. | Broader real-world model evidence is still needed beyond deterministic fixtures.                                                        | Medium   |
+| Current-version marketplace installation has not been reproduced in the compatibility report.                                            | Resolved: v0.3.0 installation evidence is recorded separately from historical v0.2.0 evidence.                                          | Resolved |
+| Scheduled URL checks can fail when upstream references drift or are unavailable.                                                         | Keep URL verification scheduled/manual, retry transient failures, and do not make it a pull-request merge gate.                         | Ongoing  |
 
 The hosted Codex Action is not a product gap. It requires API-key billing, which
 is separate from the ChatGPT subscription used by the current maintainer's
@@ -272,17 +274,17 @@ automatic selection, or instruction adherence in any additional agent.
 
 These items are intentionally outside the current Codex-first milestone:
 
-| Item | Resume When |
-|---|---|
-| Gemini, Claude Code, OpenCode, Cursor, or Hermes verification | Codex workflow conformance and setup are stable. |
-| Root `plugin.json` for Antigravity | Antigravity becomes an active target and its native manifest contract is tested. |
-| `CLAUDE.md` import adapter | Claude Code becomes an active target; use `@AGENTS.md` unless verified Claude-specific instructions are necessary. |
-| Additional per-agent setup guides and compatibility reports | The relevant agent is selected as an active target and tested directly. |
-| `repo-sync` companion skill | Scan findings and the human approval boundary are stable. |
-| Organization-wide scanner and dashboard | Single-repository JSONL behavior is executable and evaluated, not only instructional. |
-| Generic CI integration guide | A real agent runtime and failure policy are selected. |
-| Hosted Codex Action activation | A maintainer has API-key billing and wants scheduled GitHub-hosted model runs. |
-| `CHANGELOG.md` | Release cadence makes a changelog more useful than GitHub release notes alone. |
+| Item                                                          | Resume When                                                                                                        |
+| ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| Gemini, Claude Code, OpenCode, Cursor, or Hermes verification | Codex workflow conformance and setup are stable.                                                                   |
+| Root `plugin.json` for Antigravity                            | Antigravity becomes an active target and its native manifest contract is tested.                                   |
+| `CLAUDE.md` import adapter                                    | Claude Code becomes an active target; use `@AGENTS.md` unless verified Claude-specific instructions are necessary. |
+| Additional per-agent setup guides and compatibility reports   | The relevant agent is selected as an active target and tested directly.                                            |
+| `repo-sync` companion skill                                   | Scan findings and the human approval boundary are stable.                                                          |
+| Organization-wide scanner and dashboard                       | Single-repository JSONL behavior is executable and evaluated, not only instructional.                              |
+| Generic CI integration guide                                  | A real agent runtime and failure policy are selected.                                                              |
+| Hosted Codex Action activation                                | A maintainer has API-key billing and wants scheduled GitHub-hosted model runs.                                     |
+| `CHANGELOG.md`                                                | Release cadence makes a changelog more useful than GitHub release notes alone.                                     |
 
 No deferred item should appear in README as verified support before its own
 fixture or compatibility report exists. Apply the claim levels, thin-adapter
@@ -350,13 +352,13 @@ inferred:
 
 Activate optional modules only from Step 1 evidence:
 
-| Module | Activation Evidence | Maximum Fields |
-|---|---|---:|
-| `release` | Tag, changelog, registry, container, or release workflow. | 6 |
-| `agent` | Skill, plugin manifest, or agent instruction file. | 6 |
-| `monorepo` | Workspace manifest or multiple packages/services. | 6 |
-| `security` | Security policy, scanning, permissions, secrets, or signing policy. | 6 |
-| `docs` | Documentation is the product or handoff risk is active. | 6 |
+| Module     | Activation Evidence                                                 | Maximum Fields |
+| ---------- | ------------------------------------------------------------------- | -------------: |
+| `release`  | Tag, changelog, registry, container, or release workflow.           |              6 |
+| `agent`    | Skill, plugin manifest, or agent instruction file.                  |              6 |
+| `monorepo` | Workspace manifest or multiple packages/services.                   |              6 |
+| `security` | Security policy, scanning, permissions, secrets, or signing policy. |              6 |
+| `docs`     | Documentation is the product or handoff risk is active.             |              6 |
 
 Profile rules:
 
@@ -377,14 +379,14 @@ surface expansion.
 
 ## 8. Priority Queue
 
-| Order | Action | Effort | Impact |
-|---:|---|---:|---|
-| 1 | Collect time-separated local regression runs for the hardened payload without changing model-facing inputs. Preserve all first-attempt outcomes. | Observation over multiple runs | High |
-| 2 | Review the hardened-payload pass rate, failure phases, runtime, token use, and evidence quality. | 0.5 day | High |
-| 3 | If that review supports proceeding, consolidate `SKILL.md`, clarify the candidate-catalog and contextual-blocking contracts, and preserve the verified three-step behavior. | 1-2 days | High |
-| 4 | Establish a fresh repeated model baseline for the consolidated payload; do not reuse earlier rates as proof. | Observation over multiple runs | High |
-| 5 | Formalize the optional interfaces and broaden deterministic fixture coverage against the stable consolidated contract. | 1-2 days | High |
-| 6 | Decide whether profile modules are justified. Keep them deferred by default; if approved, implement and evaluate one module at a time. | Review, then 0.5-1 day per approved module | Medium |
+| Order | Action                                                                                                                                                                      |                                     Effort | Impact |
+| ----: | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -----------------------------------------: | ------ |
+|     1 | Collect time-separated local regression runs for the hardened payload without changing model-facing inputs. Preserve all first-attempt outcomes.                            |             Observation over multiple runs | High   |
+|     2 | Review the hardened-payload pass rate, failure phases, runtime, token use, and evidence quality.                                                                            |                                    0.5 day | High   |
+|     3 | If that review supports proceeding, consolidate `SKILL.md`, clarify the candidate-catalog and contextual-blocking contracts, and preserve the verified three-step behavior. |                                   1-2 days | High   |
+|     4 | Establish a fresh repeated model baseline for the consolidated payload; do not reuse earlier rates as proof.                                                                |             Observation over multiple runs | High   |
+|     5 | Formalize the optional interfaces and broaden deterministic fixture coverage against the stable consolidated contract.                                                      |                                   1-2 days | High   |
+|     6 | Decide whether profile modules are justified. Keep them deferred by default; if approved, implement and evaluate one module at a time.                                      | Review, then 0.5-1 day per approved module | Medium |
 
 Optional, unordered infrastructure: activate the hosted Codex Action only if a
 maintainer later has API-key billing and wants GitHub-hosted scheduling. It is
@@ -425,8 +427,12 @@ Completed foundation:
 - Hardened CI and release governance: removed path-filter bypasses, moved commit
   convention checks into pull requests, required exact CI jobs for tags, made
   release reruns idempotent, and enabled protected-main requirements (`#6`–`#8`).
-- Reconciled runtime-payload documentation: `SKILL.md` is installed; adjacent
-  `references/` files are maintainer-only evidence and templates.
+- Reconciled runtime-payload documentation: `SKILL.md` is installed; moved
+  maintainer-only references from `skills/.../references/` to
+  `docs/references/` so Skills CLI cannot package them as runtime resources.
+- Added skills.sh badge and explicit Skills CLI installation guidance; kept the
+  public skill name `repo-health-scan` while preserving the repository's
+  existing directory name for backwards-compatible local installs.
 - Completed `.gitignore` coverage: added `.hermes/`, `.gemini/`, `tmp/`,
   `.cache/`, `*.log`, virtualenv patterns (`5a01331`–`9575140`).
 - Replaced dead NousResearch URL with canonical `github/gitignore`
@@ -461,13 +467,18 @@ Completed foundation:
 12. Cross-agent support follows `docs/portability-contract.md`: one canonical
     payload, thin platform adapters, deterministic structural checks, and
     compatibility claims certified per named runtime and version.
+13. Keep the repository directory name `skills/repo-health-scan/`
+    stable until the staged migration in [docs/rename-plan.md](docs/rename-plan.md)
+    is approved; `repo-health-scan` remains the public skill identifier. A
+    GitHub repository rename is a separate remote operation and must not be
+    conflated with the local package-directory rename.
 
 ---
 
 ## 10. Near-Term Repository Shape
 
 ```text
-repo-health-and-sync-skill/
+repo-health-scan/
 ├── .codex-plugin/
 │   └── plugin.json
 ├── .github/
@@ -484,13 +495,14 @@ repo-health-and-sync-skill/
 ├── uv.lock                         # exact transitive dependency lock
 ├── repo-health-skill-roadmap.md
 ├── skills/
-│   └── repo-health-and-sync-skill/
+│   └── repo-health-scan/
 │       └── SKILL.md
 ├── evals/
 │   └── cases/
 │       └── repo-health-scan.json
 ├── docs/
 │   ├── codex-setup.md              # verified Codex setup
+│   ├── references/                  # maintainer-only evidence and templates
 │   ├── portability-contract.md     # cross-agent claim and adapter rules
 │   ├── maintaining.md
 │   ├── decisions.md

@@ -74,7 +74,7 @@ observed:
   shell_files: true
   recent_commits: true
   gitignore: true
-  version_sources: ["skills/repo-health-and-sync-skill/SKILL.md", ".codex-plugin/plugin.json", "CITATION.cff", "git tag"]
+  version_sources: ["skills/repo-health-scan/SKILL.md", ".codex-plugin/plugin.json", "CITATION.cff", "git tag"]
   script_surface: "maintainer-only Python + shell"
   shipped_payload: "single SKILL.md"
   tags_present: true

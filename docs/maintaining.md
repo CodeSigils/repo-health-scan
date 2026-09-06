@@ -14,16 +14,16 @@ not copy it into repositories that consume the skill.
 
 Choose the smallest path that matches the change:
 
-| Change | Required path |
-|---|---|
-| Docs, CI, schemas, or maintainer scripts | Make the change, then run the fast verification checklist. |
-| `SKILL.md` wording or behavior | Apply the change, run the fast checklist, then run the local Codex regression. |
-| Release | Align versions, pass CI for the release commit, then follow the release process below. |
-| Agent support claim | Update the relevant compatibility report and portability evidence; do not broaden claims from one runtime. |
+| Change                                   | Required path                                                                                              |
+| ---------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| Docs, CI, schemas, or maintainer scripts | Make the change, then run the fast verification checklist.                                                 |
+| `SKILL.md` wording or behavior           | Apply the change, run the fast checklist, then run the local Codex regression.                             |
+| Release                                  | Align versions, pass CI for the release commit, then follow the release process below.                     |
+| Agent support claim                      | Update the relevant compatibility report and portability evidence; do not broaden claims from one runtime. |
 
-The installed runtime payload is only `skills/repo-health-and-sync-skill/SKILL.md`.
-The adjacent `references/` files are maintainer-only evidence/templates and are
-not copied into an agent's installed skill directory.
+The installed runtime payload is only `skills/repo-health-scan/SKILL.md`.
+Maintainer-only evidence/templates live under `docs/references/` and are not
+copied into an agent's installed skill directory.
 
 ## Commit convention
 
@@ -43,15 +43,15 @@ committed, stop before publishing and recommend revocation or rotation; editing
 the message or deleting a file does not undo exposure from a commit that was
 already shared.
 
-| Type | When to use |
-| :--- | :---------- |
-| `feat:` | New methodology addition |
-| `docs:` | Documentation (README, docs/) |
-| `refactor:` | Restructuring, no behaviour change |
-| `fix:` | Bug fix in SKILL.md |
-| `chore:` | Housekeeping (.gitignore, CI) |
-| `ci:` | GitHub Actions or other CI configuration |
-| `test:` | Tests, fixtures, or evaluation evidence |
+| Type           | When to use                                        |
+| :------------- | :------------------------------------------------- |
+| `feat:`        | New methodology addition                           |
+| `docs:`        | Documentation (README, docs/)                      |
+| `refactor:`    | Restructuring, no behaviour change                 |
+| `fix:`         | Bug fix in SKILL.md                                |
+| `chore:`       | Housekeeping (.gitignore, CI)                      |
+| `ci:`          | GitHub Actions or other CI configuration           |
+| `test:`        | Tests, fixtures, or evaluation evidence            |
 | `chore(deps):` | Dependency bump (dependabot uses this scoped form) |
 
 Subject prefixes are enforced automatically by CI in the `phase-b-gate` job
@@ -144,17 +144,33 @@ Release:
 5. After the preflight succeeds, it creates the GitHub Release with generated
    notes. Categories and excluded labels are defined in `.github/release.yml`.
 
+Before announcing a release, smoke-test the published repository through the
+Skills CLI in an isolated temporary directory for each claimed host:
+
+```bash
+release_dir="$(mktemp -d)"
+cd "$release_dir"
+npx skills add CodeSigils/repo-health-and-sync-skill \
+  --skill repo-health-scan --agent codex --copy --yes
+test "$(find .agents/skills -type f -name SKILL.md | wc -l)" -eq 1
+```
+
+Repeat with `--agent claude-code` and verify
+that `.claude/skills/` contains exactly one `SKILL.md`. Record the CLI version,
+source commit, installed path, and result in the compatibility report. This is
+a release smoke test, not a pull-request merge gate.
+
 Do not create the GitHub Release manually before the preflight completes. A tag
 that does not point into `main` or lacks a successful CI run is rejected.
 
 ## How the skill works
 
 The skill runtime is a single SKILL.md with no shipped scripts and no build
-process. The adjacent references are maintainer-only and are not installed.
+process. The `docs/references/` files are maintainer-only and are not installed.
 The agent discovers repo characteristics at runtime
 using tools already on PATH (`git`, `shellcheck`, `python3`, `gh`).
 
-Changes to the methodology go directly into `skills/repo-health-and-sync-skill/SKILL.md`.
+Changes to the methodology go directly into `skills/repo-health-scan/SKILL.md`.
 There is no sync step, no payload regeneration, and no duplicate reference
 copies to maintain.
 
@@ -167,15 +183,16 @@ Keep one authoritative home for each kind of information. The root
 [README](../README.md) contains the user-facing overview and full repository
 tree; this table identifies where maintainers should make changes:
 
-| Concern | Authoritative location |
-|---|---|
-| Runtime audit methodology | `skills/repo-health-and-sync-skill/SKILL.md` |
-| Maintainer workflow and release procedure | `docs/maintaining.md` |
-| Architecture decisions | `docs/decisions.md` |
-| Portability and compatibility claims | `docs/portability-contract.md` and `docs/compatibility-reports/` |
-| Model regression behavior and evidence | `docs/codex-regression.md` and `evals/` |
-| Deterministic validation | `scripts/`, `schemas/`, and `.github/workflows/ci.yml` |
-| Packaging metadata | `.codex-plugin/plugin.json`, `CITATION.cff`, and `SKILL.md` frontmatter |
+| Concern                                   | Authoritative location                                                  |
+| ----------------------------------------- | ----------------------------------------------------------------------- |
+| Runtime audit methodology                 | `skills/repo-health-scan/SKILL.md`                                      |
+| Maintainer workflow and release procedure | `docs/maintaining.md`                                                   |
+| Architecture decisions                    | `docs/decisions.md`                                                     |
+| Portability and compatibility claims      | `docs/portability-contract.md` and `docs/compatibility-reports/`        |
+| Maintainer evaluation references          | `docs/references/`                                                      |
+| Model regression behavior and evidence    | `docs/codex-regression.md` and `evals/`                                 |
+| Deterministic validation                  | `scripts/`, `schemas/`, and `.github/workflows/ci.yml`                  |
+| Packaging metadata                        | `.codex-plugin/plugin.json`, `CITATION.cff`, and `SKILL.md` frontmatter |
 
 Do not copy guidance between these locations. Link to the owning document
 instead; this is the primary defense against documentation drift.

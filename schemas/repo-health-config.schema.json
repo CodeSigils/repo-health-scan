@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/CodeSigils/repo-health-and-sync-skill/schemas/repo-health-config.schema.json",
+  "$id": "https://github.com/CodeSigils/repo-health-scan/schemas/repo-health-config.schema.json",
   "title": "Repo Health Configuration (.repo-health.json)",
   "version": "1.0.0",
   "description": "Optional repository-level configuration to override heuristic discovery in Step 2.",

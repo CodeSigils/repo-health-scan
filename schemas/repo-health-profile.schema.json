@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/CodeSigils/repo-health-and-sync-skill/schemas/repo-health-profile.schema.json",
+  "$id": "https://github.com/CodeSigils/repo-health-scan/schemas/repo-health-profile.schema.json",
   "title": "Repo Health Profile",
   "version": "1.0.0",
   "description": "Structured repository profile emitted in Step 1 (Discover). Contains observed facts and inferred labels.",
