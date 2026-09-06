@@ -403,9 +403,10 @@ deferred under Section 6 rather than competing with the Codex reliability path.
 These recommendations improve evidence quality and maintainer decisions without
 expanding the runtime payload:
 
-1. Add a reusable dogfood report template covering repository shape, profile,
-   active/skipped dimensions, findings, tool availability, commands, and date.
-2. Add a control-justification ledger mapping each recurring CI/release check to
+1. **Completed:** Add a reusable dogfood report template covering repository
+   shape, profile, active/skipped dimensions, findings, tool availability,
+   commands, and date (`docs/dogfood-audit-template.md`).
+2. **Next:** Add a control-justification ledger mapping each recurring CI/release check to
    its failure mode, evidence, recurring cost, and retain/weaken/remove decision.
 3. Run one focused manual trigger-selection review after material `SKILL.md`
    changes; deterministic validators do not fully prove semantic agent routing.
