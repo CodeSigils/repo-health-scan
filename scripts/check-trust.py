@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -61,14 +62,26 @@ def guarded_command(text: str, variable: str, command: str) -> bool:
 
 
 def scan_secrets(root: Path) -> list[str]:
-    """Scan fixtures and compatibility reports for credential material."""
+    """Scan tracked text files for credential material.
+
+    The detector implementation is excluded because its self-test fixtures
+    intentionally contain synthetic token-shaped strings.
+    """
     errors: list[str] = []
-    paths = sorted((root / "evals").rglob("*"))
-    paths += sorted((root / "docs/compatibility-reports").rglob("*"))
+    result = subprocess.run(
+        ["git", "ls-files", "-z"], cwd=root, capture_output=True, check=False
+    )
+    if result.returncode == 0:
+        paths = [root / item for item in result.stdout.decode().split("\0") if item]
+    else:
+        paths = [path for path in root.rglob("*") if path.is_file() and ".git" not in path.parts]
     for path in paths:
-        if not path.is_file():
+        if path.relative_to(root).as_posix() == "scripts/check-trust.py":
             continue
-        text = path.read_text(encoding="utf-8")
+        try:
+            text = path.read_text(encoding="utf-8")
+        except (OSError, UnicodeDecodeError):
+            continue
         for label, pattern in SECRET_PATTERNS.items():
             if pattern.search(text):
                 errors.append(f"{path.relative_to(root)} contains a {label}")

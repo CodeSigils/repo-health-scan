@@ -38,9 +38,10 @@ Current product assessment:
 
 - The profile-first and evidence-linked planning contract is useful and
   differentiates the skill from a generic health checklist.
-- The payload was consolidated from 492 to 415 lines while retaining inline
-  probes and the complete security contract. Its remaining size is dominated by
-  operational examples rather than repeated rationalizations and checklists.
+- The current payload is 555 lines and retains inline probes and the complete
+  security contract. Its size is dominated by operational examples; do not add
+  new runtime modules until repeated model evidence shows the extra surface is
+  useful.
 - The ten dimensions behave as an evidence-activated candidate catalog. Calling
   the method "not a checklist" without that qualification overstates the
   distinction.
@@ -66,7 +67,7 @@ Current product assessment:
 | Addy Osmani's `agent-skills` keeps shared `SKILL.md` workflows alongside substantial repository-level `AGENTS.md` and `CLAUDE.md` instructions, per-agent setup guides, and separate platform manifests. Its root `plugin.json` is identified as an Antigravity manifest. | Reuse the source-ownership principle, not a presumed universal three-file contract. Add only adapters required by a selected platform and keep their scope explicit.     |
 | The AGENTS.md specification describes one repository instruction file consumed by Codex, Cursor, OpenCode, GitHub Copilot, and other agents.                                                                                                                              | Use a concise root `AGENTS.md` for repository routing without treating its presence as runtime compatibility evidence.                                                   |
 | Skills CLI 1.5.16 discovers `skills/<name>/SKILL.md` directly and lists Codex, Cursor, OpenCode, GitHub Copilot, and Hermes installation targets. An isolated local `--list` check found exactly `repo-health-scan` without root `plugin.json`.                           | Treat skills CLI discovery as verified independently of agent execution; do not add duplicate root metadata for this path.                                               |
-| Skills CLI 1.5.16 again discovered `repo-health-scan` from the published repository with `npx skills add CodeSigils/repo-health-and-sync-skill --list`.                                                                                                                   | Keep the `skills/<directory>/SKILL.md` layout, document the skills.sh install form, and verify copied installs for each claimed host.                                    |
+| Skills CLI 1.5.16 discovered `repo-health-scan` from `CodeSigils/repo-health-scan` with `npx skills add CodeSigils/repo-health-scan --list`.                                                                                                                              | Keep the `skills/<directory>/SKILL.md` layout, document the skills.sh install form, and verify copied installs for each claimed host.                                    |
 | Claude Code reads `CLAUDE.md`, not `AGENTS.md`, and officially supports importing `AGENTS.md` with `@AGENTS.md`.                                                                                                                                                          | If Claude Code becomes active, use an import adapter instead of duplicating repository instructions.                                                                     |
 | Official Codex non-interactive guidance documents `codex exec --json`, ephemeral sessions, explicit sandboxes, and machine-readable output schemas.                                                                                                                       | Use raw JSONL locally and a schema-constrained final result for deterministic grading.                                                                                   |
 | Official Codex GitHub Action guidance keeps the API key behind a proxy and supports read-only execution on trusted triggers.                                                                                                                                              | Retain the official Action as optional infrastructure for maintainers with API-key billing; never make it a prerequisite for local evaluation or repository exploration. |

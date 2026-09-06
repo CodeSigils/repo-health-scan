@@ -1,8 +1,8 @@
 # Repo Health Scan
 
 [![CI](https://github.com/CodeSigils/repo-health-scan/actions/workflows/ci.yml/badge.svg)](https://github.com/CodeSigils/repo-health-scan/actions/workflows/ci.yml)
-[![Release](https://img.shields.io/github/v/release/CodeSigils/repo-health-and-sync-skill?label=release)](https://github.com/CodeSigils/repo-health-scan/releases)
-[![skills.sh](https://skills.sh/b/codesigils/repo-health-scan)](https://skills.sh/CodeSigils/repo-health-scan)
+[![Release](https://img.shields.io/github/v/release/CodeSigils/repo-health-scan?label=release)](https://github.com/CodeSigils/repo-health-scan/releases)
+[![skills.sh](https://skills.sh/b/codesigils/repo-health-scan)](https://skills.sh/codesigils/repo-health-scan/repo-health-scan)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 **Repo Health Scan** — audits any git repository for release readiness,
@@ -75,13 +75,16 @@ For skills.sh-compatible installation, use the Skills CLI and select the
 portable skill for the target agent:
 
 ```bash
-npx skills add CodeSigils/repo-health-and-sync-skill \
+npx skills add CodeSigils/repo-health-scan \
   --skill repo-health-scan --agent codex --copy --yes
 ```
 
 Use `--agent claude-code` for Claude Code. The repository is indexed by the
 `skills/<directory>/SKILL.md` layout; no npm package or root `SKILL.md` is
-required.
+required. The skills.sh detail page is
+`https://skills.sh/codesigils/repo-health-scan/repo-health-scan`; the repository
+landing page and install-count badge may remain unavailable until skills.sh
+records an install.
 
 For repository-local Codex use, place the skill under `.agents/skills/`:
 

@@ -150,7 +150,7 @@ Skills CLI in an isolated temporary directory for each claimed host:
 ```bash
 release_dir="$(mktemp -d)"
 cd "$release_dir"
-npx skills add CodeSigils/repo-health-and-sync-skill \
+npx skills add CodeSigils/repo-health-scan \
   --skill repo-health-scan --agent codex --copy --yes
 test "$(find .agents/skills -type f -name SKILL.md | wc -l)" -eq 1
 ```
