@@ -62,7 +62,12 @@ def validate_transcript(path: Path, label: str) -> list[str]:
 
 
 def grade_positive_transcript(path: Path) -> list[str]:
-    """Verify profile content appears before a populated dimension plan."""
+    """Verify profile content appears before a populated dimension plan.
+
+    Newer Codex clients may emit the human-readable profile and plan as
+    separate messages, then return a schema-shaped final result. Accept both
+    representations while still requiring the ordering invariant.
+    """
     profile_index: int | None = None
     plan_index: int | None = None
     for index, line in enumerate(path.read_text(encoding="utf-8").splitlines()):
@@ -73,9 +78,16 @@ def grade_positive_transcript(path: Path) -> list[str]:
         item = event.get("item", {})
         if event.get("type") != "item.completed" or item.get("type") != "agent_message":
             continue
+        text = str(item.get("text", ""))
         try:
-            result = json.loads(item.get("text", ""))
+            result = json.loads(text)
         except (TypeError, json.JSONDecodeError):
+            result = None
+        if profile_index is None and "REPO PROFILE" in text:
+            profile_index = index
+        if plan_index is None and "DIMENSION PLAN" in text:
+            plan_index = index
+        if not isinstance(result, dict):
             continue
         events = result.get("events", [])
         for result_event in events:
@@ -334,6 +346,27 @@ def run_self_tests() -> int:
         assert validate_transcript(transcript, "test") == []
         assert grade_positive_transcript(transcript) == []
         assert grade_negative_transcript(transcript) == []
+
+        text_transcript = Path(directory) / "text-transcript.jsonl"
+        text_transcript.write_text(
+            "\n".join(
+                [
+                    json.dumps({"type": "thread.started"}),
+                    json.dumps({
+                        "type": "item.completed",
+                        "item": {"type": "agent_message", "text": "REPO PROFILE\\nobserved: {}"},
+                    }),
+                    json.dumps({
+                        "type": "item.completed",
+                        "item": {"type": "agent_message", "text": "DIMENSION PLAN\\nactive: []"},
+                    }),
+                    json.dumps({"type": "turn.completed"}),
+                ]
+            )
+            + "\n",
+            encoding="utf-8",
+        )
+        assert grade_positive_transcript(text_transcript) == []
     print("PASS: grade-codex-transcript.py self-tests")
     return 0
 

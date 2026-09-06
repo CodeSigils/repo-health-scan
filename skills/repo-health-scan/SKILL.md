@@ -119,7 +119,9 @@ From this output, form and **emit** a concise structured repo profile before
 checking any dimension. Separate observed facts from inferred labels. The
 profile must be visible in the transcript as a `REPO PROFILE` block; do not keep
 it only in internal reasoning or defer it to the final report. Emit the profile
-in its own message; do not combine that message with the dimension plan:
+in its own message; do not combine that message with the dimension plan.
+Do not defer either block into a final JSON response: send the profile message,
+then a separate dimension-plan message, before running any dimension probe.
 
 ### REPO PROFILE (required structure)
 
@@ -175,10 +177,10 @@ Given the emitted repo profile, ask: what invariants would break if they
 drifted?
 
 The candidate catalog below is **non-exhaustive** — not a universal checklist.
-The agent discovers applicable dimensions from this catalog; every active
-dimension must cite `activated_by` evidence from the profile. Custom dimensions
-are allowed when repo evidence supports a check not in the catalog; they must
-still cite `activated_by` evidence.
+Use these built-in dimensions for ordinary audits; add a custom dimension only
+when a repository-specific invariant is clearly necessary and explain why it
+cannot be represented by a built-in dimension. Every active dimension must cite
+`activated_by` evidence from the profile.
 
 Before running any dimension command, emit a `DIMENSION PLAN` that:
 
@@ -186,6 +188,9 @@ Before running any dimension command, emit a `DIMENSION PLAN` that:
   `activated_by`;
 - lists each inactive dimension with a concrete `skip_reason`; and
 - accounts for every candidate dimension in the catalog as active or skipped.
+
+Keep the dimension plan in its own message, after the profile message and
+before any dimension-specific command or final report.
 
 Use paths such as `observed.ci` or `inferred.release_model`. A recorded request
 or environment flag may also activate a dimension; an unobserved assumption may
