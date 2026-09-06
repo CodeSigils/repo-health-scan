@@ -118,6 +118,7 @@ jobs:
       - name: Phase B — Commit subject convention check
         run: |
           echo "=== Phase B: Commit subject convention check ==="
+          echo "Generated merge commits are excluded; authored commits remain subject to the convention."
           python3 scripts/check-commit-convention.py --range "${COMMIT_RANGE}"
 
   check-expiry:
