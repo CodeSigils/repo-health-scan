@@ -1,6 +1,6 @@
 # `repo-health-scan` Growth Roadmap
 
-**Status:** Codex-first development
+**Status:** Codex-first maintenance mode
 
 **Last reconciled:** 2026-09-06
 
@@ -389,8 +389,9 @@ surface expansion.
 |     2 | **Completed:** Review pass rate, failure phases, runtime, token use, and evidence quality; runs 13–15 support proceeding.                                                   |                                    0.5 day | High   |
 |     3 | **Completed:** Consolidate `SKILL.md` and clarify the candidate-catalog and contextual-blocking contracts.                                                                   |                                   1-2 days | High   |
 |     4 | **Completed:** Establish a fresh repeated model baseline for the consolidated payload; runs 13–15 are the current baseline.                                                 |             Observation over multiple runs | High   |
-|     5 | **Next:** Hold a documented go/no-go review for profile modules; default to continued deferral unless observed failures justify one.                                         |                                    0.5 day | High   |
-|     6 | If a module is approved, implement and evaluate one module at a time with its own fixture, field budget, and fresh regression evidence.                                     | Review, then 0.5-1 day per approved module | Medium |
+|     5 | **Completed:** Hold the profile-module go/no-go review; `docs/decisions.md` records defer-by-default.                                                                         |                                    0.5 day | High   |
+|     6 | **Maintenance:** Run release-readiness and real-project dogfood checks; reopen implementation only after a concrete evidence gap.                                             |                         Ongoing, lightweight | High   |
+|     7 | If a module is later approved, implement and evaluate one at a time with its own fixture, field budget, and fresh regression evidence.                                         | Review, then 0.5-1 day per approved module | Medium |
 
 Optional, unordered infrastructure: activate the hosted Codex Action only if a
 maintainer later has API-key billing and wants GitHub-hosted scheduling. It is
