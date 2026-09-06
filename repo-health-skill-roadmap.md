@@ -2,7 +2,7 @@
 
 **Status:** Codex-first development
 
-**Last reconciled:** 2026-08-18
+**Last reconciled:** 2026-09-06
 
 This roadmap is based on the current repository, recorded compatibility tests,
 official platform documentation, and the research sources listed below. It
@@ -114,6 +114,8 @@ Primary sources and research, accessed 2026-07-12 or 2026-07-13:
 | Secret scanning | Skill scans `.gitignore`, commit metadata, and tracked files for heuristic secret patterns; output is limited to counts/paths and includes a redaction guard. |
 | Audit hardening | Repository audits streamlined; coverage gaps closed; portability scanner fixed; expiry checker wired. Evidence: commits `1aef227`, `a54272b`, `988322d`. |
 | Release consistency | The checker validates `SKILL.md`, plugin metadata, `CITATION.cff`, tags, and GitHub releases. Strict CI queries use a read-only job token. |
+| CI and merge governance | CI runs on every pull request without path filters; `lint`, `full-verify`, and `phase-b-gate` are required on `main`, with one approval, conversation resolution, and signed commits. |
+| Release workflow hardening | Tagged releases verify the exact CI commit and required jobs; reruns are idempotent when a GitHub Release already exists. |
 | Repository verification | Script self-tests, Ruff, ShellCheck, documentation audit, plugin validation, skill validation, and diff checks pass independently. |
 | Evidence URL tracking | `docs/evidence-urls.json` upgraded to v3 schema with status, source_type, domain_tag, and last_verified fields. All 11 URLs verified reachable. |
 | Local model regression | Ten Codex runs are recorded: seven passes, one timeout, and two deterministic grading failures. Run 10 passed the revised payload on Codex CLI 0.149.0. |
@@ -126,6 +128,7 @@ Primary sources and research, accessed 2026-07-12 or 2026-07-13:
 | `.repo-health.json` and JSONL are optional maintainer-side contracts. | Schemas and graders now enforce profile completeness and redacted finding shape; cross-agent runtime conformance remains unverified. | Low |
 | Deterministic fixtures cover six repository shapes, including a monorepo, docs product, missing tools, no `origin/main`, and dirty tree. | Broader real-world model evidence is still needed beyond deterministic fixtures. | Medium |
 | Current-version marketplace installation has not been reproduced in the compatibility report. | Resolved: v0.3.0 installation evidence is recorded separately from historical v0.2.0 evidence. | Resolved |
+| Scheduled URL checks can fail when upstream references drift or are unavailable. | Keep URL verification scheduled/manual, retry transient failures, and do not make it a pull-request merge gate. | Ongoing |
 
 The hosted Codex Action is not a product gap. It requires API-key billing, which
 is separate from the ChatGPT subscription used by the current maintainer's
@@ -419,6 +422,11 @@ Completed foundation:
 - Hardened repository audits: streamlined audit flow, closed coverage gaps,
   pinned `setup-python`, fixed portability scanner, wired expiry checker
   (`1aef227`, `a54272b`, `988322d`).
+- Hardened CI and release governance: removed path-filter bypasses, moved commit
+  convention checks into pull requests, required exact CI jobs for tags, made
+  release reruns idempotent, and enabled protected-main requirements (`#6`–`#8`).
+- Reconciled runtime-payload documentation: `SKILL.md` is installed; adjacent
+  `references/` files are maintainer-only evidence and templates.
 - Completed `.gitignore` coverage: added `.hermes/`, `.gemini/`, `tmp/`,
   `.cache/`, `*.log`, virtualenv patterns (`5a01331`–`9575140`).
 - Replaced dead NousResearch URL with canonical `github/gitignore`
