@@ -127,9 +127,8 @@ Release:
 
 1. Align the `SKILL.md`, plugin manifest, citation metadata, and release tag
    versions with `python3 scripts/check-version-consistency.py`.
-2. Open a pull request for the isolated release-preparation commit. Obtain the
-   required review and pass `lint`, `full-verify`, and `phase-b-gate`; merge the
-   PR to `main`.
+2. Open a pull request for the isolated release-preparation commit. Pass
+   `lint`, `full-verify`, and `phase-b-gate`; merge the PR to `main`.
 3. From an up-to-date local checkout of the merged `main`, create and push the
    version tag (use the repository's normal signing policy when creating tags):
 
