@@ -15,7 +15,7 @@ audience: maintainers only — not shipped to skill users.
 | Public skill identifier | `repo-health-scan`                                                                                                    | `SKILL.md` frontmatter name and `--skill` selector.                                        |
 | Codex plugin            | `repo-health-and-sync-skill`                                                                                          | Separate plugin identity; not the Skills CLI skill name.                                   |
 | Skills CLI discovery    | Passed; exactly `repo-health-scan` found                                                                              | Directory and public identifier now match.                                                 |
-| skills.sh page          | Detail route responds at `/codesigils/repo-health-scan/repo-health-scan`; repository landing route is not indexed yet | The badge populates after a recorded install.                                              |
+| skills.sh page          | Detail route and repository landing route respond; landing page lists one skill and one total install | Badge and installation metadata are live; individual detail-page install history may still show `–`. |
 
 The previous claim that a remote rename would break installs was inaccurate.
 GitHub redirects clone, fetch, push, and web traffic after a repository rename.
