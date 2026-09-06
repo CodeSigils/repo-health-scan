@@ -16,6 +16,7 @@ files are runtime dependencies of the installed skill.
 | Understand why the architecture looks this way | [decisions.md](decisions.md)                                                                                            |
 | Install or test the Codex plugin               | [codex-setup.md](codex-setup.md)                                                                                        |
 | Run the model regression harness               | [codex-regression.md](codex-regression.md)                                                                              |
+| Record a real-project dogfood audit            | [dogfood-audit-template.md](dogfood-audit-template.md)                                                                  |
 | Check an agent compatibility claim             | [compatibility-reports/codex.md](compatibility-reports/codex.md) and [portability-contract.md](portability-contract.md) |
 | Understand the research behind a decision      | [research.md](research.md)                                                                                              |
 | Use maintainer-only evaluation references      | [references/](references/)                                                                                              |
