@@ -211,6 +211,7 @@ Install above).
 │   │   └── codex.md                  # Compatibility evidence for Codex CLI
 │   ├── maintaining.md                # Release and maintenance procedures
 │   ├── automation-identities.md       # Bot authority and review boundaries
+│   ├── claim-evidence-matrix.md        # Evidence behind public support claims
 │   ├── decisions.md                  # Architecture decision records
 │   ├── evidence-urls.json            # External URL inventory for verification
 │   ├── research.md                   # Design research and ecosystem analysis

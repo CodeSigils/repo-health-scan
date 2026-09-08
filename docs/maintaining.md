@@ -21,6 +21,7 @@ Choose the smallest path that matches the change:
 | Release                                  | Align versions, pass CI for the release commit, then follow the release process below.                     |
 | Agent support claim                      | Update the relevant compatibility report and portability evidence; do not broaden claims from one runtime. |
 | Bot or dependency update                 | Read [automation-identities.md](automation-identities.md), inspect the diff and required checks, then use the fast checklist. |
+| Change a public support or release claim  | Update [claim-evidence-matrix.md](claim-evidence-matrix.md) and its owning evidence report in the same change.               |
 
 The installed runtime payload is only `skills/repo-health-scan/SKILL.md`.
 Maintainer-only evidence/templates live under `docs/references/` and are not
@@ -200,6 +201,7 @@ tree; this table identifies where maintainers should make changes:
 | Maintainer workflow and release procedure | `docs/maintaining.md`                                                   |
 | Architecture decisions                    | `docs/decisions.md`                                                     |
 | Portability and compatibility claims      | `docs/portability-contract.md` and `docs/compatibility-reports/`        |
+| Public claim-to-evidence mapping           | `docs/claim-evidence-matrix.md`                                          |
 | Maintainer evaluation references          | `docs/references/`                                                      |
 | Model regression behavior and evidence    | `docs/codex-regression.md` and `evals/`                                 |
 | Deterministic validation                  | `scripts/`, `schemas/`, and `.github/workflows/ci.yml`                  |
