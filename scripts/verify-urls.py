@@ -193,7 +193,7 @@ def check_url_with_retries(
         if not is_transient_status(result[0]) or attempt == attempts:
             return result
         print(
-            f"Retrying {url} after transient result {result[0]} "
+            f"Retrying after transient result {result[0]} "
             f"({attempt}/{attempts})...",
             file=sys.stderr,
         )
