@@ -412,8 +412,8 @@ expanding the runtime payload:
    retain/weaken/remove decision (`docs/control-justification-ledger.md`).
 3. **Completed:** Run a focused semantic trigger-selection review; run 16
    activated the skill for a health audit and correctly rejected a narrow task.
-4. **Next:** Add a claim/evidence matrix for compatibility, distribution, read-only, and
-   release claims, including evidence date and confidence.
+4. **Completed:** Add a claim/evidence matrix for compatibility, distribution,
+   read-only, and release claims, including confidence and explicit boundaries.
 5. **Completed:** Enforce the Agent Skills validator policy with a pinned
    `skills-ref` command in CI (or a manual release gate for no-CI repositories),
    and provide a reusable audit script for other repositories.
