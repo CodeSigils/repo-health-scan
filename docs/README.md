@@ -18,7 +18,9 @@ files are runtime dependencies of the installed skill.
 | Run the model regression harness               | [codex-regression.md](codex-regression.md)                                                                              |
 | Record a real-project dogfood audit            | [dogfood-audit-template.md](dogfood-audit-template.md)                                                                  |
 | Justify recurring CI and release controls      | [control-justification-ledger.md](control-justification-ledger.md)                                                      |
+| Understand bot identities and automation scope | [automation-identities.md](automation-identities.md)                                                                    |
 | Check an agent compatibility claim             | [compatibility-reports/codex.md](compatibility-reports/codex.md) and [portability-contract.md](portability-contract.md) |
+| Enforce Agent Skills validator evidence        | [skills-ref-policy.md](skills-ref-policy.md)                                                   |
 | Understand the research behind a decision      | [research.md](research.md)                                                                                              |
 | Use maintainer-only evaluation references      | [references/](references/)                                                                                              |
 | Plan a repository or skill-directory rename    | [rename-plan.md](rename-plan.md)                                                                                        |

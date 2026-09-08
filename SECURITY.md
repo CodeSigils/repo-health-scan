@@ -44,6 +44,20 @@ run through `python3 scripts/check-trust.py` in local verification and CI.
   scanners or additional sensitive filenames run only when repository evidence activates them.
 - [x] CI installs a reviewed, pinned Ruff version rather than an unbounded
   latest release.
+- [x] Bot-initiated changes are reviewed as ordinary changes: the actor,
+  trigger, explicit token permissions, action pins, and diff are inspected;
+  green checks do not grant approval or broaden authority.
 
-Last reviewed: 2026-07-16 after hardening commit-metadata inspection,
-tracked-secret detection, `.gitignore` guidance, and CI dependency pinning.
+## Automation identities
+
+Dependabot and GitHub Actions are separate GitHub App identities with different
+authority. Dependabot opens dependency-update pull requests according to
+`.github/dependabot.yml`; pull-request workflows it triggers receive a
+read-only `GITHUB_TOKEN` and no repository secrets. GitHub Actions workflows
+run as `github-actions[bot]` only when a workflow writes with its token, and
+their authority is bounded by each workflow's explicit `permissions` block.
+
+This repository does not auto-merge bot pull requests. The release workflow is
+the only workflow with `contents: write`, and it may create a GitHub Release
+only after tag and CI verification. See [automation-identities.md](docs/automation-identities.md)
+for the operational model and review rules.

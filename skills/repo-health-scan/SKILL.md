@@ -367,6 +367,18 @@ else
   done <<< "$workflow_files"
 fi
 
+# Automation identity and authority. A bot actor is not a quality guarantee:
+# inspect workflow triggers, explicit permissions, pinned actions, and the
+# diff. Treat Dependabot PRs as dependency proposals; their PR workflows use
+# read-only tokens and normally cannot access repository secrets. Do not
+# recommend auto-merge or permission changes without an observed repository
+# policy and a reviewable failure mode.
+if [ -f .github/dependabot.yml ]; then
+  echo "INFO: Dependabot configuration present; inspect grouping, limits, and covered ecosystems"
+fi
+grep -RInE '^[[:space:]]*permissions:|^[[:space:]]*(pull_request_target|schedule|workflow_dispatch):|^[[:space:]]*uses:' \
+  .github/workflows 2>/dev/null | head -40 || true
+
 # Cross-platform shell
 grep -n 'which\|grep -P\|sed -i[^.]' scripts/*.sh 2>/dev/null \
   | head -10 || echo "no patterns found"
@@ -515,4 +527,6 @@ Before delivering the report, confirm that:
 - secret checks exposed only counts, status, or locations—never raw subjects or
   bodies or sensitive values; and
 - sensitive ignore candidates were checked against both ignore rules and
-  tracked files.
+  tracked files; and
+- automation findings distinguished the bot identity, trigger, permissions,
+  and reviewed diff from an assumption that a green bot PR is safe.
