@@ -313,3 +313,8 @@ core without requiring profile modules.
 distinctions—passing package tests, an inapplicable optional test command, and
 an uncommitted prototype boundary—but no repeatable gap in the core profile.
 Reopen only when a real audit failure requires module-specific evidence.
+
+The 2026-09-08 self-audit of `repo-health-scan` also passed release, shell,
+version, CI-permission, bot-configuration, and trust-contract checks. It found
+no concrete profile-module gap; the bounded evidence is recorded in
+[dogfood-audit-2026-09-08.md](dogfood-audit-2026-09-08.md).
