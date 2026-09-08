@@ -18,6 +18,7 @@ files are runtime dependencies of the installed skill.
 | Run the model regression harness               | [codex-regression.md](codex-regression.md)                                                                              |
 | Record a real-project dogfood audit            | [dogfood-audit-template.md](dogfood-audit-template.md)                                                                  |
 | Read the latest dogfood evidence               | [dogfood-audit-2026-09-08.md](dogfood-audit-2026-09-08.md)                                                              |
+| Compare eight dogfood repositories             | [dogfood-batch-2026-09-08.md](dogfood-batch-2026-09-08.md)                                                              |
 | Justify recurring CI and release controls      | [control-justification-ledger.md](control-justification-ledger.md)                                                      |
 | Understand bot identities and automation scope | [automation-identities.md](automation-identities.md)                                                                    |
 | Check the evidence behind public claims       | [claim-evidence-matrix.md](claim-evidence-matrix.md)                                                                    |
