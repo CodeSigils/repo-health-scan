@@ -2,6 +2,7 @@ name: ci
 
 env:
   PYTHON_VERSION: "3.13"
+  UV_VERSION: "0.11.7"
 
 on:
   workflow_dispatch:
@@ -33,8 +34,10 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
       - name: Install uv
         uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+        with:
+          version: ${{ env.UV_VERSION }}
       - name: Install dependencies
-        run: uv sync
+        run: uv sync --locked
       - name: Check cross-agent portability
         run: python3 scripts/check-portability.py
       - name: Enforce skills-ref evidence policy
@@ -150,15 +153,4 @@ jobs:
         with:
           fetch-depth: 0
       - name: Verify referenced URLs
-        run: |
-          for attempt in 1 2 3; do
-            if python3 scripts/verify-urls.py; then
-              exit 0
-            fi
-            if [ "$attempt" -lt 3 ]; then
-              echo "URL verification attempt $attempt failed; retrying in 15 seconds..."
-              sleep 15
-            fi
-          done
-          echo "URL verification failed after 3 attempts." >&2
-          exit 1
+        run: python3 scripts/verify-urls.py --attempts 3 --retry-delay 2

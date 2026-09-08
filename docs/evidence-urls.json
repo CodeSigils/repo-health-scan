@@ -91,6 +91,61 @@
       "notes": "Primary source for passing GITHUB_TOKEN to GitHub CLI through GH_TOKEN"
     },
     {
+      "name": "GitHub Actions secure use",
+      "url": "https://docs.github.com/en/actions/reference/security/secure-use",
+      "expected_statuses": [200],
+      "source_section": "docs/automation-identities.md",
+      "domain_tag": "github-actions-security",
+      "source_type": "official_docs",
+      "status": "active",
+      "last_verified": "2026-09-08",
+      "notes": "Least-privilege and untrusted-workflow guidance"
+    },
+    {
+      "name": "GitHub Actions GITHUB_TOKEN",
+      "url": "https://docs.github.com/en/actions/concepts/security/github_token",
+      "expected_statuses": [200],
+      "source_section": "docs/automation-identities.md",
+      "domain_tag": "github-actions-security",
+      "source_type": "official_docs",
+      "status": "active",
+      "last_verified": "2026-09-08",
+      "notes": "GitHub App installation-token scope and lifecycle"
+    },
+    {
+      "name": "GitHub Actions workflow permissions",
+      "url": "https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax",
+      "expected_statuses": [200],
+      "source_section": "docs/automation-identities.md",
+      "domain_tag": "github-actions-security",
+      "source_type": "official_docs",
+      "status": "active",
+      "last_verified": "2026-09-08",
+      "notes": "Workflow permissions and Dependabot pull-request token behavior"
+    },
+    {
+      "name": "Dependabot version updates",
+      "url": "https://docs.github.com/en/code-security/concepts/supply-chain-security/dependabot-version-updates",
+      "expected_statuses": [200],
+      "source_section": "docs/automation-identities.md",
+      "domain_tag": "dependabot",
+      "source_type": "official_docs",
+      "status": "active",
+      "last_verified": "2026-09-08",
+      "notes": "Version-update behavior and GitHub Actions support"
+    },
+    {
+      "name": "Dependabot security update customization",
+      "url": "https://docs.github.com/en/code-security/how-tos/secure-your-supply-chain/manage-your-dependency-security/customizing-dependabot-security-prs",
+      "expected_statuses": [200],
+      "source_section": "docs/automation-identities.md",
+      "domain_tag": "dependabot",
+      "source_type": "official_docs",
+      "status": "active",
+      "last_verified": "2026-09-08",
+      "notes": "Security-update grouping and configuration boundaries"
+    },
+    {
       "name": "GitHub commit signing",
       "url": "https://docs.github.com/en/authentication/managing-commit-signature-verification/signing-commits",
       "expected_statuses": [200],

@@ -1,4 +1,4 @@
-# Research — Repo Health Scan (v0.3.0)
+# Research — Repo Health Scan
 
 **Purpose:** Evidence base that informed the current methodology design.
 Contains ecosystem survey data, cross-platform consumption patterns, and
@@ -217,7 +217,23 @@ versions. The methodology remains suitable for platforms that can run `git`,
 
 ---
 
-## 9. Secret handling in repository audits (v0.3.0 addition)
+## 9. GitHub automation identities (v0.4.0 maintenance addition)
+
+**Finding:** Dependabot and GitHub Actions are distinct GitHub App identities.
+Dependabot can propose configured dependency changes, while GitHub Actions can
+only act through the token permissions declared in the workflow. A passing bot
+PR is evidence that configured checks passed, not an approval or a general
+security claim.
+
+**Applied policy:** keep the solo-maintainer queue bounded, use grouped
+minor/patch GitHub Action updates, keep major updates separate, add one
+serialized `uv` stream, and prohibit automatic merge. The release workflow is
+the only write-capable workflow and is gated by tag ancestry and prior CI.
+
+**Sources:** [automation-identities.md](automation-identities.md) records the
+official GitHub sources and repository-specific authority map.
+
+## 10. Secret handling in repository audits (v0.3.0 addition)
 
 **Finding:** Repository audits that print content from commit metadata or
 configuration files risk exposing credentials present in messages, config, or

@@ -20,6 +20,7 @@ Choose the smallest path that matches the change:
 | `SKILL.md` wording or behavior           | Apply the change, run the fast checklist, then run the local Codex regression.                             |
 | Release                                  | Align versions, pass CI for the release commit, then follow the release process below.                     |
 | Agent support claim                      | Update the relevant compatibility report and portability evidence; do not broaden claims from one runtime. |
+| Bot or dependency update                 | Read [automation-identities.md](automation-identities.md), inspect the diff and required checks, then use the fast checklist. |
 
 The installed runtime payload is only `skills/repo-health-scan/SKILL.md`.
 Maintainer-only evidence/templates live under `docs/references/` and are not
@@ -117,6 +118,15 @@ requires authenticated model access and is nondeterministic. After a material
 `python3 scripts/run-codex-regression.py` locally or dispatch the dedicated
 `Codex regression` workflow. Do not make ordinary changes depend on model
 availability.
+
+## Automation and bot review
+
+Read [automation-identities.md](automation-identities.md) before changing a
+workflow, Dependabot configuration, or a bot-authored pull request. For this
+solo repository, the correct default is small, reviewable bot proposals—not
+automatic approval or merge. A green dependency PR establishes that the
+configured checks passed; it does not establish semantic safety or authorize a
+permissions change.
 
 See [codex-regression.md](codex-regression.md) for artifacts, grading, and the
 current evidence boundary.

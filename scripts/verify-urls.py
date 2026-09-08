@@ -19,11 +19,15 @@ Exit code 1 = one or more URLs differs from the manifest.
 
 from __future__ import annotations
 
+import argparse
 import json
 import sys
+import time
 import urllib.error
 import urllib.request
 from collections import Counter
+from collections.abc import Callable
+from datetime import date
 from pathlib import Path
 from typing import Any
 
@@ -36,6 +40,10 @@ VALID_SOURCE_TYPES = {
     "official_docs", "specification", "academic", "community",
     "pinned_snapshot", "versioned_release", "mirror",
 }
+RETRYABLE_HTTP_STATUSES = frozenset({408, 429, 500, 502, 503, 504})
+MAX_JSON_BYTES = 1_000_000
+UrlResult = tuple[int | str, bool, str | None]
+UrlChecker = Callable[[str, str | None, float], UrlResult]
 
 
 def load_manifest(path: Path = MANIFEST_PATH) -> tuple[int, str, list[dict[str, Any]]]:
@@ -63,6 +71,10 @@ def validate_entry_v1(entry: dict[str, Any]) -> None:
     missing = [key for key in required if key not in entry]
     if missing:
         raise ValueError(f"missing required field(s): {', '.join(missing)}")
+    if not isinstance(entry["name"], str) or not entry["name"].strip():
+        raise ValueError("name must be a non-empty string")
+    if not isinstance(entry["url"], str) or not entry["url"].startswith(("http://", "https://")):
+        raise ValueError("url must be an absolute HTTP(S) URL")
     if not isinstance(entry["expected_statuses"], list) or not entry["expected_statuses"]:
         raise ValueError("expected_statuses must be a non-empty list")
     for status in entry["expected_statuses"]:
@@ -98,12 +110,17 @@ def validate_entry_v3(entry: dict[str, Any]) -> None:
     if last_verified is not None:
         if not isinstance(last_verified, str):
             raise ValueError("last_verified must be a string")
-        # Validate ISO date format (YYYY-MM-DD)
-        parts = last_verified.split("-")
-        if len(parts) != 3 or not all(p.isdigit() for p in parts):
+        try:
+            date.fromisoformat(last_verified)
+        except ValueError:
             raise ValueError(
                 f"last_verified must be ISO date (YYYY-MM-DD); got {last_verified!r}"
-            )
+            ) from None
+
+    if "versioned_url" in entry and not isinstance(entry["versioned_url"], bool):
+        raise ValueError("versioned_url must be a boolean")
+    if "content_type" in entry and entry["content_type"] != "json":
+        raise ValueError("content_type must be 'json' when present")
 
 
 def validate_entry(entry: dict[str, Any], version: int = 1) -> None:
@@ -114,10 +131,14 @@ def validate_entry(entry: dict[str, Any], version: int = 1) -> None:
         validate_entry_v1(entry)
 
 
-def check_url(url: str, content_type: str | None = None) -> tuple[int | str, int, str | None]:
-    """Return (final_status_code, redirect_count, content_or_error) for one URL.
+def check_url(
+    url: str, content_type: str | None = None, timeout: float = 10
+) -> UrlResult:
+    """Return (final_status_code, redirected, content_or_error) for one URL.
 
-    When content_type is "json", captures response body and validates JSON.
+    When content_type is "json", reads at most ``MAX_JSON_BYTES`` and validates
+    the response body. This function makes one request; retry policy belongs in
+    ``check_url_with_retries`` so local and CI checks behave the same way.
     """
     request = urllib.request.Request(
         url,
@@ -126,27 +147,58 @@ def check_url(url: str, content_type: str | None = None) -> tuple[int | str, int
     )
 
     try:
-        with urllib.request.urlopen(request, timeout=10) as response:
+        with urllib.request.urlopen(request, timeout=timeout) as response:
             status = response.status
-            redirect_count = len(response.headers.get("Location", "").split("\n")) if "Location" in response.headers else 0
+            redirected = response.geturl() != url
 
             if content_type == "json":
-                body = response.read().decode("utf-8")
+                body_bytes = response.read(MAX_JSON_BYTES + 1)
+                if len(body_bytes) > MAX_JSON_BYTES:
+                    return status, redirected, "JSON_TOO_LARGE"
                 try:
-                    json.loads(body)
-                    return status, redirect_count, "VALID"
-                except (json.JSONDecodeError, ValueError):
-                    return status, redirect_count, "INVALID_JSON"
-            return status, redirect_count, None
+                    json.loads(body_bytes.decode("utf-8"))
+                    return status, redirected, "VALID"
+                except (json.JSONDecodeError, UnicodeDecodeError):
+                    return status, redirected, "INVALID_JSON"
+            return status, redirected, None
 
     except urllib.error.HTTPError as exc:
-        return exc.code, 0, f"HTTP {exc.code}"
+        return exc.code, False, f"HTTP {exc.code}"
     except urllib.error.URLError as exc:
-        return "ERROR", 0, str(exc.reason)
+        return "NETWORK_ERROR", False, str(exc.reason)
     except TimeoutError:
-        return "TIMEOUT", 0, "timeout"
+        return "TIMEOUT", False, "timeout"
     except ValueError as exc:
-        return "ERROR", 0, f"invalid URL: {exc}"
+        return "INVALID_URL", False, f"invalid URL: {exc}"
+
+
+def is_transient_status(status: int | str) -> bool:
+    """Return whether a failed URL check can reasonably succeed on retry."""
+    return status in RETRYABLE_HTTP_STATUSES or status in {"NETWORK_ERROR", "TIMEOUT"}
+
+
+def check_url_with_retries(
+    url: str,
+    content_type: str | None,
+    timeout: float,
+    attempts: int,
+    retry_delay: float,
+    *,
+    checker: UrlChecker = check_url,
+    sleeper: Callable[[float], None] = time.sleep,
+) -> UrlResult:
+    """Run a bounded retry loop for temporary network and server failures."""
+    for attempt in range(1, attempts + 1):
+        result = checker(url, content_type, timeout)
+        if not is_transient_status(result[0]) or attempt == attempts:
+            return result
+        print(
+            f"Retrying {url} after transient result {result[0]} "
+            f"({attempt}/{attempts})...",
+            file=sys.stderr,
+        )
+        sleeper(retry_delay)
+    raise AssertionError("retry loop must return during its final attempt")
 
 
 def classify_status(status: int | str, expected_statuses: list[int]) -> str:
@@ -164,7 +216,29 @@ def check_self_test() -> int:
     assert classify_status("ERROR", [200]) == "DRIFT"
     assert classify_status(200, [200, 201]) == "OK"
     assert classify_status(201, [200, 201]) == "OK"
+    assert is_transient_status(429)
+    assert is_transient_status(503)
+    assert is_transient_status("NETWORK_ERROR")
+    assert not is_transient_status(404)
+    assert not is_transient_status("INVALID_URL")
     print("  PASS  classify_status")
+
+    retry_results = iter([("NETWORK_ERROR", False, "offline"), (200, False, None)])
+    retry_calls: list[tuple[str, str | None, float]] = []
+    retry_delays: list[float] = []
+
+    def fake_check(url: str, content_type: str | None, timeout: float) -> UrlResult:
+        retry_calls.append((url, content_type, timeout))
+        return next(retry_results)
+
+    result = check_url_with_retries(
+        "https://example.test", None, 4, 3, 0,
+        checker=fake_check, sleeper=retry_delays.append,
+    )
+    assert result[0] == 200
+    assert len(retry_calls) == 2
+    assert retry_delays == [0]
+    print("  PASS  bounded transient retry")
 
     # Test validate_entry (v1)
     try:
@@ -229,6 +303,15 @@ def check_self_test() -> int:
     except ValueError:
         print("  PASS  validate_entry v3 bad date")
 
+    try:
+        validate_entry({
+            "name": "test", "url": "https://example.com", "expected_statuses": [200],
+            "last_verified": "2026-99-99",
+        }, version=3)
+        assert False, "should have failed"
+    except ValueError:
+        print("  PASS  validate_entry v3 impossible date")
+
     print("  PASS  verify-urls.py self-tests")
     return 0
 
@@ -254,19 +337,28 @@ def summary_report(entries: list[dict[str, Any]], version: int) -> None:
 
 
 def main() -> int:
-    if "--self-test" in sys.argv:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--self-test", action="store_true", help="Run internal validation tests")
+    parser.add_argument("--summary", action="store_true", help="Print manifest classification summary")
+    parser.add_argument("--attempts", type=int, default=3, help="Maximum requests per URL (default: 3)")
+    parser.add_argument("--retry-delay", type=float, default=2, help="Seconds between retries (default: 2)")
+    parser.add_argument("--timeout", type=float, default=10, help="Per-request timeout in seconds (default: 10)")
+    args = parser.parse_args()
+    if args.self_test:
         return check_self_test()
+    if args.attempts < 1 or args.retry_delay < 0 or args.timeout <= 0:
+        parser.error("--attempts must be >= 1, --retry-delay >= 0, and --timeout > 0")
 
     version, _description, entries = load_manifest()
-    summary_mode = "--summary" in sys.argv
+    summary_mode = args.summary
 
     print("=== Evidence URL Re-verification ===")
     print(f"Schema version: {version}")
     if version >= 3:
-        print(f"{'Name':<30s} {'Status':<8s} {'Expected':<12s} {'Redirects':<9s} {'Content':<12s} {'URL Status':<12s} {'Note':<10s}")
+        print(f"{'Name':<30s} {'Status':<8s} {'Expected':<12s} {'Redirected':<9s} {'Content':<12s} {'URL Status':<12s} {'Note':<10s}")
         print("-" * 100)
     else:
-        print(f"{'Name':<30s} {'Status':<8s} {'Expected':<12s} {'Redirects':<9s} {'Content':<12s} {'Note':<10s}")
+        print(f"{'Name':<30s} {'Status':<8s} {'Expected':<12s} {'Redirected':<9s} {'Content':<12s} {'Note':<10s}")
         print("-" * 90)
 
     drift_found = False
@@ -293,7 +385,9 @@ def main() -> int:
             continue
 
         content_type = entry.get("content_type")
-        status, redirects, content = check_url(entry["url"], content_type)
+        status, redirected, content = check_url_with_retries(
+            entry["url"], content_type, args.timeout, args.attempts, args.retry_delay
+        )
         expected = entry["expected_statuses"]
         note = classify_status(status, expected)
         if note == "DRIFT":
@@ -312,12 +406,12 @@ def main() -> int:
         if version >= 3:
             print(
                 f"  {entry['name']:<30s} {status!s:<8s} {expected_text:<12s} "
-                f"{redirects!s:<9s} {content_label:<12s} {url_status:<12s} {note:<10s}{marker}"
+                f"{redirected!s:<9s} {content_label:<12s} {url_status:<12s} {note:<10s}{marker}"
             )
         else:
             print(
                 f"  {entry['name']:<30s} {status!s:<8s} {expected_text:<12s} "
-                f"{redirects!s:<9s} {content_label:<12s} {note:<10s}{marker}"
+                f"{redirected!s:<9s} {content_label:<12s} {note:<10s}{marker}"
             )
 
     if drift_found:

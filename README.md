@@ -91,7 +91,7 @@ For repository-local Codex use, place the skill under `.agents/skills/`:
 
 ```bash
 mkdir -p .agents/skills
-cp -r repo-health-and-sync-skill/skills/repo-health-scan .agents/skills/
+cp -r skills/repo-health-scan .agents/skills/
 ```
 
 Codex discovers repository skills from `.agents/skills/`. For reusable
@@ -161,7 +161,7 @@ development infrastructure — scripts, CI, docs, evals, plugin manifests.
 
 ```text
 skills/
-└── repo-health-and-sync-skill/
+└── repo-health-scan/
     └── SKILL.md      # 3-step methodology — discover, infer, report
 ```
 
@@ -210,6 +210,7 @@ Install above).
 │   ├── compatibility-reports/
 │   │   └── codex.md                  # Compatibility evidence for Codex CLI
 │   ├── maintaining.md                # Release and maintenance procedures
+│   ├── automation-identities.md       # Bot authority and review boundaries
 │   ├── decisions.md                  # Architecture decision records
 │   ├── evidence-urls.json            # External URL inventory for verification
 │   ├── research.md                   # Design research and ecosystem analysis
@@ -235,7 +236,7 @@ Install above).
 │   ├── verify.sh                     # Repository structure consistency check
 │   └── verify-urls.py                # Checks external URL references are reachable
 ├── skills/
-│   └── repo-health-and-sync-skill/
+│   └── repo-health-scan/
 │       └── SKILL.md                  # The shipped runtime skill
 ├── docs/
 │   └── references/                   # Maintainer-only evidence and templates
