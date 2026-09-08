@@ -44,6 +44,14 @@ facts rather than universal defects.
   new model-regression baseline.
 - No repository required a new profile module or runtime payload change.
 
+### Full-depth follow-up
+
+The shallow-history limitation was tested separately with a full clone of
+`psf/requests`: 6,494 commits, `origin/main` as the bounded base, zero commits
+outside that base, clean diff, and latest tag `v2.34.2`. No release workflow
+file was present. This confirms that a full clone resolves the evidence gap;
+the skill does not need a new history module.
+
 ## Recommendation
 
 Keep the current payload and CI unchanged. Use this batch as comparative
