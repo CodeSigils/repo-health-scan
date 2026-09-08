@@ -2,7 +2,7 @@
 
 **Status:** Codex-first maintenance mode
 
-**Last reconciled:** 2026-09-06
+**Last reconciled:** 2026-09-08
 
 This roadmap is based on the current repository, recorded compatibility tests,
 official platform documentation, and the research sources listed below. It
@@ -121,7 +121,7 @@ Primary sources and research, accessed 2026-07-12 or 2026-07-13:
 | Release workflow hardening | Tagged releases verify the exact CI commit and required jobs; reruns are idempotent when a GitHub Release already exists.                                                                 |
 | Repository verification    | Script self-tests, Ruff, ShellCheck, documentation audit, plugin validation, skill validation, and diff checks pass independently.                                                        |
 | Agent Skills format        | Pinned official `skills-ref` validation is run locally and in the `lint` CI job against `skills/repo-health-scan`.                                         |
-| Evidence URL tracking      | `docs/evidence-urls.json` upgraded to v3 schema with status, source_type, domain_tag, and last_verified fields. All 11 URLs verified reachable.                                           |
+| Evidence URL tracking      | `docs/evidence-urls.json` upgraded to v3 schema with status, source_type, domain_tag, and last_verified fields. All 18 URLs verified reachable on 2026-09-08. |
 | Local model regression     | Sixteen Codex runs are recorded: eleven passes, one timeout, and two deterministic grading failures. Runs 13–16 are clean passes on Codex CLI 0.153.2. |
 
 ### Remaining Gaps
