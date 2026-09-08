@@ -123,6 +123,7 @@ Primary sources and research, accessed 2026-07-12 or 2026-07-13:
 | Agent Skills format        | Pinned official `skills-ref` validation is run locally and in the `lint` CI job against `skills/repo-health-scan`.                                         |
 | Evidence URL tracking      | `docs/evidence-urls.json` upgraded to v3 schema with status, source_type, domain_tag, and last_verified fields. All 18 URLs verified reachable on 2026-09-08. |
 | Local model regression     | Sixteen Codex runs are recorded: eleven passes, one timeout, and two deterministic grading failures. Runs 13–16 are clean passes on Codex CLI 0.153.2. |
+| Comparative dogfood        | Eight-repository comparison plus a full-depth `psf/requests` follow-up found no profile-module gap; evidence is recorded in `docs/dogfood-batch-2026-09-08.md`. |
 
 ### Remaining Gaps
 
@@ -391,7 +392,7 @@ surface expansion.
 |     3 | **Completed:** Consolidate `SKILL.md` and clarify the candidate-catalog and contextual-blocking contracts.                                                                   |                                   1-2 days | High   |
 |     4 | **Completed:** Establish a fresh repeated model baseline for the consolidated payload; runs 13–15 are the current baseline.                                                 |             Observation over multiple runs | High   |
 |     5 | **Completed:** Hold the profile-module go/no-go review; `docs/decisions.md` records defer-by-default.                                                                         |                                    0.5 day | High   |
-|     6 | **Maintenance:** Run release-readiness and real-project dogfood checks; add the bounded evidence artifacts listed below; reopen implementation only after a concrete evidence gap. | Ongoing, lightweight | High   |
+|     6 | **Maintenance:** Run release-readiness and real-project dogfood checks; the 2026-09-08 comparative and full-depth audits found no profile-module gap. Repeat only after a concrete evidence gap. | Ongoing, lightweight | High   |
 |     7 | If a module is later approved, implement and evaluate one at a time with its own fixture, field budget, and fresh regression evidence.                                         | Review, then 0.5-1 day per approved module | Medium |
 
 Optional, unordered infrastructure: activate the hosted Codex Action only if a
