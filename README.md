@@ -138,6 +138,31 @@ The Python and shell files under `scripts/` are maintainer-only checks for
 this repository's CI and documentation. They are not installed as skill
 runtime helpers and should not be copied into `skills/repo-health-scan/`.
 
+The [maintainer guide](docs/maintaining.md#fast-verification-checklist) owns
+the local verification checklist. Hooks and workflows also use these commands;
+scheduled and model checks are separate from that checklist:
+
+```bash
+python3 scripts/check-portability.py
+python3 scripts/check-commit-convention.py --range "$COMMIT_RANGE"  # outgoing commits
+python3 scripts/check-python-range-parity.py
+python3 scripts/check-skills-ref-policy.py .
+python3 scripts/doc-audit.py --self-test
+python3 scripts/verify-urls.py --self-test
+python3 scripts/extract-tests.py --self-test
+python3 scripts/validate-scripts.py --self-test
+python3 scripts/validate-evals.py --self-test
+python3 scripts/check-trust.py --self-test
+python3 scripts/check-dependency-backlog.py --days 7  # GitHub API; read-only locally
+python3 scripts/run-codex-regression.py  # authenticated model regression
+python3 scripts/grade-codex-transcript.py --self-test
+```
+
+Set `COMMIT_RANGE` to the commits being checked. The scheduled backlog job can
+post comments; the local example above does not. See the maintainer guide and
+the [regression workflow](.github/workflows/codex-regression.yml) for their
+triggers, inputs, and full commands.
+
 The optional [Codex model regression](docs/codex-regression.md) runs positive
 and negative prompts against an isolated fixture. It is manual or scheduled,
 uses a read-only sandbox, and does not block ordinary pull requests.
