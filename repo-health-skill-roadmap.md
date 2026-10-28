@@ -38,7 +38,7 @@ Current product assessment:
 
 - The profile-first and evidence-linked planning contract is useful and
   differentiates the skill from a generic health checklist.
-- The current payload is 518 lines after removing repeated prose and low-value
+- The current payload is 613 lines after removing repeated prose and low-value
   examples while retaining inline probes and the complete security contract.
   Do not add new runtime modules until repeated model evidence shows the extra
   surface is useful.

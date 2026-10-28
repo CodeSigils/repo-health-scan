@@ -89,9 +89,8 @@ Use `--agent claude-code` for Claude Code. The repository is indexed by the
 `skills/<directory>/SKILL.md` layout; no npm package or root `SKILL.md` is
 required. The skills.sh detail page is
 `https://skills.sh/codesigils/repo-health-scan/repo-health-scan`; the repository
-landing page is `https://skills.sh/codesigils/repo-health-scan`. The badge
-currently reports one indexed skill/install; skills.sh may show a dash on the
-individual skill page until its per-skill history is populated.
+landing page is `https://skills.sh/codesigils/repo-health-scan`. The skills.sh
+detail page reports current install and audit status.
 
 For repository-local Codex use, place the skill under `.agents/skills/`:
 
@@ -209,7 +208,7 @@ Install above).
 
 ```text
 ├── .github/
-│   ├── dependabot.yml               # Weekly GitHub Actions updates
+│   ├── dependabot.yml               # Weekly dependency updates
 │   └── workflows/
 │       ├── ci.yml                    # Deterministic CI pipeline
 │       ├── codex-regression.yml      # Non-blocking model evaluation
@@ -244,9 +243,16 @@ Install above).
 │   ├── maintaining.md                # Contributor workflow and verification commands
 │   ├── automation-identities.md       # Bot authority and review boundaries
 │   ├── claim-evidence-matrix.md        # Evidence behind public support claims
+│   ├── control-justification-ledger.md # Control rationale and evidence ledger
 │   ├── decisions.md                  # Architecture decision records
+│   ├── dogfood-audit-2026-09-08.md   # Dated dogfood audit snapshot
+│   ├── dogfood-audit-template.md     # Reusable dogfood audit template
+│   ├── dogfood-batch-2026-09-08.md   # Dated multi-repository dogfood batch
 │   ├── evidence-urls.json            # External URL inventory for verification
+│   ├── references/                   # Maintainer-only evidence and templates
+│   ├── rename-plan.md                # Repository rename and migration record
 │   ├── research.md                   # Design research and ecosystem analysis
+│   ├── skills-ref-policy.md          # Skills-ref validation policy
 │   └── doc-standards.json            # Documentation quality and style rules
 ├── evals/
 │   ├── cases/
@@ -256,8 +262,12 @@ Install above).
 │       ├── positive-prompt.md        # Prompt that should trigger full scan
 │       └── positive-result.schema.json  # Expected output schema for positive case
 ├── scripts/                          # CI-only tooling (not shipped)
+│   ├── _common.py                    # Shared helpers for maintainer scripts
+│   ├── check-commit-convention.py    # Enforces commit-subject prefixes and ranges
+│   ├── check-dependency-backlog.py   # Flags stale dependency pull requests
 │   ├── check-portability.py          # Validates no agent-specific references in skills
 │   ├── check-python-range-parity.py  # Keeps duplicated Python CI jobs equivalent
+│   ├── check-skills-ref-policy.py    # Enforces the pinned skills-ref validation policy
 │   ├── check-trust.py                # Validates security and trust contract
 │   ├── doc-audit.py                  # Manifest-driven doc completeness checker
 │   ├── extract-tests.py              # Extracts test fixtures from script docstrings
@@ -270,8 +280,6 @@ Install above).
 ├── skills/
 │   └── repo-health-scan/
 │       └── SKILL.md                  # The shipped runtime skill
-├── docs/
-│   └── references/                   # Maintainer-only evidence and templates
 ```
 
 ---
