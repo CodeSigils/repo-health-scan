@@ -7,7 +7,7 @@ reproducible format evidence with the official `skills-ref` validator.
   `agentskills` source to an immutable commit.
 - Repositories intentionally without CI must put the same pinned command in a
   manual release gate (normally `docs/release-checklist.md` or
-  `docs/maintaining.md`) and record the result with the release evidence.
+  `docs/MAINTENANCE.md`) and record the result with the release evidence.
 - The validator checks format and frontmatter conformance; it does not certify
   runtime behavior, safety, or usefulness.
 

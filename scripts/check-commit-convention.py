@@ -3,7 +3,7 @@ check-commit-convention.py — Validate commit subject prefixes against the docu
 
 Reads authored (non-merge) commit subjects from a git revision range and fails
 if any subject does not start with an allowed conventional-commit prefix. This is the automated
-enforcement half of the "Commit convention" section in docs/maintaining.md.
+enforcement half of the "Commit convention" section in docs/MAINTENANCE.md.
 
 Usage:
     python3 scripts/check-commit-convention.py                  # check origin/main..HEAD
@@ -139,7 +139,7 @@ def main() -> int:
     if violations:
         print(
             f"BLOCKING: {len(violations)} commit subject(s) violate the "
-            "subject convention (see docs/maintaining.md)",
+            "subject convention (see docs/MAINTENANCE.md)",
             file=sys.stderr,
         )
         return 1

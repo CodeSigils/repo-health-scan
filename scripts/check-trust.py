@@ -86,7 +86,7 @@ def validate_repo(root: Path = REPO_ROOT) -> list[str]:
     description = frontmatter_description(skill)
     security = read(root, "SECURITY.md")
     readme = read(root, "README.md")
-    maintaining = read(root, "docs/maintaining.md")
+    maintaining = read(root, "docs/MAINTENANCE.md")
     codex_report = read(root, "docs/compatibility-reports/codex.md")
 
     if "Use when" not in description or "Not for" not in description:

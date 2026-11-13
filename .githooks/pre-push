@@ -43,7 +43,7 @@ if [ -n "$RANGES" ]; then
         if ! python3 scripts/check-commit-convention.py --range "$range"; then
             echo "" >&2
             echo "pre-push: subject convention failed for $range" >&2
-            echo "See docs/maintaining.md#commit-convention" >&2
+            echo "See docs/MAINTENANCE.md#commit-convention" >&2
             exit 1
         fi
     done

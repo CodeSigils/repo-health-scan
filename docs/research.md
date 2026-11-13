@@ -277,7 +277,7 @@ evidence. Mixing those jobs makes current instructions compete with historical
 context and increases drift.
 
 **Applied pattern:** The docs index routes maintainers by task, while
-`maintaining.md` owns the workflow. `portability-contract.md` owns normative
+`MAINTENANCE.md` owns the workflow. `portability-contract.md` owns normative
 claims, compatibility reports own runtime evidence, and `decisions.md` and
 `research.md` remain explanatory/history surfaces. Machine-readable JSON files
 stay clearly labeled as CI inputs rather than user documentation.

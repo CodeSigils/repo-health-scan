@@ -108,7 +108,7 @@ Primary sources and research, accessed 2026-07-12 or 2026-07-13:
 | Final reporting            | The full audit produced a structured final profile, concrete harm, remediation, and correct payload/tooling classification.                                                               |
 | Probe correctness          | Dirty-tree, TOML/JSON version parsing, attribution range, and command-block examples were corrected and smoke-tested.                                                                     |
 | Runtime boundary           | The shipped payload is one `SKILL.md`; Python and shell scripts are maintainer-only.                                                                                                      |
-| Repository routing         | Root `AGENTS.md` routes health-audit intent to `SKILL.md`, routine maintenance to `docs/maintaining.md`, and explicitly excludes narrow implementation work.                              |
+| Repository routing         | Root `AGENTS.md` routes health-audit intent to `SKILL.md`, routine maintenance to `docs/MAINTENANCE.md`, and explicitly excludes narrow implementation work.                              |
 | Skills CLI discovery       | Skills CLI 1.5.16 found exactly `repo-health-scan` from the local `skills/` tree with `npx --yes skills add <repo> --list`; no root manifest was required.                                |
 | skills.sh distribution     | README documents `npx skills add` for Codex and Claude Code; the skills.sh badge and install smoke matrix remain lightweight distribution evidence.                                       |
 | Eval contract              | `evals/cases/repo-health-scan.json` covers positive/negative triggers, this skill pack, and a Python library using `uv`.                                                                  |
@@ -268,7 +268,7 @@ Root `AGENTS.md` now acts only as a repository adapter:
   `SKILL.md`.
 - It preserves negative triggers for narrow fixes, feature work, single-file
   edits, and routine code review.
-- It routes contributor workflow to `docs/maintaining.md` rather than copying
+- It routes contributor workflow to `docs/MAINTENANCE.md` rather than copying
   commands or conventions.
 
 An isolated skills CLI 1.5.16 check found exactly `repo-health-scan` directly
@@ -537,7 +537,7 @@ repo-health-scan/
 │   ├── codex-setup.md              # verified Codex setup
 │   ├── references/                  # maintainer-only evidence and templates
 │   ├── portability-contract.md     # cross-agent claim and adapter rules
-│   ├── maintaining.md
+│   ├── MAINTENANCE.md              # contributor workflow and verification commands
 │   ├── decisions.md
 │   └── compatibility-reports/
 │       └── codex.md

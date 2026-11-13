@@ -32,5 +32,5 @@ another repository has one; record the failure mode and evidence first.
 | Release `release` job | 2026-10-01 | Only ran after a release cadence that had already stalled, and the published `v0.4.0` predates the payload rename, so the smoke test it was meant to gate did not gate it. |
 | `check-expiry` job | 2026-10-03 | No monitored file declared an expiry date, and `--strict` only emitted missing dates as notes. The control could not detect the stated failure mode; `verify-urls` remains the evidence-staleness control. |
 
-`main` is now the distribution channel. See [maintaining.md](maintaining.md) for
+`main` is now the distribution channel. See [MAINTENANCE.md](MAINTENANCE.md) for
 what replaced the release procedure.

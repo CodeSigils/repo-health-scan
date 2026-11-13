@@ -137,7 +137,7 @@ The Python and shell files under `scripts/` are maintainer-only checks for
 this repository's CI and documentation. They are not installed as skill
 runtime helpers and should not be copied into `skills/repo-health-scan/`.
 
-The [maintainer guide](docs/maintaining.md#fast-verification-checklist) owns
+The [maintainer guide](docs/MAINTENANCE.md#fast-verification-checklist) owns
 the local verification checklist. Hooks and workflows also use these commands;
 scheduled and model checks are separate from that checklist:
 
@@ -240,7 +240,7 @@ Install above).
 │   ├── portability-contract.md       # Cross-agent portability guarantees
 │   ├── compatibility-reports/
 │   │   └── codex.md                  # Compatibility evidence for Codex CLI
-│   ├── maintaining.md                # Contributor workflow and verification commands
+│   ├── MAINTENANCE.md               # Contributor workflow and verification commands
 │   ├── automation-identities.md       # Bot authority and review boundaries
 │   ├── claim-evidence-matrix.md        # Evidence behind public support claims
 │   ├── control-justification-ledger.md # Control rationale and evidence ledger
@@ -321,7 +321,7 @@ tracked state are separate: `.gitignore` cannot protect a file already in Git.
   payload, thin adapters, and per-runtime certification
 - [Growth roadmap](repo-health-skill-roadmap.md) — verified scope and ordered
   follow-ups
-- [Maintainer guide](docs/maintaining.md) — repository verification
+- [Maintainer guide](docs/MAINTENANCE.md) — repository verification
 - [CodeSigils/agents-markdown-formatter](https://github.com/CodeSigils/agents-markdown-formatter) — GFM/MDX formatter with structural guards
 
 ---
