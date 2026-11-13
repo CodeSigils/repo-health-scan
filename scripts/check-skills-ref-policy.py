@@ -19,7 +19,7 @@ MANUAL_FILES = {
     "CONTRIBUTING.md",
     "README.md",
     "docs/release-checklist.md",
-    "docs/maintaining.md",
+    "docs/MAINTENANCE.md",
     "docs/README.md",
 }
 

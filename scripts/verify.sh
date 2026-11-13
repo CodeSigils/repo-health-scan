@@ -72,7 +72,7 @@ if [ "$MODE" = "--self-test" ]; then
     fi
 
     # Required files (new architecture)
-    for f in AGENTS.md docs/doc-standards.json README.md docs/maintaining.md \
+    for f in AGENTS.md docs/doc-standards.json README.md docs/MAINTENANCE.md \
              evals/cases/repo-health-scan.json \
              scripts/check-trust.py \
              skills/repo-health-scan/SKILL.md; do

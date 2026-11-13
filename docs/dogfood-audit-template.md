@@ -25,11 +25,13 @@ observed:
   gitignore: false
   version_sources: []
   script_surface: ""
+  reliability_audit_requested: false
   shipped_payload: ""
   base_ref: null
+  branch_commits_outside_base: null
   working_tree_dirty: false
   workflow_files: []
-  tool_availability: {}
+  verify_refs: false
 inferred:
   repo_type: ""
   risk_context: ""

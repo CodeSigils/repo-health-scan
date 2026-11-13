@@ -273,7 +273,7 @@ tree; this table identifies where maintainers should make changes:
 | Concern                                        | Authoritative location                                                  |
 | ---------------------------------------------- | ----------------------------------------------------------------------- |
 | Runtime audit methodology                      | `skills/repo-health-scan/SKILL.md`                                      |
-| Maintainer workflow and distribution procedure | `docs/maintaining.md`                                                   |
+| Maintainer workflow and distribution procedure | `docs/MAINTENANCE.md`                                                   |
 | Architecture decisions                         | `docs/decisions.md`                                                     |
 | Portability and compatibility claims           | `docs/portability-contract.md` and `docs/compatibility-reports/`        |
 | Public claim-to-evidence mapping               | `docs/claim-evidence-matrix.md`                                         |

@@ -12,7 +12,7 @@ files are runtime dependencies of the installed skill.
 
 | If you need to…                                | Read…                                                                                                                   |
 | ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| Make or review a repository change             | [maintaining.md](maintaining.md)                                                                                        |
+| Make or review a repository change             | [MAINTENANCE.md](MAINTENANCE.md)                                                                                        |
 | Understand why the architecture looks this way | [decisions.md](decisions.md)                                                                                            |
 | Install or test the Codex plugin               | [codex-setup.md](codex-setup.md)                                                                                        |
 | Run the model regression harness               | [codex-regression.md](codex-regression.md)                                                                              |
@@ -30,13 +30,13 @@ files are runtime dependencies of the installed skill.
 
 ## Normal maintainer path
 
-1. Read [maintaining.md](maintaining.md) and make the smallest evidence-backed
+1. Read [MAINTENANCE.md](MAINTENANCE.md) and make the smallest evidence-backed
    change.
 2. Run the fast verification commands listed there.
 3. If `SKILL.md` behavior or trigger boundaries changed, run the optional local
    Codex regression.
 4. Before publishing a change to the payload, smoke-test the install as
-   described in [maintaining.md](maintaining.md#smoke-testing-a-change).
+   described in [MAINTENANCE.md](MAINTENANCE.md#smoke-testing-a-change).
 
 The root [README](../README.md) is the user-facing overview. `AGENTS.md` is
 only a routing layer; it points maintainers here and does not duplicate these
@@ -46,7 +46,7 @@ procedures.
 
 The files use four deliberately different roles:
 
-- **How-to:** `maintaining.md`, `codex-setup.md`, and `codex-regression.md`
+- **How-to:** `MAINTENANCE.md`, `codex-setup.md`, and `codex-regression.md`
   explain how to perform maintainer tasks.
 - **Reference:** `portability-contract.md` and
   `compatibility-reports/` define claim levels and recorded runtime evidence.

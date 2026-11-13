@@ -22,7 +22,7 @@
       "id": "maintainer-route",
       "description": "Routes repository changes to the maintainer guide",
       "type": "regex",
-      "pattern": "docs/maintaining\\.md"
+      "pattern": "docs/MAINTENANCE\\.md"
     }
   ],
   "README.md": [
@@ -107,7 +107,7 @@
       "pattern": "research\\.md"
     }
   ],
-  "docs/maintaining.md": [
+  "docs/MAINTENANCE.md": [
     {
       "id": "commit-format",
       "description": "Commit convention documented",

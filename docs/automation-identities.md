@@ -41,7 +41,7 @@ A newer release supersedes instead of queueing. If a version is published
 while its pull request is open, that pull request is closed and a new one
 opens at the newer version, leaving the open count at the cap even though a
 fresh pull request was created. That is the mechanism behind the twelve-day
-stall in [maintaining.md](maintaining.md), and why a cap that works as
+stall in [MAINTENANCE.md](MAINTENANCE.md), and why a cap that works as
 configured does not prevent churn.
 
 `exclude-patterns` ungroups rather than skips. An excluded dependency still

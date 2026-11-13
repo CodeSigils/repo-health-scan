@@ -14,6 +14,7 @@ observed:
   gitignore: false
   version_sources: []
   script_surface: ""
+  reliability_audit_requested: false
   shipped_payload: ""
   base_ref: null
   branch_commits_outside_base: null
@@ -41,6 +42,7 @@ inferred:
 | `gitignore` | `test -f .gitignore` | `true` / `false` |
 | `version_sources` | Parseable paths inside one distribution boundary | `["pyproject.toml", "src/pkg/__init__.py"]` |
 | `script_surface` | `find scripts/`, root `*.sh` | `"maintainer-only Python + shell"` |
+| `reliability_audit_requested` | Explicit user request for reliability or test-gap analysis | `true` / `false` |
 | `shipped_payload` | Skill discovery | `"single SKILL.md"` |
 | `branch_commits_outside_base` | bounded base comparison | integer or `null` |
 | `working_tree_dirty` | `git status --porcelain` | `true` / `false` |
@@ -68,6 +70,7 @@ observed:
   gitignore: true
   version_sources: [".codex-plugin/plugin.json"]
   script_surface: "maintainer-only Python + shell"
+  reliability_audit_requested: false
   shipped_payload: "single SKILL.md"
   base_ref: "origin/main"
   verify_refs: false
@@ -90,6 +93,7 @@ observed:
   gitignore: true
   version_sources: ["pyproject.toml", "src/example/__init__.py"]
   script_surface: "none"
+  reliability_audit_requested: false
   shipped_payload: "library"
   base_ref: "origin/main"
   verify_refs: false

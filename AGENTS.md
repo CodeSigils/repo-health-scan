@@ -13,12 +13,12 @@
   fix, a single-file edit, or a routine code review without a repository-health
   question.
 - For changes to this repository, follow
-  [`docs/maintaining.md`](docs/maintaining.md).
+  [`docs/MAINTENANCE.md`](docs/MAINTENANCE.md).
 
 ## Source Ownership
 
 - `SKILL.md` owns the audit methodology and trigger boundaries.
-- `docs/maintaining.md` owns contributor workflow and verification commands.
+- `docs/MAINTENANCE.md` owns contributor workflow and verification commands.
 - Compatibility reports own agent-specific support claims.
 
 Keep this file as a routing layer. Link to the owning source instead of

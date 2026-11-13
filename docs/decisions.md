@@ -165,7 +165,7 @@ the skill into a universal checklist.
 
 The v0.1.0 B-phase design and its shipped helper/reference files remain
 historical and are available in git history. Current repository structure and
-validation commands are documented in `docs/maintaining.md` and `README.md`.
+validation commands are documented in `docs/MAINTENANCE.md` and `README.md`.
 
 ---
 
