@@ -199,10 +199,9 @@ def self_test() -> int:
                 except re.error as e:
                     print(f"  FAIL  Self-test: {check['type']} check '{check['id']}' invalid: {e}")
                     return 1
-            elif check["type"] == "contains-all":
-                if "items" not in check or not isinstance(check["items"], list):
-                    print(f"  FAIL  Self-test: contains-all check '{check['id']}' missing 'items' list")
-                    return 1
+            elif check["type"] == "contains-all" and ("items" not in check or not isinstance(check["items"], list)):
+                print(f"  FAIL  Self-test: contains-all check '{check['id']}' missing 'items' list")
+                return 1
 
     with TemporaryDirectory() as directory:
         root = Path(directory)
